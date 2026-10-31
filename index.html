@@ -302,7 +302,7 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- MODAL FORMULAIRE D'AJOUT & ÉDITION                       -->
+  <!-- MODAL FORMULAIRE D'AJOUT & ÉDITION (AVEC NOVALIDATE)      -->
   <!-- ======================================================== -->
   <div id="addModal" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm p-3 overflow-y-auto hidden">
     <div class="max-w-lg mx-auto bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-2xl">
@@ -321,7 +321,8 @@
         </button>
       </div>
 
-      <form id="lineupForm" onsubmit="handleFormSubmit(event)" class="space-y-3 text-xs">
+      <!-- FORM AVEC NOVALIDATE POUR ÉVITER LES BLOCAGES SILENCIEUX DU NAVIGATEUR -->
+      <form id="lineupForm" onsubmit="handleFormSubmit(event)" novalidate class="space-y-3 text-xs">
         
         <!-- CARTE -->
         <div>
@@ -403,12 +404,12 @@
         <!-- CIBLE & DÉPART -->
         <div>
           <label class="block text-zinc-400 mb-1 font-semibold">Cible / Zone visée</label>
-          <input type="text" id="formTarget" required placeholder="ex: B - Window, Fenêtre Mid, Stairs" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
+          <input type="text" id="formTarget" placeholder="ex: B - Window, Fenêtre Mid, Stairs" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
         </div>
 
         <div>
           <label class="block text-zinc-400 mb-1 font-semibold">Position du joueur (depuis où ?)</label>
-          <input type="text" id="formFrom" required placeholder="ex: B - Tunnel, Spawn T (Poubelle)" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
+          <input type="text" id="formFrom" placeholder="ex: B - Tunnel, Spawn T (Poubelle)" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
         </div>
 
         <!-- ZONE PHOTOS LOCALES -->
@@ -425,17 +426,17 @@
             <input type="file" id="filePos" accept="image/*" class="block w-full text-zinc-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-zinc-800 file:text-zinc-200">
           </div>
           <div>
-            <label class="block text-amber-400 font-bold mb-0.5">3. Photo Visée (Crosshair ou Réticule) * <span id="hintAimPhoto" class="text-[10px] text-zinc-400 font-normal"></span></label>
+            <label class="block text-amber-400 font-bold mb-0.5">3. Photo Visée (Crosshair ou Réticule) <span id="hintAimPhoto" class="text-[10px] text-zinc-400 font-normal"></span></label>
             <input type="file" id="fileAim" accept="image/*" class="block w-full text-zinc-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-zinc-800 file:text-zinc-200">
           </div>
         </div>
 
-        <!-- ZONE PHOTOS URL -->
+        <!-- ZONE PHOTOS URL (AVEC TYPE="TEXT" POUR ÉVITER LES BOGUES DE VALIDATION) -->
         <div id="sectionUrlImages" class="hidden border border-zinc-800 bg-zinc-950/70 p-2.5 rounded-xl space-y-2">
           <div class="flex items-center justify-between"><span class="text-amber-400 font-bold">Liens ImgBB</span><a href="https://fr.imgbb.com/" target="_blank" class="text-[11px] text-sky-400 underline">Ouvrir fr.imgbb.com</a></div>
-          <input type="url" id="formResultUrl" placeholder="Lien Résultat" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs">
-          <input type="url" id="formPosUrl" placeholder="Lien Position" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs">
-          <input type="url" id="formAimUrl" placeholder="Lien Visée *" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs">
+          <input type="text" id="formResultUrl" placeholder="Lien Résultat" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs">
+          <input type="text" id="formPosUrl" placeholder="Lien Position" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs">
+          <input type="text" id="formAimUrl" placeholder="Lien Visée *" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs">
         </div>
 
         <div>
@@ -538,7 +539,7 @@
     let searchQuery = "";
     let imageMode = "local";
     let activeLineup = null;
-    let editingLineupId = null; // ID du lineup en cours d'édition (ou null si création)
+    let editingLineupId = null;
     let zoomScale = 1;
 
     let isCrosshairZoomEnabled = localStorage.getItem("cs2_crosshair_zoom") !== "false";
@@ -1044,11 +1045,17 @@
     }
 
     // ==========================================
-    // SOUMISSION DU FORMULAIRE : AJOUT & MODIFICATION
+    // SOUMISSION DU FORMULAIRE (AJOUT & MODIFICATION)
     // ==========================================
     function handleFormSubmit(e) {
       e.preventDefault();
       const data = getFormData();
+
+      if (!data.target || !data.from) {
+        alert("Veuillez renseigner la cible et la position du joueur.");
+        return;
+      }
+
       const isEditing = Boolean(editingLineupId);
       const existingItem = isEditing ? lineups.find(l => l.id === editingLineupId) : null;
 
@@ -1064,7 +1071,10 @@
         posPath = document.getElementById("formPosUrl").value.trim() || (existingItem ? existingItem.posImage : "");
         resultPath = document.getElementById("formResultUrl").value.trim() || (existingItem ? existingItem.resultImage : "");
 
-        if (!aimPath) { alert("Veuillez renseigner le lien de visée."); return; }
+        if (!aimPath) { 
+          alert("Veuillez renseigner au moins le lien de la photo de visée."); 
+          return; 
+        }
 
         const entry = { id, ...data, aimImage: aimPath, posImage: posPath, resultImage: resultPath };
         
@@ -1086,13 +1096,12 @@
         const filePos = document.getElementById("filePos").files[0];
         const fileRes = document.getElementById("fileResult").files[0];
 
-        // En création, l'image de visée est obligatoire. En édition, on garde l'existante si non remplie.
+        // En création nouvelle, la photo de visée est obligatoire. En édition, on garde l'existante.
         if (!isEditing && !fileAim) {
           alert("Sélectionne au moins une photo pour le crosshair.");
           return;
         }
 
-        // Vérification des doublons sur les nouveaux fichiers choisis
         const filesToCheck = [fileAim, filePos, fileRes].filter(Boolean);
         let conflicts = [];
         for (const file of filesToCheck) {
@@ -1124,7 +1133,7 @@
 
         downloadLineupsJson();
 
-        // Récapitulatif seulement si de nouvelles photos ont été chargées
+        // N'affiche le rappel d'upload que si de nouvelles photos ont été sélectionnées
         const newlySelectedFiles = [fileAim ? fileAim.name : null, filePos ? filePos.name : null, fileRes ? fileRes.name : null].filter(Boolean);
         if (newlySelectedFiles.length > 0) {
           showLocalSummaryModal(newlySelectedFiles);
@@ -1196,7 +1205,7 @@
     }
 
     // ==========================================
-    // GESTION DU MODAL D'AJOUT ET D'ÉDITION
+    // OUVERTURE MODAL AJOUT / ÉDITION
     // ==========================================
     function openAddModal() { 
       editingLineupId = null;
@@ -1210,7 +1219,6 @@
       document.getElementById("hintPosPhoto").innerText = "";
       document.getElementById("hintAimPhoto").innerText = "";
 
-      // Réinitialiser les boutons sur les valeurs par défaut
       selectButtonByVal("groupMap", "map", currentMap || "Dust II");
       selectButtonByVal("groupSide", "side", "T");
       selectButtonByVal("groupType", "type", "smoke");
@@ -1234,12 +1242,12 @@
       document.getElementById("modalSubmitBtn").innerHTML = '<i class="fa-solid fa-check mr-1"></i> Enregistrer les modifications';
       document.getElementById("editModePhotoNotice").innerHTML = '<i class="fa-solid fa-circle-info text-amber-400 mr-1"></i>Les photos actuelles sont conservées si aucun nouveau fichier n\'est sélectionné.';
 
-      // Pré-remplir les champs textes
+      // Textes
       document.getElementById("formTarget").value = item.target || "";
       document.getElementById("formFrom").value = item.from || "";
       document.getElementById("formTip").value = item.tip || "";
 
-      // Pré-remplir les boutons
+      // Boutons sélecteurs
       selectButtonByVal("groupMap", "map", item.map || "Dust II");
       selectButtonByVal("groupSide", "side", item.side || "T");
       selectButtonByVal("groupType", "type", item.type || "smoke");
@@ -1248,17 +1256,25 @@
       selectButtonByVal("groupStance", "stance", item.stance || "Stand Up");
       selectButtonByVal("groupMovement", "movement", item.throwMovement || "Jumpthrow");
 
-      // Afficher les noms des photos actuelles comme indications
+      // Noms des photos en rappel
       document.getElementById("hintResultPhoto").innerText = item.resultImage ? `(Actuelle : ${item.resultImage})` : `(Aucune)`;
       document.getElementById("hintPosPhoto").innerText = item.posImage ? `(Actuelle : ${item.posImage})` : `(Aucune)`;
       document.getElementById("hintAimPhoto").innerText = item.aimImage ? `(Actuelle : ${item.aimImage})` : ``;
 
-      // Pré-remplir aussi les champs URL si mode web
-      document.getElementById("formResultUrl").value = item.resultImage || "";
-      document.getElementById("formPosUrl").value = item.posImage || "";
-      document.getElementById("formAimUrl").value = item.aimImage || "";
+      // Détection du mode (web si commence par http, sinon local)
+      const isWebImages = (item.aimImage && item.aimImage.startsWith("http"));
+      if (isWebImages) {
+        document.getElementById("formResultUrl").value = item.resultImage || "";
+        document.getElementById("formPosUrl").value = item.posImage || "";
+        document.getElementById("formAimUrl").value = item.aimImage || "";
+        setImageMode("url");
+      } else {
+        document.getElementById("formResultUrl").value = "";
+        document.getElementById("formPosUrl").value = "";
+        document.getElementById("formAimUrl").value = "";
+        setImageMode("local");
+      }
 
-      setImageMode("local");
       document.getElementById("addModal").classList.remove("hidden");
     }
 
