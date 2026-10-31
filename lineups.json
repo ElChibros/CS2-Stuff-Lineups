@@ -16,7 +16,7 @@
     "resultImage": "20261031225722_1.jpg"
   },
   {
-    "id": "dust_ii_t_smoke_spawn_ct_0504",
+    "id": "cache_t_smoke_spawn_ct_0504",
     "map": "Dust II",
     "side": "T",
     "type": "smoke",
@@ -186,6 +186,7 @@
     "side": "T",
     "type": "smoke",
     "target": "Mid Door",
+    "aimType": "reticle",
     "from": "T Spawn Long",
     "stance": "Stand Up",
     "throwClick": "Clic Gauche",
