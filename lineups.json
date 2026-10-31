@@ -1,5 +1,20 @@
 [
   {
+    "id": "cache_t_smoke_a_site_heaven_1961",
+    "map": "Cache",
+    "side": "T",
+    "type": "smoke",
+    "target": "A Site Heaven",
+    "from": "Spawn T",
+    "stance": "Stand Up",
+    "throwClick": "Clic Gauche",
+    "throwMovement": "Statique",
+    "tip": "",
+    "aimImage": "20261031225712_1.jpg",
+    "posImage": "20261031225703_1.jpg",
+    "resultImage": "20261031225722_1.jpg"
+  },
+  {
     "id": "cache_t_flash_b_site_5676",
     "map": "Cache",
     "side": "T",
