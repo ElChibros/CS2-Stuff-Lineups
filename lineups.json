@@ -1,5 +1,20 @@
 [
   {
+    "id": "dust_ii_ct_smoke_short_5610",
+    "map": "Dust II",
+    "side": "CT",
+    "type": "smoke",
+    "target": "Short",
+    "from": "Site A",
+    "stance": "Stand Up",
+    "throwClick": "Clic Gauche",
+    "throwMovement": "Statique",
+    "tip": "Il faut aligner le haut de la caisse avec le mur de la short",
+    "aimImage": "20261031220439_1.jpg",
+    "posImage": "20261031220439_1.jpg",
+    "resultImage": "20261031220450_1.jpg"
+  },
+  {
     "id": "dust_ii_ct_smoke_long_doors_1756",
     "map": "Dust II",
     "side": "CT",
