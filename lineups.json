@@ -1,5 +1,21 @@
 [
   {
+    "id": "cache_t_flash_site_a_1209",
+    "map": "Cache",
+    "side": "T",
+    "type": "flash",
+    "aimType": "crosshair",
+    "target": "Site A",
+    "from": "Main A",
+    "stance": "Crouch and throw",
+    "throwClick": "Clic Gauche",
+    "throwMovement": "Statique",
+    "tip": "",
+    "aimImage": "20261031232357_1.jpg",
+    "posImage": "20261031232407_1.jpg",
+    "resultImage": "20261031232419_1.jpg"
+  },
+  {
     "id": "cache_ct_molotov_backsite_a_1900",
     "map": "Cache",
     "side": "CT",
