@@ -1,5 +1,20 @@
 [
   {
+    "id": "inferno_ct_smoke_short_9627",
+    "map": "Inferno",
+    "side": "CT",
+    "type": "smoke",
+    "target": "Short",
+    "from": "Balcony",
+    "stance": "Stand Up",
+    "throwClick": "Clic Gauche",
+    "throwMovement": "Statique",
+    "tip": "",
+    "aimImage": "20261031223102_1.jpg",
+    "posImage": "20261031223108_1.jpg",
+    "resultImage": "20261031223113_1.jpg"
+  },
+  {
     "id": "inferno_t_smoke_spawn_ct_boost_1125",
     "map": "Inferno",
     "side": "T",
