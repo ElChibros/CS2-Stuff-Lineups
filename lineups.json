@@ -1,18 +1,18 @@
 [
   {
-    "id": "cache_t_smoke_a_site_heaven_1961",
-    "map": "Cache",
+    "id": "dust_ii_t_smoke_spawn_ct_0504",
+    "map": "Dust II",
     "side": "T",
     "type": "smoke",
-    "target": "A Site Heaven",
-    "from": "Spawn T",
+    "target": "Spawn CT",
+    "from": "Toxic",
     "stance": "Stand Up",
-    "throwClick": "Clic Gauche",
-    "throwMovement": "Statique",
-    "tip": "",
-    "aimImage": "20261031225712_1.jpg",
-    "posImage": "20261031225703_1.jpg",
-    "resultImage": "20261031225722_1.jpg"
+    "throwClick": "Clic G + D (Moyen)",
+    "throwMovement": "Jumpthrow",
+    "tip": "Viser un tout petit peu à droite de la ligne",
+    "aimImage": "20261031224532_1.jpg",
+    "posImage": "20261031224456_1.jpg",
+    "resultImage": "20261031224553_1.jpg"
   },
   {
     "id": "cache_t_flash_b_site_5676",
