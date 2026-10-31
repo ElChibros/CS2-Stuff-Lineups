@@ -1,5 +1,20 @@
 [
   {
+    "id": "dust_ii_ct_smoke_long_doors_1756",
+    "map": "Dust II",
+    "side": "CT",
+    "type": "smoke",
+    "target": "Long Doors",
+    "from": "Spawn CT",
+    "stance": "Stand Up",
+    "throwClick": "Clic Gauche",
+    "throwMovement": "Jumpthrow",
+    "tip": "",
+    "aimImage": "20261031220114_1.jpg",
+    "posImage": "20261031220118_1.jpg",
+    "resultImage": "20261031220124_1.jpg"
+  },
+  {
     "id": "dust_ii_ct_smoke_b_window_retake_9399",
     "map": "Dust II",
     "side": "CT",
