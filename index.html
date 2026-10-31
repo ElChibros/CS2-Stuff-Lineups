@@ -485,6 +485,18 @@
       }
       init();
     }
+	
+	// Vérifie si un nom de fichier est déjà utilisé dans la base
+	function findDuplicateImage(filename) {
+	  if (!filename) return null;
+	  const cleanName = filename.trim();
+	  for (const item of lineups) {
+		if (item.aimImage === cleanName || item.posImage === cleanName || item.resultImage === cleanName) {
+		  return item; // Retourne le lineup qui utilise déjà cette photo
+		}
+	  }
+	  return null;
+	}
 
     function init() {
       renderMapButtons();
@@ -911,6 +923,18 @@
       setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-copy mr-1"></i> Copier', 2000);
     }
 
+// RECHERCHE DE DOUBLON DANS LA BASE ACTUELLE
+    function findDuplicateImage(filename) {
+      if (!filename) return null;
+      const cleanName = filename.trim();
+      for (const item of lineups) {
+        if (item.aimImage === cleanName || item.posImage === cleanName || item.resultImage === cleanName) {
+          return item;
+        }
+      }
+      return null;
+    }
+
     // SOUMISSION DU FORMULAIRE : PAS DE DOSSIER IMAGES/ ET NOMS ORIGINAUX
     function handleFormSubmit(e) {
       e.preventDefault();
@@ -926,6 +950,7 @@
         aimPath = document.getElementById("formAimUrl").value.trim();
         posPath = document.getElementById("formPosUrl").value.trim();
         resultPath = document.getElementById("formResultUrl").value.trim();
+        
         if (!aimPath) {
           alert("Veuillez renseigner le lien de l'image de visée.");
           return;
@@ -950,6 +975,27 @@
           alert("Sélectionne au moins une photo pour le crosshair.");
           return;
         }
+
+        // --- VÉRIFICATION DES DOUBLONS D'IMAGES ---
+        const filesToCheck = [fileAim, filePos, fileRes].filter(Boolean);
+        let conflicts = [];
+
+        for (const file of filesToCheck) {
+          const existing = findDuplicateImage(file.name);
+          if (existing) {
+            conflicts.push(`• "${file.name}" (déjà utilisé sur : [${existing.map}] ${existing.target})`);
+          }
+        }
+
+        if (conflicts.length > 0) {
+          const msg = "⚠️ ATTENTION : Fichier(s) déjà existant(s) dans la base !\n\n" +
+                      conflicts.join("\n") +
+                      "\n\nSi vous continuez, vous allez écraser la photo sur GitHub ou partager la même image entre deux repères.\n\nVoulez-vous quand même enregistrer ?";
+          if (!confirm(msg)) {
+            return; // Annule l'enregistrement pour te permettre de renommer la capture
+          }
+        }
+        // ------------------------------------------
 
         aimPath = fileAim.name;
         if (filePos) posPath = filePos.name;
