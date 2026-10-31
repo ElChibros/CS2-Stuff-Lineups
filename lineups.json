@@ -1,5 +1,21 @@
 [
   {
+    "id": "mirage_t_smoke_connector_5251",
+    "map": "Mirage",
+    "side": "T",
+    "type": "smoke",
+    "aimType": "crosshair",
+    "target": "Connector",
+    "from": "Mid boxes",
+    "stance": "Stand Up",
+    "throwClick": "Clic G + D (Moyen)",
+    "throwMovement": "Jumpthrow",
+    "tip": "",
+    "aimImage": "20261101000839_1.jpg",
+    "posImage": "20261101000834_1.jpg",
+    "resultImage": "20261101000852_1.jpg"
+  },
+  {
     "id": "mirage_t_smoke_top_mid_8429",
     "map": "Mirage",
     "side": "T",
