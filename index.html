@@ -38,14 +38,14 @@
       </div>
     </div>
 
-    <!-- BARRE DE RECHERCHE TEXTE RAPIDE -->
+    <!-- RECHERCHE TEXTE RAPIDE -->
     <div class="relative">
       <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-zinc-500 text-xs"></i>
       <input 
         type="text" 
         id="searchInput" 
         oninput="handleSearch(this.value)" 
-        placeholder="Recherche rapide (ex: Window, Tunnel, Jumpthrow...)" 
+        placeholder="Recherche (ex: Window, Crouch, Jumpthrow, Tunnel...)" 
         class="w-full bg-zinc-950 border border-zinc-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-amber-500"
       >
       <button onclick="clearSearch()" id="clearSearchBtn" class="hidden absolute right-2.5 top-2 text-zinc-500 hover:text-zinc-300 text-xs">
@@ -84,12 +84,12 @@
     </div>
   </section>
 
-  <!-- LISTE DES LINEUPS (COMPACTE) -->
+  <!-- LISTE DES LINEUPS COMPACTE -->
   <main class="px-3.5 pt-3 space-y-3" id="lineupsList">
     <!-- Rempli en JS -->
   </main>
 
-  <!-- FOOTER BRANDING -->
+  <!-- FOOTER -->
   <footer class="mt-10 text-center text-[11px] text-zinc-600 border-t border-zinc-900 pt-5">
     <p>CS2 Stuff Lineups • Made with precision by <span class="text-zinc-400 font-semibold">ElChibros</span></p>
   </footer>
@@ -156,16 +156,28 @@
           </div>
         </div>
 
-        <div>
-          <label class="block text-zinc-400 mb-1 font-semibold">Mouvement au lancer</label>
-          <select id="formMovement" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
-            <option value="Statique">Statique</option>
-            <option value="Jumpthrow">Jumpthrow</option>
-            <option value="W + Jumpthrow">W + Jumpthrow (Avancer)</option>
-            <option value="D + Jumpthrow">D + Jumpthrow</option>
-            <option value="Run-throw">Run-throw (Courir)</option>
-            <option value="Walk-throw">Walk-throw (Marcher)</option>
-          </select>
+        <!-- NOUVEAU : POSTURE EN VISÉE & LANCER -->
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-amber-400 mb-1 font-semibold">Posture (Visée & Lancer)</label>
+            <select id="formStance" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
+              <option value="Stand Up">Debout (Stand Up)</option>
+              <option value="Crouch and throw">Accroupi (Crouch and throw)</option>
+              <option value="Aim crouch then Stand Up">Viser accroupi ➔ Se lever (Aim crouch then Stand Up)</option>
+              <option value="Aim Stand Up then crouch">Viser debout ➔ S'accroupir (Aim Stand Up then crouch)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-zinc-400 mb-1 font-semibold">Mouvement au lancer</label>
+            <select id="formMovement" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
+              <option value="Statique">Statique (Sans saut)</option>
+              <option value="Jumpthrow">Jumpthrow</option>
+              <option value="W + Jumpthrow">W + Jumpthrow (Avancer)</option>
+              <option value="D + Jumpthrow">D + Jumpthrow</option>
+              <option value="Run-throw">Run-throw (Courir)</option>
+              <option value="Walk-throw">Walk-throw (Marcher)</option>
+            </select>
+          </div>
         </div>
 
         <div>
@@ -178,7 +190,7 @@
           <input type="text" id="formFrom" required placeholder="ex: B - Tunnel, Spawn T (Poubelle)" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
         </div>
 
-        <!-- ZONE 1 : LIENS EXTERNES / IMGBB -->
+        <!-- ZONE 1 : LIENS EXTERNES / IMGBB (3 PHOTOS) -->
         <div id="sectionUrlImages" class="border border-zinc-800 bg-zinc-950/70 p-2.5 rounded-xl space-y-2">
           <div class="flex items-center justify-between">
             <span class="text-amber-400 font-bold">Liens d'images (ImgBB)</span>
@@ -187,24 +199,32 @@
             </a>
           </div>
           <div>
-            <label class="block text-zinc-400 mb-0.5">Lien photo du viseur *</label>
-            <input type="url" id="formAimUrl" placeholder="https://i.ibb.co/... ou lien direct" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs focus:outline-none focus:border-amber-500">
+            <label class="block text-zinc-400 mb-0.5">1. Lien photo du Viseur *</label>
+            <input type="url" id="formAimUrl" placeholder="https://i.ibb.co/... (Alignement viseur)" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs focus:outline-none focus:border-amber-500">
           </div>
           <div>
-            <label class="block text-zinc-400 mb-0.5">Lien photo des pieds / position (Optionnel)</label>
-            <input type="url" id="formPosUrl" placeholder="https://i.ibb.co/... (optionnel)" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs focus:outline-none focus:border-amber-500">
+            <label class="block text-zinc-400 mb-0.5">2. Lien photo de la Position (Optionnel)</label>
+            <input type="url" id="formPosUrl" placeholder="https://i.ibb.co/... (Placement pieds)" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs focus:outline-none focus:border-amber-500">
+          </div>
+          <div>
+            <label class="block text-zinc-400 mb-0.5">3. Lien photo du Résultat (Optionnel)</label>
+            <input type="url" id="formResultUrl" placeholder="https://i.ibb.co/... (Atterrissage/Smoke)" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs focus:outline-none focus:border-amber-500">
           </div>
         </div>
 
-        <!-- ZONE 2 : FICHIERS LOCAUX PC -->
+        <!-- ZONE 2 : FICHIERS LOCAUX PC (3 PHOTOS) -->
         <div id="sectionLocalImages" class="hidden border border-zinc-800 bg-zinc-950/70 p-2.5 rounded-xl space-y-2">
           <div>
-            <label class="block text-amber-400 font-bold mb-0.5">Photo Viseur (Alignement)</label>
+            <label class="block text-amber-400 font-bold mb-0.5">1. Photo Viseur (Alignement) *</label>
             <input type="file" id="fileAim" accept="image/*" class="block w-full text-zinc-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-zinc-800 file:text-zinc-200">
           </div>
           <div>
-            <label class="block text-zinc-400 font-medium mb-0.5">Photo Position (Pieds) - Optionnel</label>
+            <label class="block text-zinc-400 font-medium mb-0.5">2. Photo Position (Pieds) - Optionnel</label>
             <input type="file" id="filePos" accept="image/*" class="block w-full text-zinc-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-zinc-800 file:text-zinc-200">
+          </div>
+          <div>
+            <label class="block text-zinc-400 font-medium mb-0.5">3. Photo Résultat (Impact) - Optionnel</label>
+            <input type="file" id="fileResult" accept="image/*" class="block w-full text-zinc-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-zinc-800 file:text-zinc-200">
           </div>
         </div>
 
@@ -255,7 +275,7 @@
   <div id="shareCodeModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm p-4 flex items-center justify-center hidden">
     <div class="max-w-md w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 shadow-2xl space-y-2.5 text-center">
       <h3 class="font-bold text-sm text-zinc-100"><i class="fa-solid fa-code text-amber-500 mr-1.5"></i>Code de Lineup à partager</h3>
-      <textarea id="shareCodeOutput" readonly rows="5" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 font-mono text-[11px] text-amber-300 select-all focus:outline-none"></textarea>
+      <textarea id="shareCodeOutput" readonly rows="6" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 font-mono text-[11px] text-amber-300 select-all focus:outline-none"></textarea>
       <div class="flex gap-2">
         <button onclick="copyGeneratedCode()" id="btnCopyCode" class="flex-1 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold py-2 rounded-lg text-xs transition">
           <i class="fa-solid fa-copy mr-1"></i> Copier
@@ -274,16 +294,16 @@
     <div class="max-w-md mx-auto bg-zinc-900 border border-zinc-700 rounded-2xl p-4 shadow-2xl space-y-3">
       <div class="text-center">
         <h2 class="text-sm font-bold text-zinc-100"><i class="fa-solid fa-check text-emerald-400 mr-1.5"></i>Lineup prêt !</h2>
-        <p class="text-[11px] text-zinc-400">Télécharge tes fichiers pour mettre à jour GitHub :</p>
+        <p class="text-[11px] text-zinc-400">Télécharge tes photos à mettre dans le dossier <code class="text-zinc-200 bg-zinc-800 px-1 rounded">images/</code> :</p>
       </div>
 
       <div class="bg-zinc-950 p-2.5 rounded-xl border border-zinc-800 space-y-1.5 text-xs">
-        <p class="font-bold text-amber-400">1. Photos (dossier images/)</p>
+        <p class="font-bold text-amber-400">Photos renommées</p>
         <div id="downloadButtonsPhotos" class="space-y-1"></div>
       </div>
 
       <div class="bg-zinc-950 p-2.5 rounded-xl border border-zinc-800 space-y-1.5 text-xs">
-        <p class="font-bold text-amber-400">2. Code mis à jour</p>
+        <p class="font-bold text-amber-400">Code mis à jour</p>
         <button onclick="downloadUpdatedHtml()" class="w-full bg-zinc-100 hover:bg-white text-zinc-950 font-bold py-2 rounded-lg text-xs transition flex items-center justify-center gap-1.5">
           <i class="fa-solid fa-file-code"></i> Télécharger index.html
         </button>
@@ -314,11 +334,13 @@
         "type": "smoke",
         "target": "B - Window",
         "from": "B - Tunnel",
+        "stance": "Stand Up",
         "throwClick": "Clic Gauche",
         "throwMovement": "Jumpthrow",
         "tip": "",
         "aimImage": "images/dust_ii_t_smoke_b_window_aim.jpg",
-        "posImage": "images/dust_ii_t_smoke_b_window_pos.jpg"
+        "posImage": "images/dust_ii_t_smoke_b_window_pos.jpg",
+        "resultImage": "images/dust_ii_t_smoke_b_window_result.jpg"
       }
     ];
   </script>
@@ -345,8 +367,10 @@
 
     let lastAimFile = null;
     let lastPosFile = null;
+    let lastResultFile = null;
     let lastAimName = "";
     let lastPosName = "";
+    let lastResultName = "";
 
     function init() {
       renderMapButtons();
@@ -409,7 +433,6 @@
       renderLineups();
     }
 
-    // Helper pour le badge coloré de grenade à gauche
     function getGrenadeIconBadge(type) {
       switch(type) {
         case 'smoke':
@@ -432,6 +455,28 @@
       }
     }
 
+    // Helper pour afficher l'icône et le libellé de posture
+    function formatStanceBadge(stance) {
+      if (!stance) return '';
+      let icon = 'fa-person';
+      let color = 'text-emerald-400';
+      if (stance.includes('Crouch and throw')) {
+        icon = 'fa-person-praying';
+        color = 'text-amber-400';
+      } else if (stance.includes('Aim crouch then Stand Up')) {
+        icon = 'fa-arrow-up text-amber-400 mr-0.5"></i><i class="fa-solid fa-person';
+        color = 'text-sky-400';
+      } else if (stance.includes('Aim Stand Up then crouch')) {
+        icon = 'fa-arrow-down text-sky-400 mr-0.5"></i><i class="fa-solid fa-person-praying';
+        color = 'text-amber-400';
+      }
+      return `
+        <span class="px-2 py-0.5 rounded bg-zinc-800 text-zinc-200 font-semibold border border-zinc-700 flex items-center gap-1">
+          <i class="fa-solid ${icon} ${color} text-[10px]"></i> ${stance}
+        </span>
+      `;
+    }
+
     function renderLineups() {
       const container = document.getElementById("lineupsList");
       const filtered = lineups.filter(item => {
@@ -441,7 +486,7 @@
         
         let matchSearch = true;
         if (searchQuery) {
-          const haystack = `${item.target} ${item.from} ${item.map} ${item.side} ${item.throwClick} ${item.throwMovement} ${item.tip || ''}`.toLowerCase();
+          const haystack = `${item.target} ${item.from} ${item.map} ${item.side} ${item.stance || ''} ${item.throwClick} ${item.throwMovement} ${item.tip || ''}`.toLowerCase();
           matchSearch = haystack.includes(searchQuery);
         }
 
@@ -461,7 +506,7 @@
       container.innerHTML = filtered.map(item => `
         <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow">
           
-          <!-- EN-TÊTE COMPACTE AVEC ICÔNE COLORÉE TOUT À GAUCHE -->
+          <!-- EN-TÊTE COMPACTE -->
           <div class="p-2.5 border-b border-zinc-800/80 flex items-center justify-between gap-2">
             <div class="flex items-center gap-2.5 min-w-0">
               ${getGrenadeIconBadge(item.type)}
@@ -487,27 +532,42 @@
             </div>
           </div>
 
-          <!-- DEUX PHOTOS CÔTE À CÔTE (VISEUR & POSITION) -->
-          <div class="grid grid-cols-2 gap-1.5 p-2 bg-zinc-950/60">
+          <!-- 3 PHOTOS CÔTE À CÔTE : VISEUR / POSITION / RÉSULTAT -->
+          <div class="grid grid-cols-3 gap-1 p-1.5 bg-zinc-950/60">
             <!-- 1. Viseur -->
-            <div class="relative bg-zinc-900 rounded-lg overflow-hidden h-24 sm:h-32 border border-zinc-800 cursor-pointer" onclick="openImageModal('${item.aimImage}', '${item.target} - Alignement Viseur')">
+            <div class="relative bg-zinc-900 rounded-lg overflow-hidden h-20 sm:h-28 border border-zinc-800 cursor-pointer" onclick="openImageModal('${item.aimImage}', '${item.target} - Alignement Viseur')">
               <img src="${item.aimImage}" onerror="this.src='https://placehold.co/400x250/18181b/71717a?text=Viseur'" class="w-full h-full object-cover" alt="Viseur">
-              <span class="absolute bottom-1 left-1 bg-black/80 backdrop-blur text-[10px] px-1.5 py-0.5 rounded text-zinc-300 border border-zinc-700 flex items-center gap-1">
+              <span class="absolute bottom-1 left-1 bg-black/85 backdrop-blur text-[9px] px-1 py-0.2 rounded text-zinc-300 border border-zinc-700 flex items-center gap-1">
                 <i class="fa-solid fa-crosshairs text-amber-400"></i> Viseur
               </span>
             </div>
 
-            <!-- 2. Position -->
-            <div class="relative bg-zinc-900 rounded-lg overflow-hidden h-24 sm:h-32 border border-zinc-800 cursor-pointer" onclick="openImageModal('${item.posImage || item.aimImage}', '${item.target} - Position Joueur')">
+            <!-- 2. Position (Pieds) -->
+            <div class="relative bg-zinc-900 rounded-lg overflow-hidden h-20 sm:h-28 border border-zinc-800 cursor-pointer" onclick="openImageModal('${item.posImage || item.aimImage}', '${item.target} - Position Joueur')">
               ${item.posImage ? `
                 <img src="${item.posImage}" onerror="this.src='https://placehold.co/400x250/18181b/71717a?text=Position'" class="w-full h-full object-cover" alt="Position">
-                <span class="absolute bottom-1 left-1 bg-black/80 backdrop-blur text-[10px] px-1.5 py-0.5 rounded text-zinc-300 border border-zinc-700 flex items-center gap-1">
+                <span class="absolute bottom-1 left-1 bg-black/85 backdrop-blur text-[9px] px-1 py-0.2 rounded text-zinc-300 border border-zinc-700 flex items-center gap-1">
                   <i class="fa-solid fa-shoe-prints text-sky-400"></i> Position
                 </span>
               ` : `
                 <div class="w-full h-full flex flex-col items-center justify-center text-zinc-600 text-xs">
-                  <i class="fa-solid fa-shoe-prints text-lg mb-1 opacity-50"></i>
-                  <span class="text-[10px]">Non spécifié</span>
+                  <i class="fa-solid fa-shoe-prints text-sm mb-0.5 opacity-40"></i>
+                  <span class="text-[9px]">Aucune</span>
+                </div>
+              `}
+            </div>
+
+            <!-- 3. Résultat (Impact / Atterrissage) -->
+            <div class="relative bg-zinc-900 rounded-lg overflow-hidden h-20 sm:h-28 border border-zinc-800 cursor-pointer" onclick="openImageModal('${item.resultImage || item.aimImage}', '${item.target} - Reconstitution Résultat')">
+              ${item.resultImage ? `
+                <img src="${item.resultImage}" onerror="this.src='https://placehold.co/400x250/18181b/71717a?text=Résultat'" class="w-full h-full object-cover" alt="Résultat">
+                <span class="absolute bottom-1 left-1 bg-black/85 backdrop-blur text-[9px] px-1 py-0.2 rounded text-zinc-300 border border-zinc-700 flex items-center gap-1">
+                  <i class="fa-solid fa-flag-checkered text-emerald-400"></i> Résultat
+                </span>
+              ` : `
+                <div class="w-full h-full flex flex-col items-center justify-center text-zinc-600 text-xs">
+                  <i class="fa-solid fa-flag-checkered text-sm mb-0.5 opacity-40"></i>
+                  <span class="text-[9px]">Aucun</span>
                 </div>
               `}
             </div>
@@ -518,6 +578,7 @@
             <span class="px-2 py-0.5 rounded bg-zinc-800 text-zinc-200 font-semibold border border-zinc-700 flex items-center gap-1">
               <i class="fa-regular fa-hand-pointer text-amber-400 text-[10px]"></i> ${item.throwClick}
             </span>
+            ${formatStanceBadge(item.stance)}
             <span class="px-2 py-0.5 rounded bg-zinc-800 text-zinc-200 font-semibold border border-zinc-700 flex items-center gap-1">
               <i class="fa-solid fa-person-running text-sky-400 text-[10px]"></i> ${item.throwMovement}
             </span>
@@ -576,6 +637,7 @@
         type: document.getElementById("formType").value,
         target: document.getElementById("formTarget").value.trim(),
         from: document.getElementById("formFrom").value.trim(),
+        stance: document.getElementById("formStance").value,
         throwClick: document.getElementById("formClick").value,
         throwMovement: document.getElementById("formMovement").value,
         tip: document.getElementById("formTip").value.trim()
@@ -591,12 +653,14 @@
 
       const aimUrl = document.getElementById("formAimUrl").value.trim();
       const posUrl = document.getElementById("formPosUrl").value.trim();
+      const resultUrl = document.getElementById("formResultUrl").value.trim();
 
       const payload = {
         id: `${slugify(data.map)}_${slugify(data.side)}_${slugify(data.type)}_${slugify(data.target)}_${Date.now().toString().slice(-4)}`,
         ...data,
         aimImage: aimUrl || "https://placehold.co/800x450/18181b/f59e0b?text=Aim",
-        posImage: posUrl || ""
+        posImage: posUrl || "",
+        resultImage: resultUrl || ""
       };
 
       document.getElementById('shareCodeOutput').value = JSON.stringify(payload, null, 2);
@@ -627,16 +691,18 @@
 
       let aimPath = "";
       let posPath = "";
+      let resultPath = "";
 
       if (imageMode === 'url') {
         aimPath = document.getElementById("formAimUrl").value.trim();
         posPath = document.getElementById("formPosUrl").value.trim();
+        resultPath = document.getElementById("formResultUrl").value.trim();
         if (!aimPath) {
           alert("Veuillez renseigner le lien de l'image de visée.");
           return;
         }
 
-        const newEntry = { id, ...data, aimImage: aimPath, posImage: posPath };
+        const newEntry = { id, ...data, aimImage: aimPath, posImage: posPath, resultImage: resultPath };
         lineups.unshift(newEntry);
         currentMap = data.map;
         renderMapButtons();
@@ -647,6 +713,7 @@
       } else {
         lastAimFile = document.getElementById("fileAim").files[0];
         lastPosFile = document.getElementById("filePos").files[0];
+        lastResultFile = document.getElementById("fileResult").files[0];
 
         if (!lastAimFile) {
           alert("Sélectionne au moins une photo pour le viseur.");
@@ -663,7 +730,13 @@
           posPath = `images/${lastPosName}`;
         }
 
-        const newEntry = { id, ...data, aimImage: aimPath, posImage: posPath };
+        if (lastResultFile) {
+          const resExt = lastResultFile.name.split('.').pop();
+          lastResultName = `${baseSlug}_result.${resExt}`;
+          resultPath = `images/${lastResultName}`;
+        }
+
+        const newEntry = { id, ...data, aimImage: aimPath, posImage: posPath, resultImage: resultPath };
         lineups.unshift(newEntry);
         currentMap = data.map;
         renderMapButtons();
@@ -735,6 +808,17 @@
           <div class="flex items-center justify-between bg-zinc-900 p-2 rounded border border-zinc-800 mt-1">
             <span class="font-mono text-zinc-300 text-[10px] truncate mr-2">${lastPosName}</span>
             <button onclick="downloadFile(lastPosFile, lastPosName)" class="bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-2 py-1 rounded text-[10px]">
+              <i class="fa-solid fa-download"></i> Télécharger
+            </button>
+          </div>
+        `;
+      }
+
+      if (lastResultFile) {
+        html += `
+          <div class="flex items-center justify-between bg-zinc-900 p-2 rounded border border-zinc-800 mt-1">
+            <span class="font-mono text-zinc-300 text-[10px] truncate mr-2">${lastResultName}</span>
+            <button onclick="downloadFile(lastResultFile, lastResultName)" class="bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-2 py-1 rounded text-[10px]">
               <i class="fa-solid fa-download"></i> Télécharger
             </button>
           </div>
