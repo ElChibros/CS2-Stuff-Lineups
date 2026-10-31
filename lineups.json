@@ -1,5 +1,20 @@
 [
   {
+    "id": "cache_t_flash_b_site_5676",
+    "map": "Cache",
+    "side": "T",
+    "type": "flash",
+    "target": "B Site",
+    "from": "Toxic",
+    "stance": "Stand Up",
+    "throwClick": "Clic Gauche",
+    "throwMovement": "Statique",
+    "tip": "",
+    "aimImage": "20261031225104_1.jpg",
+    "posImage": "20261031224456_1.jpg",
+    "resultImage": "20261031225112_1.jpg"
+  },
+  {
     "id": "inferno_ct_smoke_short_9627",
     "map": "Inferno",
     "side": "CT",

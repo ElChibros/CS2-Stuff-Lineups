@@ -441,22 +441,24 @@
     </div>
   </div>
 
-  <!-- MODAL CONFIRMATION AJOUT LOCAL -->
+<!-- MODAL CONFIRMATION AJOUT LOCAL -->
   <div id="localSummaryModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm p-4 flex items-center justify-center hidden">
     <div class="max-w-md w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-5 shadow-2xl space-y-4">
       <div class="text-center">
         <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-xl mb-2"><i class="fa-solid fa-check"></i></div>
-        <h2 class="text-base font-bold text-zinc-100">Lineup ajouté !</h2>
-        <p class="text-xs text-zinc-400 mt-1">Glisse ces photos sur la page GitHub qui s'est ouverte :</p>
+        <h2 class="text-base font-bold text-zinc-100">Lineup enregistré !</h2>
+        <p class="text-xs text-amber-400 mt-1 font-semibold">Le fichier <code class="bg-zinc-800 px-1 py-0.5 rounded text-white">lineups.json</code> a été téléchargé automatiquement.</p>
+        <p class="text-[11px] text-zinc-400 mt-1">Glisse-le avec tes photos sur l'onglet GitHub qui vient de s'ouvrir :</p>
       </div>
+
       <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800 space-y-2 text-xs">
-        <p class="font-bold text-amber-400"><i class="fa-solid fa-images mr-1"></i> Photos sélectionnées :</p>
+        <p class="font-bold text-amber-400"><i class="fa-solid fa-images mr-1"></i> Photos à glisser :</p>
         <ul id="localFilesSummaryList" class="space-y-1 font-mono text-[11px] text-zinc-300 pl-2"></ul>
       </div>
-      <button onclick="downloadLineupsJson(); closeLocalSummaryModal();" class="w-full bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold py-2.5 rounded-lg text-xs transition flex items-center justify-center gap-1.5 shadow">
-        <i class="fa-solid fa-download"></i> Télécharger lineups.json mis à jour
+
+      <button onclick="closeLocalSummaryModal()" class="w-full bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold py-2 rounded-lg text-xs transition shadow">
+        J'ai compris (Fermer)
       </button>
-      <button onclick="closeLocalSummaryModal()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-semibold py-1.5 rounded-lg text-xs transition">Fermer</button>
     </div>
   </div>
 
@@ -940,6 +942,7 @@
       setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-copy mr-1"></i> Copier', 2000);
     }
 
+    // SOUMISSION DU FORMULAIRE : TÉLÉCHARGEMENT AUTO DU JSON + OUVERTURE GITHUB
     function handleFormSubmit(e) {
       e.preventDefault();
       const data = getFormData();
@@ -960,14 +963,16 @@
         selectMapAndShowLineups(data.map);
         closeAddModal();
         document.getElementById("lineupForm").reset();
-        showSaveAlert();
-        window.open(GITHUB_UPLOAD_URL, "_blank");
+
+        // Téléchargement automatique du JSON + ouverture GitHub
+        downloadLineupsJson();
       } else {
         const fileAim = document.getElementById("fileAim").files[0];
         const filePos = document.getElementById("filePos").files[0];
         const fileRes = document.getElementById("fileResult").files[0];
         if (!fileAim) { alert("Sélectionne au moins une photo pour le crosshair."); return; }
 
+        // Vérification des doublons
         const filesToCheck = [fileAim, filePos, fileRes].filter(Boolean);
         let conflicts = [];
         for (const file of filesToCheck) {
@@ -990,7 +995,11 @@
         closeAddModal();
         document.getElementById("lineupForm").reset();
 
-        window.open(GITHUB_UPLOAD_URL, "_blank");
+        // 1. Télécharge automatiquement lineups.json
+        // 2. Ouvre automatiquement la page GitHub Upload
+        downloadLineupsJson();
+
+        // Affiche la liste pense-bête des photos sélectionnées
         showLocalSummaryModal([fileAim.name, filePos ? filePos.name : null, fileRes ? fileRes.name : null].filter(Boolean));
       }
     }
