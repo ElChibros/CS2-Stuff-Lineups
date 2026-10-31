@@ -1,5 +1,21 @@
 [
   {
+    "id": "mirage_ct_he_mid_window_smoke_blast_3590",
+    "map": "Mirage",
+    "side": "CT",
+    "type": "he",
+    "aimType": "crosshair",
+    "target": "Mid window smoke blast",
+    "from": "Jungle",
+    "stance": "Crouch and throw",
+    "throwClick": "Clic Droit",
+    "throwMovement": "Jumpthrow",
+    "tip": "Viser la tache noir",
+    "aimImage": "20261101003844_1.jpg",
+    "posImage": "20261101003825_1.jpg",
+    "resultImage": "20261101003858_1.jpg"
+  },
+  {
     "id": "mirage_t_flash_b_site_6252",
     "map": "Mirage",
     "side": "T",
