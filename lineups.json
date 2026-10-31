@@ -1,5 +1,20 @@
 [
   {
+    "id": "inferno_t_smoke_spawn_ct_boost_1125",
+    "map": "Inferno",
+    "side": "T",
+    "type": "smoke",
+    "target": "Spawn CT  Boost",
+    "from": "Banane",
+    "stance": "Stand Up",
+    "throwClick": "Clic Gauche",
+    "throwMovement": "Jumpthrow",
+    "tip": "",
+    "aimImage": "20261031222643_1.jpg",
+    "posImage": "20261031222538_1.jpg",
+    "resultImage": "20261031222704_1.jpg"
+  },
+  {
     "id": "dust_ii_ct_smoke_short_5610",
     "map": "Dust II",
     "side": "CT",
