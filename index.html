@@ -29,8 +29,8 @@
     }
     .crosshair-magnifier img {
       position: absolute;
-      width: 320%;
-      height: 320%;
+      width: 1000%;
+      height: 1000%;
       max-width: none;
       top: 50%;
       left: 50%;
@@ -265,7 +265,7 @@
               <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div class="w-2 h-2 border border-amber-400/80 rounded-full"></div>
               </div>
-              <span class="absolute bottom-1 right-1.5 bg-black/80 px-1 py-0.2 rounded text-[8px] font-mono font-bold text-amber-400 border border-amber-500/40">3.2x</span>
+              <span class="absolute bottom-1 right-1.5 bg-black/80 px-1 py-0.2 rounded text-[8px] font-mono font-bold text-amber-400 border border-amber-500/40">10.0x</span>
             </div>
           </div>
         </div>
@@ -810,7 +810,7 @@
     }
 
     function changeZoom(delta) {
-      zoomScale = Math.min(Math.max(1, zoomScale + delta), 4.5);
+      zoomScale = Math.min(Math.max(1, zoomScale + delta), 10);
       applyZoom();
     }
 
