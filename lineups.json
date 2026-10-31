@@ -1,5 +1,21 @@
 [
   {
+    "id": "mirage_t_smoke_window_mid_9076",
+    "map": "Mirage",
+    "side": "T",
+    "type": "smoke",
+    "aimType": "reticle",
+    "target": "Window Mid",
+    "from": "Mid boxes",
+    "stance": "Stand Up",
+    "throwClick": "Clic Gauche",
+    "throwMovement": "Statique",
+    "tip": "",
+    "aimImage": "20261101001508_1.jpg",
+    "posImage": "20261101000834_1.jpg",
+    "resultImage": "20261101001520_1.jpg"
+  },
+  {
     "id": "mirage_t_smoke_connector_5251",
     "map": "Mirage",
     "side": "T",
