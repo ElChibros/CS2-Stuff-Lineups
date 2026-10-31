@@ -1,5 +1,21 @@
 [
   {
+    "id": "cache_ct_molotov_backsite_a_1900",
+    "map": "Cache",
+    "side": "CT",
+    "type": "molotov",
+    "aimType": "crosshair",
+    "target": "Backsite A",
+    "from": "Car Spawn CT",
+    "stance": "Stand Up",
+    "throwClick": "Clic Gauche",
+    "throwMovement": "Jumpthrow",
+    "tip": "",
+    "aimImage": "20261031232517_1.jpg",
+    "posImage": "20261031232433_1.jpg",
+    "resultImage": "20261031232526_1.jpg"
+  },
+  {
     "id": "cache_t_smoke_a_site_heaven_8312",
     "map": "Cache",
     "side": "T",
