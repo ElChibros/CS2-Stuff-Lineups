@@ -1,0 +1,62 @@
+[
+	{
+	"id": "dust_ii_t_smoke_b_window_4819",
+	"map": "Dust II",
+	"side": "T",
+	"type": "smoke",
+	"target": "B - Window",
+	"from": "B - Tunnel",
+	"stance": "Stand Up",
+	"throwClick": "Clic Gauche",
+	"throwMovement": "Jumpthrow",
+	"tip": "",
+	"aimImage": "images/dust_ii_t_smoke_b_window_aim.jpg",
+	"posImage": "images/dust_ii_t_smoke_b_window_pos.jpg",
+	"resultImage": "images/dust_ii_t_smoke_b_window_result.jpg"
+	},
+	{
+	  "id": "dust_ii_t_smoke_b_door_9000",
+	  "map": "Dust II",
+	  "side": "T",
+	  "type": "smoke",
+	  "target": "B - Door",
+	  "from": "B - Tunnel",
+	  "stance": "Stand Up",
+	  "throwClick": "Clic Gauche",
+	  "throwMovement": "Jumpthrow",
+	  "tip": "",
+	  "aimImage": "images/dust_ii_t_smoke_b_door_aim.jpg",
+	  "posImage": "images/dust_ii_t_smoke_b_door_pos.jpg",
+	  "resultImage": "images/dust_ii_t_smoke_b_door_result.jpg"
+	},
+	{
+	  "id": "dust_ii_t_smoke_ct_spawn_6768",
+	  "map": "Dust II",
+	  "side": "T",
+	  "type": "smoke",
+	  "target": "CT Spawn",
+	  "from": "XBOX Mid",
+	  "stance": "Aim crouch then Stand Up",
+	  "throwClick": "Clic Gauche",
+	  "throwMovement": "Jumpthrow",
+	  "tip": "",
+	  "aimImage": "images/dust_ii_t_smoke_ct_spawn_aim.jpg",
+	  "posImage": "images/dust_ii_t_smoke_ct_spawn_pos.jpg",
+	  "resultImage": "images/dust_ii_t_smoke_ct_spawn_result.jpg"
+	},
+	{
+	  "id": "dust_ii_t_smoke_mid_door_1116",
+	  "map": "Dust II",
+	  "side": "T",
+	  "type": "smoke",
+	  "target": "Mid door",
+	  "from": "Lower Tunnel",
+	  "stance": "Stand Up",
+	  "throwClick": "Clic G + D (Moyen)",
+	  "throwMovement": "Statique",
+	  "tip": "",
+	  "aimImage": "images/dust_ii_t_smoke_mid_door_aim.jpg",
+	  "posImage": "images/dust_ii_t_smoke_mid_door_pos.jpg",
+	  "resultImage": "images/dust_ii_t_smoke_mid_door_result.jpg"
+	}
+]
