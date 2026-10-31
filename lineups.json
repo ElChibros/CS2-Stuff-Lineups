@@ -1,5 +1,21 @@
 [
   {
+    "id": "cache_t_smoke_a_site_heaven_8312",
+    "map": "Cache",
+    "side": "T",
+    "type": "smoke",
+    "aimType": "reticle",
+    "target": "A Site Heaven",
+    "from": "T Spawn - Squeaky entrance",
+    "stance": "Stand Up",
+    "throwClick": "Clic Gauche",
+    "throwMovement": "Statique",
+    "tip": "",
+    "aimImage": "20261031225712_1.jpg",
+    "posImage": "20261031225703_1.jpg",
+    "resultImage": "20261031225722_1.jpg"
+  },
+  {
     "id": "dust_ii_t_smoke_spawn_ct_0504",
     "map": "Dust II",
     "side": "T",
