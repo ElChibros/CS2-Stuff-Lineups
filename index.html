@@ -84,19 +84,16 @@
           <p class="text-[11px] text-zinc-500">Sélectionne la map pour afficher les repères</p>
         </div>
         
-        <!-- BOUTON TOGGLE LOUPE CROSSHAIR -->
         <button onclick="toggleCrosshairZoom()" id="toggleZoomBtnHub" class="text-[11px] px-2.5 py-1 rounded-lg border flex items-center gap-1.5 transition font-semibold">
           <i class="fa-solid fa-crosshairs"></i> Loupe : <span id="toggleZoomStatusHub">ON</span>
         </button>
       </div>
 
-      <!-- GRILLE DES CARTES AVEC LOGOS OFFICIELS -->
-      <div class="grid grid-cols-2 gap-2.5" id="mapGridContainer">
-        <!-- Rempli en JS -->
-      </div>
+      <!-- GRILLE DES CARTES -->
+      <div class="grid grid-cols-2 gap-2.5" id="mapGridContainer"></div>
     </div>
 
-    <!-- BOUTON AJOUT RAPIDE EN BAS -->
+    <!-- BOUTON AJOUT RAPIDE -->
     <div class="pt-6">
       <button onclick="openAddModal()" class="w-full bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg transition">
         <i class="fa-solid fa-plus text-sm"></i> Ajouter un nouveau Lineup
@@ -113,8 +110,6 @@
     <!-- TOP BAR STUFFS -->
     <header class="sticky top-0 z-30 bg-zinc-900/95 backdrop-blur border-b border-zinc-800 px-3.5 py-2.5 space-y-2">
       <div class="flex items-center justify-between">
-        
-        <!-- BOUTON RETOUR HUB DE CARTE -->
         <div class="flex items-center gap-2">
           <button onclick="showMapSelectView()" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition">
             <i class="fa-solid fa-chevron-left text-[10px] text-amber-400"></i> Cartes
@@ -125,13 +120,11 @@
           </div>
         </div>
 
-        <!-- ACTIONS -->
         <div class="flex items-center gap-1.5">
-          <!-- TOGGLE LOUPE DANS LA BARRE -->
           <button onclick="toggleCrosshairZoom()" id="toggleZoomBtnTop" class="text-[11px] px-2 py-1.5 rounded-lg border font-semibold flex items-center gap-1 transition" title="Activer/Désactiver la loupe de crosshair">
             <i class="fa-solid fa-crosshairs"></i> <span id="toggleZoomStatusTop">ON</span>
           </button>
-          <button onclick="downloadLineupsJson()" title="Sauvegarder JSON et ouvrir GitHub" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-amber-400 border border-zinc-700 font-bold px-2 py-1.5 rounded-lg flex items-center gap-1 transition">
+          <button onclick="downloadLineupsJson()" title="Sauvegarder JSON et ouvrir GitHub" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-amber-400 border border-zinc-700 font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition">
             <i class="fa-solid fa-floppy-disk"></i> JSON
           </button>
           <button onclick="openAddModal()" class="text-xs bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition shadow">
@@ -140,14 +133,14 @@
         </div>
       </div>
 
-      <!-- RECHERCHE TEXTE RAPIDE -->
+      <!-- RECHERCHE TEXTE -->
       <div class="relative">
         <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-zinc-500 text-xs"></i>
         <input 
           type="text" 
           id="searchInput" 
           oninput="handleSearch(this.value)" 
-          placeholder="Recherche (ex: Window, Crouch, Jumpthrow, Tunnel...)" 
+          placeholder="Recherche (ex: Window, Réticule, Jumpthrow...)" 
           class="w-full bg-zinc-950 border border-zinc-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-amber-500"
         >
         <button onclick="clearSearch()" id="clearSearchBtn" class="hidden absolute right-2.5 top-2 text-zinc-500 hover:text-zinc-300 text-xs">
@@ -155,7 +148,7 @@
         </button>
       </div>
 
-      <!-- SÉLECTEUR RAPIDE DE MAP HORIZONTAL -->
+      <!-- SÉLECTEUR RAPIDE DE MAP -->
       <div class="flex gap-1.5 overflow-x-auto no-scrollbar pt-0.5 pb-0.5 text-xs font-semibold" id="mapButtons"></div>
     </header>
 
@@ -167,7 +160,7 @@
       </button>
     </div>
 
-    <!-- FILTRES RAPIDES : CAMP & TYPE -->
+    <!-- FILTRES RAPIDES -->
     <section class="px-3.5 pt-2.5 space-y-2">
       <div class="grid grid-cols-3 gap-1.5 text-[11px] font-bold uppercase tracking-wider">
         <button onclick="setSide('ALL')" id="btn-side-ALL" class="py-1.5 rounded-lg bg-amber-500 text-zinc-950 transition">Tous</button>
@@ -189,7 +182,7 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- MODAL DÉTAIL D'UN LINEUP (AVEC LOUPE DE CROSSHAIR)       -->
+  <!-- MODAL DÉTAIL D'UN LINEUP (AVEC ALERTES POSTURE & RÉTICULE)-->
   <!-- ======================================================== -->
   <div id="detailModal" class="fixed inset-0 z-40 bg-black/90 backdrop-blur-md p-3 sm:p-5 overflow-y-auto hidden">
     <div class="max-w-xl mx-auto bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl">
@@ -216,12 +209,21 @@
           <span id="detailClick" class="px-2.5 py-1 rounded bg-zinc-800 text-zinc-200 font-semibold border border-zinc-700 flex items-center gap-1.5"></span>
           <span id="detailStance" class="px-2.5 py-1 rounded bg-zinc-800 text-zinc-200 font-semibold border border-zinc-700 flex items-center gap-1.5"></span>
           <span id="detailMovement" class="px-2.5 py-1 rounded bg-zinc-800 text-zinc-200 font-semibold border border-zinc-700 flex items-center gap-1.5"></span>
+          <span id="detailAimTypeBadge" class="hidden px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40 flex items-center gap-1.5">
+            <i class="fa-solid fa-bullseye text-amber-400"></i> Réticule Grenade
+          </span>
         </div>
 
-        <!-- ALERTE ROUGE POSTURE -->
+        <!-- ALERTE ROUGE : POSTURE SPÉCIALE -->
         <div id="detailStanceWarning" class="hidden bg-red-500/20 border border-red-500/50 text-red-200 px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2 shadow-sm">
           <i class="fa-solid fa-triangle-exclamation text-amber-400 text-sm animate-pulse"></i>
           <span>ATTENTION POSTURE SPÉCIALE : <span id="detailStanceWarningText" class="underline uppercase"></span></span>
+        </div>
+
+        <!-- ALERTE AMBRE : RÉTICULE DE GRENADE (PAS DE VISEUR CENTRAL) -->
+        <div id="detailReticleWarning" class="hidden bg-amber-500/20 border border-amber-500/50 text-amber-200 px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2 shadow-sm">
+          <i class="fa-solid fa-triangle-exclamation text-amber-400 text-sm animate-pulse"></i>
+          <span>ATTENTION : ALIGNER LE RÉTICULE DE GRENADE / HUD (PAS LE VISEUR CENTRAL)</span>
         </div>
 
         <div id="detailTipContainer" class="hidden text-xs text-zinc-300 bg-zinc-950/70 p-2.5 rounded-lg border border-zinc-800 italic">
@@ -243,15 +245,14 @@
           </div>
         </div>
 
-        <!-- 2. CROSSHAIR (AVEC LOUPE CENTRALE TOGGLEABLE) -->
+        <!-- 2. VISÉE / CROSSHAIR -->
         <div class="space-y-1.5">
           <div class="flex items-center justify-between text-xs">
             <span class="font-bold text-amber-400 flex items-center gap-1.5">
-              <i class="fa-solid fa-crosshairs"></i> 2. Crosshair Placement (Alignement du viseur)
+              <i class="fa-solid fa-crosshairs"></i> 2. <span id="detailAimSectionTitle">Crosshair Placement</span>
             </span>
             
-            <!-- TOGGLE RAPIDE LOUPE DANS LE MODAL -->
-            <button onclick="toggleCrosshairZoom()" class="text-[10px] px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 font-semibold hover:border-amber-500 transition">
+            <button id="toggleZoomBtnDetail" onclick="toggleCrosshairZoom()" class="text-[10px] px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 font-semibold hover:border-amber-500 transition">
               <i class="fa-solid fa-magnifying-glass mr-1 text-amber-400"></i>Loupe : <span class="zoomStatusText">ON</span>
             </button>
           </div>
@@ -259,13 +260,10 @@
           <div class="relative rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900 cursor-pointer" onclick="triggerZoomFromDetail('aim')">
             <img id="detailAimImg" src="" alt="Crosshair Placement" class="w-full object-contain max-h-[45vh]">
             
-            <!-- LOUPE AUTOMATIQUE AU CENTRE DU RETICULE -->
+            <!-- LOUPE AUTOMATIQUE (DÉSACTIVÉE SI RÉTICULE DE GRENADE) -->
             <div id="crosshairMagnifierBox" class="crosshair-magnifier">
               <img id="magnifierZoomImg" src="" alt="Zoom Viseur">
-              <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <!-- <div class="w-2 h-2 border border-amber-400/80 rounded-full"></div> -->
-              </div>
-              <span class="absolute bottom-1 right-1.5 bg-black/80 px-1 py-0.2 rounded text-[8px] font-mono font-bold text-amber-400 border border-amber-500/40">10.0x</span>
+              <span class="absolute bottom-1 right-1.5 bg-black/80 px-1 py-0.2 rounded text-[8px] font-mono font-bold text-amber-400 border border-amber-500/40">10x</span>
             </div>
           </div>
         </div>
@@ -296,7 +294,9 @@
     <div class="p-2 text-center text-[10px] text-zinc-500 bg-zinc-950">Double-clique pour agrandir au centre</div>
   </div>
 
-  <!-- MODAL FORMULAIRE D'AJOUT -->
+  <!-- ======================================================== -->
+  <!-- MODAL FORMULAIRE D'AJOUT AVEC OPTION TYPE DE REPÈRE     -->
+  <!-- ======================================================== -->
   <div id="addModal" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm p-3 overflow-y-auto hidden">
     <div class="max-w-lg mx-auto bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-2xl">
       <div class="flex justify-between items-center mb-3 border-b border-zinc-800 pb-2.5">
@@ -304,6 +304,7 @@
         <button onclick="closeAddModal()" class="text-zinc-500 hover:text-zinc-300 text-xl font-bold">&times;</button>
       </div>
 
+      <!-- TYPE DE SOURCE : LOCAL OU URL -->
       <div class="grid grid-cols-2 gap-2 mb-3 text-xs font-semibold">
         <button type="button" onclick="setImageMode('local')" id="btnModeLocal" class="py-1.5 rounded-lg bg-amber-500 text-zinc-950 font-bold flex items-center justify-center gap-1.5">
           <i class="fa-solid fa-folder-open"></i> Photos PC (Local)
@@ -314,6 +315,8 @@
       </div>
 
       <form id="lineupForm" onsubmit="handleFormSubmit(event)" class="space-y-3 text-xs">
+        
+        <!-- CARTE -->
         <div>
           <label class="block text-zinc-400 mb-1 font-semibold">Carte</label>
           <div class="flex flex-wrap gap-1" id="groupMap">
@@ -327,6 +330,7 @@
           </div>
         </div>
 
+        <!-- CAMP (T / CT) -->
         <div>
           <label class="block text-zinc-400 mb-1 font-semibold">Camp</label>
           <div class="grid grid-cols-2 gap-1.5" id="groupSide">
@@ -335,6 +339,7 @@
           </div>
         </div>
 
+        <!-- GRENADE -->
         <div>
           <label class="block text-zinc-400 mb-1 font-semibold">Type de grenade</label>
           <div class="grid grid-cols-4 gap-1" id="groupType">
@@ -345,6 +350,16 @@
           </div>
         </div>
 
+        <!-- NOUVEAU : TYPE DE REPÈRE DE VISÉE (CROSSHAIR vs RÉTICULE GRENADE) -->
+        <div>
+          <label class="block text-amber-400 mb-1 font-semibold">Repère de visée</label>
+          <div class="grid grid-cols-2 gap-1.5" id="groupAimType">
+            <button type="button" onclick="setFormOption('aimType', 'crosshair', this)" class="form-btn py-1.5 px-2 rounded-lg border bg-amber-500 text-zinc-950 font-bold border-amber-500 text-center">🎯 Viseur central (Crosshair)</button>
+            <button type="button" onclick="setFormOption('aimType', 'reticle', this)" class="form-btn py-1.5 px-2 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800 text-center">💣 Réticule Grenade / HUD</button>
+          </div>
+        </div>
+
+        <!-- TYPE DE CLIC -->
         <div>
           <label class="block text-zinc-400 mb-1 font-semibold">Type de Clic</label>
           <div class="grid grid-cols-3 gap-1" id="groupClick">
@@ -354,8 +369,9 @@
           </div>
         </div>
 
+        <!-- POSTURE -->
         <div>
-          <label class="block text-amber-400 mb-1 font-semibold">Posture</label>
+          <label class="block text-zinc-400 mb-1 font-semibold">Posture</label>
           <div class="grid grid-cols-2 gap-1" id="groupStance">
             <button type="button" onclick="setFormOption('stance', 'Stand Up', this)" class="form-btn py-1.5 px-2 rounded-lg border bg-amber-500 text-zinc-950 font-bold border-amber-500 text-left">🧍 Debout (Stand Up)</button>
             <button type="button" onclick="setFormOption('stance', 'Crouch and throw', this)" class="form-btn py-1.5 px-2 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800 text-left">🧎 Accroupi (Crouch)</button>
@@ -364,6 +380,7 @@
           </div>
         </div>
 
+        <!-- MOUVEMENT -->
         <div>
           <label class="block text-zinc-400 mb-1 font-semibold">Mouvement</label>
           <div class="grid grid-cols-3 gap-1" id="groupMovement">
@@ -376,6 +393,7 @@
           </div>
         </div>
 
+        <!-- CIBLE & DÉPART -->
         <div>
           <label class="block text-zinc-400 mb-1 font-semibold">Cible / Zone visée</label>
           <input type="text" id="formTarget" required placeholder="ex: B - Window, Fenêtre Mid, Stairs" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
@@ -386,23 +404,25 @@
           <input type="text" id="formFrom" required placeholder="ex: B - Tunnel, Spawn T (Poubelle)" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
         </div>
 
+        <!-- ZONE PHOTOS LOCALES -->
         <div id="sectionLocalImages" class="border border-zinc-800 bg-zinc-950/70 p-2.5 rounded-xl space-y-2">
           <div class="text-[11px] text-zinc-400 italic"><i class="fa-solid fa-circle-info text-amber-500 mr-1"></i>Noms conservés, à mettre à la racine du repo GitHub.</div>
           <div><label class="block text-zinc-400 font-medium mb-0.5">1. Photo Résultat (Impact/Smoke)</label><input type="file" id="fileResult" accept="image/*" class="block w-full text-zinc-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-zinc-800 file:text-zinc-200"></div>
           <div><label class="block text-zinc-400 font-medium mb-0.5">2. Photo Position (Pieds)</label><input type="file" id="filePos" accept="image/*" class="block w-full text-zinc-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-zinc-800 file:text-zinc-200"></div>
-          <div><label class="block text-amber-400 font-bold mb-0.5">3. Photo Crosshair (Viseur) *</label><input type="file" id="fileAim" accept="image/*" class="block w-full text-zinc-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-zinc-800 file:text-zinc-200"></div>
+          <div><label class="block text-amber-400 font-bold mb-0.5">3. Photo Visée (Crosshair ou Réticule Grenade) *</label><input type="file" id="fileAim" accept="image/*" class="block w-full text-zinc-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-zinc-800 file:text-zinc-200"></div>
         </div>
 
+        <!-- ZONE PHOTOS URL -->
         <div id="sectionUrlImages" class="hidden border border-zinc-800 bg-zinc-950/70 p-2.5 rounded-xl space-y-2">
           <div class="flex items-center justify-between"><span class="text-amber-400 font-bold">Liens ImgBB</span><a href="https://fr.imgbb.com/" target="_blank" class="text-[11px] text-sky-400 underline">Ouvrir fr.imgbb.com</a></div>
           <input type="url" id="formResultUrl" placeholder="Lien Résultat" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs">
           <input type="url" id="formPosUrl" placeholder="Lien Position" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs">
-          <input type="url" id="formAimUrl" placeholder="Lien Crosshair *" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs">
+          <input type="url" id="formAimUrl" placeholder="Lien Visée *" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs">
         </div>
 
         <div>
           <label class="block text-zinc-400 mb-0.5 font-semibold">Note / Astuce (Optionnel)</label>
-          <input type="text" id="formTip" placeholder="ex: Aligner le bas du viseur avec l'antenne" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 text-xs focus:outline-none focus:border-amber-500">
+          <input type="text" id="formTip" placeholder="ex: Aligner le coin de la goupille avec l'antenne" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 text-xs focus:outline-none focus:border-amber-500">
         </div>
 
         <div class="grid grid-cols-2 gap-2 pt-1.5">
@@ -441,7 +461,7 @@
     </div>
   </div>
 
-<!-- MODAL CONFIRMATION AJOUT LOCAL -->
+  <!-- MODAL CONFIRMATION AJOUT LOCAL -->
   <div id="localSummaryModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm p-4 flex items-center justify-center hidden">
     <div class="max-w-md w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-5 shadow-2xl space-y-4">
       <div class="text-center">
@@ -450,15 +470,11 @@
         <p class="text-xs text-amber-400 mt-1 font-semibold">Le fichier <code class="bg-zinc-800 px-1 py-0.5 rounded text-white">lineups.json</code> a été téléchargé automatiquement.</p>
         <p class="text-[11px] text-zinc-400 mt-1">Glisse-le avec tes photos sur l'onglet GitHub qui vient de s'ouvrir :</p>
       </div>
-
       <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800 space-y-2 text-xs">
-        <p class="font-bold text-amber-400"><i class="fa-solid fa-images mr-1"></i> Photos à glisser :</p>
+        <p class="font-bold text-amber-400"><i class="fa-solid fa-images mr-1"></i> Photos sélectionnées :</p>
         <ul id="localFilesSummaryList" class="space-y-1 font-mono text-[11px] text-zinc-300 pl-2"></ul>
       </div>
-
-      <button onclick="closeLocalSummaryModal()" class="w-full bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold py-2 rounded-lg text-xs transition shadow">
-        J'ai compris (Fermer)
-      </button>
+      <button onclick="closeLocalSummaryModal()" class="w-full bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold py-2 rounded-lg text-xs transition shadow">J'ai compris (Fermer)</button>
     </div>
   </div>
 
@@ -468,7 +484,6 @@
   <script>
     const GITHUB_UPLOAD_URL = "https://github.com/ElChibros/CS2-Stuff-Lineups/upload";
 
-    // Métadonnées des cartes avec logos officiels CS2
     const MAPS_META = [
       { name: "Dust II", code: "de_dust2", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_dust2.png", color: "from-amber-600/20 to-orange-950/40" },
       { name: "Cache", code: "de_cache", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_cache.png", color: "from-emerald-600/20 to-teal-950/40" },
@@ -488,6 +503,7 @@
         "target": "B - Window",
         "from": "B - Tunnel",
         "stance": "Stand Up",
+        "aimType": "crosshair",
         "throwClick": "Clic Gauche",
         "throwMovement": "Jumpthrow",
         "tip": "",
@@ -506,13 +522,13 @@
     let activeLineup = null;
     let zoomScale = 1;
 
-    // ÉTAT DU ZOOM LOUPE AVEC SAUVEGARDE LOCALE (localStorage)
     let isCrosshairZoomEnabled = localStorage.getItem("cs2_crosshair_zoom") !== "false";
 
     let formValues = {
       map: "Dust II",
       side: "T",
       type: "smoke",
+      aimType: "crosshair",
       click: "Clic Gauche",
       stance: "Stand Up",
       movement: "Jumpthrow"
@@ -538,8 +554,13 @@
 
       const magBox = document.getElementById("crosshairMagnifierBox");
       if (magBox) {
-        if (isCrosshairZoomEnabled) magBox.classList.remove("hidden");
-        else magBox.classList.add("hidden");
+        const isReticle = activeLineup && activeLineup.aimType === 'reticle';
+        // Si c'est un réticule de grenade, on désactive impérativement la loupe centrale
+        if (isCrosshairZoomEnabled && !isReticle) {
+          magBox.classList.remove("hidden");
+        } else {
+          magBox.classList.add("hidden");
+        }
       }
     }
 
@@ -549,9 +570,6 @@
       updateZoomUI();
     }
 
-    // ==========================================
-    // NAVIGATION ENTRE LE MAP HUB & LES STUFFS
-    // ==========================================
     function showMapSelectView() {
       document.getElementById("mapSelectView").classList.remove("hidden");
       document.getElementById("lineupsMainView").classList.add("hidden");
@@ -688,7 +706,7 @@
         const matchType = currentType === 'ALL' || item.type === currentType;
         let matchSearch = true;
         if (searchQuery) {
-          const haystack = `${item.target} ${item.from} ${item.map} ${item.side} ${item.stance || ''} ${item.throwClick} ${item.throwMovement} ${item.tip || ''}`.toLowerCase();
+          const haystack = `${item.target} ${item.from} ${item.map} ${item.side} ${item.stance || ''} ${item.aimType || ''} ${item.throwClick} ${item.throwMovement} ${item.tip || ''}`.toLowerCase();
           matchSearch = haystack.includes(searchQuery);
         }
         return matchMap && matchSide && matchType && matchSearch;
@@ -729,13 +747,16 @@
             </div>
             <div class="relative bg-zinc-900 rounded-lg overflow-hidden h-20 sm:h-28 border border-zinc-800">
               <img src="${item.aimImage}" onerror="this.src='https://placehold.co/400x250/18181b/71717a?text=Viseur'" class="w-full h-full object-cover" alt="Crosshair">
-              <span class="absolute bottom-1 left-1 bg-black/85 backdrop-blur text-[9px] px-1 py-0.2 rounded text-zinc-300 border border-zinc-700 flex items-center gap-1"><i class="fa-solid fa-crosshairs text-amber-400"></i> Crosshair</span>
+              <span class="absolute bottom-1 left-1 bg-black/85 backdrop-blur text-[9px] px-1 py-0.2 rounded text-zinc-300 border border-zinc-700 flex items-center gap-1">
+                ${item.aimType === 'reticle' ? '<i class="fa-solid fa-bullseye text-amber-400"></i> Réticule' : '<i class="fa-solid fa-crosshairs text-amber-400"></i> Crosshair'}
+              </span>
             </div>
           </div>
 
           <div class="px-2.5 py-1.5 bg-zinc-900 flex flex-wrap gap-1.5 items-center text-[11px]">
             <span class="px-2 py-0.5 rounded bg-zinc-800 text-zinc-200 font-semibold border border-zinc-700 flex items-center gap-1"><i class="fa-regular fa-hand-pointer text-amber-400 text-[10px]"></i> ${item.throwClick}</span>
             ${formatStanceBadge(item.stance)}
+            ${item.aimType === 'reticle' ? `<span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 font-semibold border border-amber-500/30 flex items-center gap-1"><i class="fa-solid fa-bullseye text-[10px]"></i> Réticule Grenade</span>` : ''}
             <span class="px-2 py-0.5 rounded bg-zinc-800 text-zinc-200 font-semibold border border-zinc-700 flex items-center gap-1"><i class="fa-solid fa-person-running text-sky-400 text-[10px]"></i> ${item.throwMovement}</span>
             ${item.tip ? `<span class="text-[11px] text-zinc-400 italic truncate max-w-full"><i class="fa-solid fa-circle-info text-zinc-500 mr-1 text-[10px]"></i>${item.tip}</span>` : ''}
           </div>
@@ -747,6 +768,8 @@
       const item = lineups.find(l => l.id === id);
       if (!item) return;
       activeLineup = item;
+
+      const isReticle = item.aimType === 'reticle';
 
       document.getElementById('detailGrenadeBadge').innerHTML = getGrenadeIconBadge(item.type);
       document.getElementById('detailTarget').innerText = item.target;
@@ -761,6 +784,12 @@
       document.getElementById('detailStance').innerHTML = formatStanceBadge(item.stance) || `<i class="fa-solid fa-person text-emerald-400"></i> Stand Up`;
       document.getElementById('detailMovement').innerHTML = `<i class="fa-solid fa-person-running text-sky-400"></i> ${item.throwMovement}`;
 
+      // Badge réticule dans les infos
+      const reticleBadge = document.getElementById('detailAimTypeBadge');
+      if (isReticle) reticleBadge.classList.remove('hidden');
+      else reticleBadge.classList.add('hidden');
+
+      // 1. Alerte rouge posture spéciale
       const stanceWarning = document.getElementById('detailStanceWarning');
       if (item.stance && item.stance !== 'Stand Up') {
         document.getElementById('detailStanceWarningText').innerText = item.stance;
@@ -768,6 +797,24 @@
       } else {
         stanceWarning.classList.add('hidden');
       }
+
+      // 2. Alerte réticule de grenade (pas le viseur central)
+      const reticleWarning = document.getElementById('detailReticleWarning');
+      if (isReticle) {
+        reticleWarning.classList.remove('hidden');
+      } else {
+        reticleWarning.classList.add('hidden');
+      }
+
+      // Titre de la section de visée
+      document.getElementById('detailAimSectionTitle').innerText = isReticle 
+        ? "Alignement Réticule Grenade / HUD" 
+        : "Crosshair Placement (Viseur)";
+
+      // Bouton toggle de loupe dans le modal : masqué si réticule
+      const toggleZoomDetail = document.getElementById('toggleZoomBtnDetail');
+      if (isReticle) toggleZoomDetail.classList.add('hidden');
+      else toggleZoomDetail.classList.remove('hidden');
 
       const tipCont = document.getElementById('detailTipContainer');
       if (item.tip) {
@@ -794,7 +841,8 @@
       if (type === 'pos') {
         openZoomModal(activeLineup.posImage || activeLineup.aimImage, `${activeLineup.target} - Position (Pieds)`);
       } else {
-        openZoomModal(activeLineup.aimImage, `${activeLineup.target} - Crosshair Placement`);
+        const titleSuffix = activeLineup.aimType === 'reticle' ? "Réticule Grenade" : "Crosshair Placement";
+        openZoomModal(activeLineup.aimImage, `${activeLineup.target} - ${titleSuffix}`);
       }
     }
 
@@ -880,6 +928,7 @@
         map: formValues.map,
         side: formValues.side,
         type: formValues.type,
+        aimType: formValues.aimType || "crosshair",
         target: document.getElementById("formTarget").value.trim(),
         from: document.getElementById("formFrom").value.trim(),
         stance: formValues.stance,
@@ -942,7 +991,6 @@
       setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-copy mr-1"></i> Copier', 2000);
     }
 
-    // SOUMISSION DU FORMULAIRE : TÉLÉCHARGEMENT AUTO DU JSON + OUVERTURE GITHUB
     function handleFormSubmit(e) {
       e.preventDefault();
       const data = getFormData();
@@ -964,7 +1012,6 @@
         closeAddModal();
         document.getElementById("lineupForm").reset();
 
-        // Téléchargement automatique du JSON + ouverture GitHub
         downloadLineupsJson();
       } else {
         const fileAim = document.getElementById("fileAim").files[0];
@@ -972,7 +1019,6 @@
         const fileRes = document.getElementById("fileResult").files[0];
         if (!fileAim) { alert("Sélectionne au moins une photo pour le crosshair."); return; }
 
-        // Vérification des doublons
         const filesToCheck = [fileAim, filePos, fileRes].filter(Boolean);
         let conflicts = [];
         for (const file of filesToCheck) {
@@ -995,11 +1041,7 @@
         closeAddModal();
         document.getElementById("lineupForm").reset();
 
-        // 1. Télécharge automatiquement lineups.json
-        // 2. Ouvre automatiquement la page GitHub Upload
         downloadLineupsJson();
-
-        // Affiche la liste pense-bête des photos sélectionnées
         showLocalSummaryModal([fileAim.name, filePos ? filePos.name : null, fileRes ? fileRes.name : null].filter(Boolean));
       }
     }
