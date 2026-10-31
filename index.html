@@ -29,10 +29,10 @@
 
       <!-- BOUTONS D'ACTION DU HAUT -->
       <div class="flex items-center gap-1.5">
-        <button onclick="downloadLineupsJson()" title="Sauvegarder la base de données JSON" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-amber-400 border border-zinc-700 font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition">
+        <button onclick="downloadLineupsJson()" title="Sauvegarder JSON et ouvrir GitHub" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-amber-400 border border-zinc-700 font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition">
           <i class="fa-solid fa-floppy-disk"></i> JSON
         </button>
-        <button onclick="openImportModal()" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 font-semibold px-2 py-1.5 rounded-lg flex items-center gap-1 transition">
+        <button onclick="openImportModal()" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition">
           <i class="fa-solid fa-file-import text-zinc-400"></i> Importer
         </button>
         <button onclick="openAddModal()" class="text-xs bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition shadow">
@@ -66,7 +66,7 @@
   <div id="saveAlert" class="hidden bg-amber-500/10 border-b border-amber-500/30 px-3.5 py-2 flex items-center justify-between text-xs">
     <span class="text-amber-400 font-medium"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Changements non enregistrés !</span>
     <button onclick="downloadLineupsJson()" class="bg-amber-500 text-zinc-950 font-bold px-2.5 py-1 rounded hover:bg-amber-400 transition flex items-center gap-1 text-[11px] shadow">
-      <i class="fa-solid fa-download"></i> Exporter lineups.json
+      <i class="fa-solid fa-download"></i> Exporter & GitHub
     </button>
   </div>
 
@@ -101,7 +101,7 @@
   </footer>
 
   <!-- ======================================================== -->
-  <!-- MODAL DÉTAIL D'UN LINEUP (POSITION HAUT / CROSSHAIR BAS) -->
+  <!-- MODAL DÉTAIL D'UN LINEUP (AVEC ALERTE POSTURE INCLUSE)   -->
   <!-- ======================================================== -->
   <div id="detailModal" class="fixed inset-0 z-40 bg-black/90 backdrop-blur-md p-3 sm:p-5 overflow-y-auto hidden">
     <div class="max-w-xl mx-auto bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl">
@@ -123,14 +123,14 @@
           <button onclick="closeDetailModal()" class="w-8 h-8 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white flex items-center justify-center text-lg transition shrink-0">&times;</button>
         </div>
 
-        <!-- BADGES COMPLETS -->
+        <!-- BADGES DU LANCER -->
         <div class="flex flex-wrap gap-1.5 pt-1 text-xs">
           <span id="detailClick" class="px-2.5 py-1 rounded bg-zinc-800 text-zinc-200 font-semibold border border-zinc-700 flex items-center gap-1.5"></span>
           <span id="detailStance" class="px-2.5 py-1 rounded bg-zinc-800 text-zinc-200 font-semibold border border-zinc-700 flex items-center gap-1.5"></span>
           <span id="detailMovement" class="px-2.5 py-1 rounded bg-zinc-800 text-zinc-200 font-semibold border border-zinc-700 flex items-center gap-1.5"></span>
         </div>
 
-        <!-- ALERTE POSTURE NON-STAND-UP DANS LE MODAL -->
+        <!-- ALERTE ROUGE POSTURE : PRÉSENTE UNIQUEMENT ICI AU CLIC -->
         <div id="detailStanceWarning" class="hidden bg-red-500/20 border border-red-500/50 text-red-200 px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2 shadow-sm">
           <i class="fa-solid fa-triangle-exclamation text-amber-400 text-sm animate-pulse"></i>
           <span>ATTENTION POSTURE SPÉCIALE : <span id="detailStanceWarningText" class="underline uppercase"></span></span>
@@ -203,16 +203,16 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- MODAL FORMULAIRE D'AJOUT (LOCAL PAR DÉFAUT)              -->
+  <!-- MODAL FORMULAIRE D'AJOUT AVEC BOUTONS SELECTEURS         -->
   <!-- ======================================================== -->
-  <div id="addModal" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm p-4 overflow-y-auto hidden">
+  <div id="addModal" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm p-3 overflow-y-auto hidden">
     <div class="max-w-lg mx-auto bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-2xl">
       <div class="flex justify-between items-center mb-3 border-b border-zinc-800 pb-2.5">
         <h2 class="text-sm font-bold text-zinc-100"><i class="fa-solid fa-crosshairs text-amber-500 mr-2"></i>Nouveau Lineup</h2>
         <button onclick="closeAddModal()" class="text-zinc-500 hover:text-zinc-300 text-xl font-bold">&times;</button>
       </div>
 
-      <!-- LOCAL PAR DÉFAUT -->
+      <!-- TYPE DE SOURCE : LOCAL OU URL -->
       <div class="grid grid-cols-2 gap-2 mb-3 text-xs font-semibold">
         <button type="button" onclick="setImageMode('local')" id="btnModeLocal" class="py-1.5 rounded-lg bg-amber-500 text-zinc-950 font-bold flex items-center justify-center gap-1.5">
           <i class="fa-solid fa-folder-open"></i> Photos PC (Local)
@@ -222,72 +222,77 @@
         </button>
       </div>
 
-      <form id="lineupForm" onsubmit="handleFormSubmit(event)" class="space-y-2.5 text-xs">
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-zinc-400 mb-1 font-semibold">Carte</label>
-            <select id="formMap" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
-              <option value="Dust II">Dust II</option>
-              <option value="Cache">Cache</option>
-              <option value="Mirage">Mirage</option>
-              <option value="Inferno">Inferno</option>
-              <option value="Ancient">Ancient</option>
-              <option value="Anubis">Anubis</option>
-              <option value="Nuke">Nuke</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-zinc-400 mb-1 font-semibold">Camp</label>
-            <select id="formSide" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
-              <option value="T">T (Terroristes)</option>
-              <option value="CT">CT (Anti-Terroristes)</option>
-            </select>
+      <form id="lineupForm" onsubmit="handleFormSubmit(event)" class="space-y-3 text-xs">
+        
+        <!-- SÉLECTEUR BOUTON : CARTE -->
+        <div>
+          <label class="block text-zinc-400 mb-1 font-semibold">Carte</label>
+          <div class="flex flex-wrap gap-1" id="groupMap">
+            <button type="button" onclick="setFormOption('map', 'Dust II', this)" class="form-btn px-2.5 py-1 rounded-lg border bg-amber-500 text-zinc-950 font-bold border-amber-500">Dust II</button>
+            <button type="button" onclick="setFormOption('map', 'Cache', this)" class="form-btn px-2.5 py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">Cache</button>
+            <button type="button" onclick="setFormOption('map', 'Mirage', this)" class="form-btn px-2.5 py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">Mirage</button>
+            <button type="button" onclick="setFormOption('map', 'Inferno', this)" class="form-btn px-2.5 py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">Inferno</button>
+            <button type="button" onclick="setFormOption('map', 'Ancient', this)" class="form-btn px-2.5 py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">Ancient</button>
+            <button type="button" onclick="setFormOption('map', 'Anubis', this)" class="form-btn px-2.5 py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">Anubis</button>
+            <button type="button" onclick="setFormOption('map', 'Nuke', this)" class="form-btn px-2.5 py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">Nuke</button>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-zinc-400 mb-1 font-semibold">Grenade</label>
-            <select id="formType" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
-              <option value="smoke">Smoke</option>
-              <option value="molotov">Molotov</option>
-              <option value="flash">Flash</option>
-              <option value="he">HE (Grenade)</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-zinc-400 mb-1 font-semibold">Type de Clic</label>
-            <select id="formClick" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
-              <option value="Clic Gauche">Clic Gauche</option>
-              <option value="Clic Droit">Clic Droit</option>
-              <option value="Clic G + D (Moyen)">Clic Gauche + Droit</option>
-            </select>
+        <!-- SÉLECTEUR BOUTON : CAMP (T / CT) -->
+        <div>
+          <label class="block text-zinc-400 mb-1 font-semibold">Camp</label>
+          <div class="grid grid-cols-2 gap-1.5" id="groupSide">
+            <button type="button" onclick="setFormOption('side', 'T', this)" class="form-btn py-1.5 rounded-lg border bg-amber-500 text-zinc-950 font-bold border-amber-500">T (Terroristes)</button>
+            <button type="button" onclick="setFormOption('side', 'CT', this)" class="form-btn py-1.5 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">CT (Anti-Terroristes)</button>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-amber-400 mb-1 font-semibold">Posture</label>
-            <select id="formStance" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
-              <option value="Stand Up">Debout (Stand Up)</option>
-              <option value="Crouch and throw">Accroupi (Crouch and throw)</option>
-              <option value="Aim crouch then Stand Up">Viser accroupi ➔ Se lever</option>
-              <option value="Aim Stand Up then crouch">Viser debout ➔ S'accroupir</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-zinc-400 mb-1 font-semibold">Mouvement</label>
-            <select id="formMovement" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
-              <option value="Statique">Statique (Sans saut)</option>
-              <option value="Jumpthrow">Jumpthrow</option>
-              <option value="W + Jumpthrow">W + Jumpthrow (Avancer)</option>
-              <option value="D + Jumpthrow">D + Jumpthrow</option>
-              <option value="Run-throw">Run-throw (Courir)</option>
-              <option value="Walk-throw">Walk-throw (Marcher)</option>
-            </select>
+        <!-- SÉLECTEUR BOUTON : GRENADE -->
+        <div>
+          <label class="block text-zinc-400 mb-1 font-semibold">Type de grenade</label>
+          <div class="grid grid-cols-4 gap-1" id="groupType">
+            <button type="button" onclick="setFormOption('type', 'smoke', this)" class="form-btn py-1 rounded-lg border bg-amber-500 text-zinc-950 font-bold border-amber-500"><i class="fa-solid fa-smog mr-1"></i> Smoke</button>
+            <button type="button" onclick="setFormOption('type', 'molotov', this)" class="form-btn py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800"><i class="fa-solid fa-fire mr-1"></i> Molotov</button>
+            <button type="button" onclick="setFormOption('type', 'flash', this)" class="form-btn py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800"><i class="fa-solid fa-bolt mr-1"></i> Flash</button>
+            <button type="button" onclick="setFormOption('type', 'he', this)" class="form-btn py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800"><i class="fa-solid fa-bomb mr-1"></i> HE</button>
           </div>
         </div>
 
+        <!-- SÉLECTEUR BOUTON : TYPE DE CLIC -->
+        <div>
+          <label class="block text-zinc-400 mb-1 font-semibold">Type de Clic</label>
+          <div class="grid grid-cols-3 gap-1" id="groupClick">
+            <button type="button" onclick="setFormOption('click', 'Clic Gauche', this)" class="form-btn py-1 rounded-lg border bg-amber-500 text-zinc-950 font-bold border-amber-500">Clic Gauche</button>
+            <button type="button" onclick="setFormOption('click', 'Clic Droit', this)" class="form-btn py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">Clic Droit</button>
+            <button type="button" onclick="setFormOption('click', 'Clic G + D (Moyen)', this)" class="form-btn py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">Clic G + D</button>
+          </div>
+        </div>
+
+        <!-- SÉLECTEUR BOUTON : POSTURE -->
+        <div>
+          <label class="block text-amber-400 mb-1 font-semibold">Posture</label>
+          <div class="grid grid-cols-2 gap-1" id="groupStance">
+            <button type="button" onclick="setFormOption('stance', 'Stand Up', this)" class="form-btn py-1.5 px-2 rounded-lg border bg-amber-500 text-zinc-950 font-bold border-amber-500 text-left">🧍 Debout (Stand Up)</button>
+            <button type="button" onclick="setFormOption('stance', 'Crouch and throw', this)" class="form-btn py-1.5 px-2 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800 text-left">🧎 Accroupi (Crouch)</button>
+            <button type="button" onclick="setFormOption('stance', 'Aim crouch then Stand Up', this)" class="form-btn py-1.5 px-2 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800 text-left">🧎➔🧍 Viser accroupi, lever</button>
+            <button type="button" onclick="setFormOption('stance', 'Aim Stand Up then crouch', this)" class="form-btn py-1.5 px-2 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800 text-left">🧍➔🧎 Viser debout, baisser</button>
+          </div>
+        </div>
+
+        <!-- SÉLECTEUR BOUTON : MOUVEMENT -->
+        <div>
+          <label class="block text-zinc-400 mb-1 font-semibold">Mouvement</label>
+          <div class="grid grid-cols-3 gap-1" id="groupMovement">
+            <button type="button" onclick="setFormOption('movement', 'Statique', this)" class="form-btn py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">Statique</button>
+            <button type="button" onclick="setFormOption('movement', 'Jumpthrow', this)" class="form-btn py-1 rounded-lg border bg-amber-500 text-zinc-950 font-bold border-amber-500">Jumpthrow</button>
+            <button type="button" onclick="setFormOption('movement', 'W + Jumpthrow', this)" class="form-btn py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">W + Jump</button>
+            <button type="button" onclick="setFormOption('movement', 'D + Jumpthrow', this)" class="form-btn py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">D + Jump</button>
+            <button type="button" onclick="setFormOption('movement', 'Run-throw', this)" class="form-btn py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">Run-throw</button>
+            <button type="button" onclick="setFormOption('movement', 'Walk-throw', this)" class="form-btn py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">Walk-throw</button>
+          </div>
+        </div>
+
+        <!-- CHAMPS TEXTES -->
         <div>
           <label class="block text-zinc-400 mb-1 font-semibold">Cible / Zone visée</label>
           <input type="text" id="formTarget" required placeholder="ex: B - Window, Fenêtre Mid, Stairs" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
@@ -298,10 +303,10 @@
           <input type="text" id="formFrom" required placeholder="ex: B - Tunnel, Spawn T (Poubelle)" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500">
         </div>
 
-        <!-- ZONE 1 : FICHIERS LOCAUX PC (ACTIF PAR DÉFAUT, NOMS CONSERVÉS) -->
+        <!-- ZONE PHOTOS LOCALES -->
         <div id="sectionLocalImages" class="border border-zinc-800 bg-zinc-950/70 p-2.5 rounded-xl space-y-2">
           <div class="text-[11px] text-zinc-400 italic">
-            <i class="fa-solid fa-circle-info text-amber-500 mr-1"></i>Les noms originaux de vos fichiers seront conservés à la racine du repo.
+            <i class="fa-solid fa-circle-info text-amber-500 mr-1"></i>Noms conservés, à mettre à la racine du repo GitHub.
           </div>
           <div>
             <label class="block text-zinc-400 font-medium mb-0.5">1. Photo Résultat (Impact/Smoke)</label>
@@ -317,26 +322,15 @@
           </div>
         </div>
 
-        <!-- ZONE 2 : LIENS EXTERNES / IMGBB -->
+        <!-- ZONE PHOTOS URL -->
         <div id="sectionUrlImages" class="hidden border border-zinc-800 bg-zinc-950/70 p-2.5 rounded-xl space-y-2">
           <div class="flex items-center justify-between">
-            <span class="text-amber-400 font-bold">Liens d'images (ImgBB)</span>
-            <a href="https://fr.imgbb.com/" target="_blank" class="text-[11px] text-sky-400 underline">
-              Ouvrir fr.imgbb.com <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-            </a>
+            <span class="text-amber-400 font-bold">Liens ImgBB</span>
+            <a href="https://fr.imgbb.com/" target="_blank" class="text-[11px] text-sky-400 underline">Ouvrir fr.imgbb.com</a>
           </div>
-          <div>
-            <label class="block text-zinc-400 mb-0.5">1. Lien Résultat / Atterrissage</label>
-            <input type="url" id="formResultUrl" placeholder="https://i.ibb.co/... (Smoke/Impact)" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs focus:outline-none focus:border-amber-500">
-          </div>
-          <div>
-            <label class="block text-zinc-400 mb-0.5">2. Lien Position (Pieds)</label>
-            <input type="url" id="formPosUrl" placeholder="https://i.ibb.co/... (Placement)" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs focus:outline-none focus:border-amber-500">
-          </div>
-          <div>
-            <label class="block text-zinc-400 mb-0.5">3. Lien Crosshair Placement (Viseur) *</label>
-            <input type="url" id="formAimUrl" placeholder="https://i.ibb.co/... (Viseur)" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs focus:outline-none focus:border-amber-500">
-          </div>
+          <input type="url" id="formResultUrl" placeholder="Lien Résultat" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs">
+          <input type="url" id="formPosUrl" placeholder="Lien Position" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs">
+          <input type="url" id="formAimUrl" placeholder="Lien Crosshair *" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs">
         </div>
 
         <div>
@@ -372,10 +366,7 @@
         <input type="file" id="jsonFileInput" accept=".json" onchange="handleJsonFileUpload(event)" class="block w-full text-zinc-400 text-xs file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-zinc-800 file:text-zinc-200">
       </div>
 
-      <div class="text-xs">
-        <label class="block mb-1 font-semibold text-zinc-300">Ou colle un ou plusieurs codes ici :</label>
-        <textarea id="importCodesTextarea" rows="6" placeholder="Colle ici le ou les codes reçus de tes potes..." class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-zinc-200 font-mono text-[11px] focus:outline-none focus:border-amber-500"></textarea>
-      </div>
+      <textarea id="importCodesTextarea" rows="6" placeholder="Colle ici le ou les codes reçus de tes potes..." class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-zinc-200 font-mono text-[11px] focus:outline-none focus:border-amber-500"></textarea>
 
       <button onclick="processImportCodes()" class="w-full bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold py-2.5 rounded-lg text-xs transition shadow">
         <i class="fa-solid fa-bolt mr-1"></i> Importer et Exporter lineups.json
@@ -406,12 +397,12 @@
         <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-xl mb-2">
           <i class="fa-solid fa-check"></i>
         </div>
-        <h2 class="text-base font-bold text-zinc-100">Lineup ajouté avec succès !</h2>
-        <p class="text-xs text-zinc-400 mt-1">Glisse simplement ces photos telles quelles à la racine de ton repo GitHub :</p>
+        <h2 class="text-base font-bold text-zinc-100">Lineup ajouté !</h2>
+        <p class="text-xs text-zinc-400 mt-1">Glisse ces photos sur la page GitHub qui s'est ouverte :</p>
       </div>
 
       <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800 space-y-2 text-xs">
-        <p class="font-bold text-amber-400"><i class="fa-solid fa-images mr-1"></i> Photos à upload à la racine :</p>
+        <p class="font-bold text-amber-400"><i class="fa-solid fa-images mr-1"></i> Photos sélectionnées :</p>
         <ul id="localFilesSummaryList" class="space-y-1 font-mono text-[11px] text-zinc-300 pl-2"></ul>
       </div>
 
@@ -427,7 +418,8 @@
 
   <!-- SCRIPT LOGIQUE DE L'APPLICATION -->
   <script>
-    // Fallback par défaut sans le dossier images/ (fichiers à la racine)
+    const GITHUB_UPLOAD_URL = "https://github.com/ElChibros/CS2-Stuff-Lineups/upload";
+
     const DEFAULT_FALLBACK_DATA = [
       {
         "id": "dust_ii_t_smoke_b_window_4819",
@@ -462,9 +454,30 @@
     let currentSide = "ALL";
     let currentType = "ALL";
     let searchQuery = "";
-    let imageMode = "local"; // LOCAL SÉLECTIONNÉ PAR DÉFAUT
+    let imageMode = "local";
     let activeLineup = null;
     let zoomScale = 1;
+
+    // Valeurs sélectionnées dans le formulaire via les boutons
+    let formValues = {
+      map: "Dust II",
+      side: "T",
+      type: "smoke",
+      click: "Clic Gauche",
+      stance: "Stand Up",
+      movement: "Jumpthrow"
+    };
+
+    function setFormOption(field, value, el) {
+      formValues[field] = value;
+      const parent = el.parentElement;
+      Array.from(parent.querySelectorAll('.form-btn')).forEach(btn => {
+        btn.classList.remove('bg-amber-500', 'text-zinc-950', 'font-bold', 'border-amber-500');
+        btn.classList.add('bg-zinc-950', 'text-zinc-400', 'border-zinc-800');
+      });
+      el.classList.remove('bg-zinc-950', 'text-zinc-400', 'border-zinc-800');
+      el.classList.add('bg-amber-500', 'text-zinc-950', 'font-bold', 'border-amber-500');
+    }
 
     async function loadLineupsData() {
       try {
@@ -480,29 +493,18 @@
           lineups = [...DEFAULT_FALLBACK_DATA];
         }
       } catch (err) {
-        console.warn("Impossible de fetch lineups.json (normal en ouverture locale directe file://).");
+        console.warn("Impossible de fetch lineups.json (normal en ouverture locale directe).");
         lineups = [...DEFAULT_FALLBACK_DATA];
       }
       init();
     }
-	
-	// Vérifie si un nom de fichier est déjà utilisé dans la base
-	function findDuplicateImage(filename) {
-	  if (!filename) return null;
-	  const cleanName = filename.trim();
-	  for (const item of lineups) {
-		if (item.aimImage === cleanName || item.posImage === cleanName || item.resultImage === cleanName) {
-		  return item; // Retourne le lineup qui utilise déjà cette photo
-		}
-	  }
-	  return null;
-	}
 
     function init() {
       renderMapButtons();
       renderLineups();
     }
 
+    // TÉLÉCHARGEMENT DU JSON + OUVERTURE AUTOMATIQUE DE GITHUB UPLOAD
     function downloadLineupsJson() {
       const jsonContent = JSON.stringify(lineups, null, 2);
       const blob = new Blob([jsonContent], { type: "application/json" });
@@ -514,6 +516,9 @@
       URL.revokeObjectURL(url);
 
       document.getElementById('saveAlert').classList.add('hidden');
+
+      // Ouvre directement la page d'upload de ton repo
+      window.open(GITHUB_UPLOAD_URL, "_blank");
     }
 
     function renderMapButtons() {
@@ -630,10 +635,8 @@
         return;
       }
 
-      container.innerHTML = filtered.map(item => {
-        const isSpecialStance = item.stance && item.stance !== 'Stand Up';
-
-        return `
+      // PAS D'ALERTE ROUGE SUR LA CARTE PRINCIPALE
+      container.innerHTML = filtered.map(item => `
         <div class="bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-xl overflow-hidden shadow transition cursor-pointer" onclick="openDetailModal('${item.id}')">
           <div class="p-2.5 border-b border-zinc-800/80 flex items-center justify-between gap-2">
             <div class="flex items-center gap-2.5 min-w-0">
@@ -660,18 +663,8 @@
             </div>
           </div>
 
-          <!-- BANDEAU D'ALERTE POSTURE SUR L'IMAGE SI != STAND UP -->
-          ${isSpecialStance ? `
-            <div class="bg-red-600/90 text-white font-black text-[10px] px-2.5 py-1 flex items-center justify-between tracking-wide shadow-inner">
-              <span class="flex items-center gap-1"><i class="fa-solid fa-triangle-exclamation text-amber-300"></i> POSTURE INHABITUELLE</span>
-              <span class="uppercase tracking-wider">${item.stance}</span>
-            </div>
-          ` : ''}
-
           <!-- 1. RÉSULTAT > 2. POSITION > 3. CROSSHAIR -->
           <div class="grid grid-cols-3 gap-1 p-1.5 bg-zinc-950/60 relative">
-            
-            <!-- RÉSULTAT -->
             <div class="relative bg-zinc-900 rounded-lg overflow-hidden h-20 sm:h-28 border border-zinc-800">
               ${item.resultImage ? `
                 <img src="${item.resultImage}" onerror="this.src='https://placehold.co/400x250/18181b/71717a?text=Résultat'" class="w-full h-full object-cover" alt="Résultat">
@@ -686,7 +679,6 @@
               `}
             </div>
 
-            <!-- POSITION -->
             <div class="relative bg-zinc-900 rounded-lg overflow-hidden h-20 sm:h-28 border border-zinc-800">
               ${item.posImage ? `
                 <img src="${item.posImage}" onerror="this.src='https://placehold.co/400x250/18181b/71717a?text=Position'" class="w-full h-full object-cover" alt="Position">
@@ -701,19 +693,12 @@
               `}
             </div>
 
-            <!-- CROSSHAIR -->
             <div class="relative bg-zinc-900 rounded-lg overflow-hidden h-20 sm:h-28 border border-zinc-800">
               <img src="${item.aimImage}" onerror="this.src='https://placehold.co/400x250/18181b/71717a?text=Viseur'" class="w-full h-full object-cover" alt="Crosshair">
               <span class="absolute bottom-1 left-1 bg-black/85 backdrop-blur text-[9px] px-1 py-0.2 rounded text-zinc-300 border border-zinc-700 flex items-center gap-1">
                 <i class="fa-solid fa-crosshairs text-amber-400"></i> Crosshair
               </span>
-              ${isSpecialStance ? `
-                <span class="absolute top-1 right-1 bg-red-600/95 text-white font-black text-[8px] px-1 rounded flex items-center gap-0.5 shadow">
-                  <i class="fa-solid fa-triangle-exclamation text-[7px]"></i> CROUCH
-                </span>
-              ` : ''}
             </div>
-
           </div>
 
           <div class="px-2.5 py-1.5 bg-zinc-900 flex flex-wrap gap-1.5 items-center text-[11px]">
@@ -731,8 +716,7 @@
             ` : ''}
           </div>
         </div>
-      `;
-      }).join('');
+      `).join('');
     }
 
     function openDetailModal(id) {
@@ -753,7 +737,7 @@
       document.getElementById('detailStance').innerHTML = formatStanceBadge(item.stance) || `<i class="fa-solid fa-person text-emerald-400"></i> Stand Up`;
       document.getElementById('detailMovement').innerHTML = `<i class="fa-solid fa-person-running text-sky-400"></i> ${item.throwMovement}`;
 
-      // Avertissement posture spéciale
+      // L'ALERTE ROUGE EST MAINTENUE ICI UNIQUEMENT
       const stanceWarning = document.getElementById('detailStanceWarning');
       if (item.stance && item.stance !== 'Stand Up') {
         document.getElementById('detailStanceWarningText').innerText = item.stance;
@@ -836,7 +820,6 @@
       document.getElementById('saveAlert').classList.remove('hidden');
     }
 
-    // Basculer mode Photos
     function setImageMode(mode) {
       imageMode = mode;
       if (mode === 'local') {
@@ -861,16 +844,27 @@
 
     function getFormData() {
       return {
-        map: document.getElementById("formMap").value,
-        side: document.getElementById("formSide").value,
-        type: document.getElementById("formType").value,
+        map: formValues.map,
+        side: formValues.side,
+        type: formValues.type,
         target: document.getElementById("formTarget").value.trim(),
         from: document.getElementById("formFrom").value.trim(),
-        stance: document.getElementById("formStance").value,
-        throwClick: document.getElementById("formClick").value,
-        throwMovement: document.getElementById("formMovement").value,
+        stance: formValues.stance,
+        throwClick: formValues.click,
+        throwMovement: formValues.movement,
         tip: document.getElementById("formTip").value.trim()
       };
+    }
+
+    function findDuplicateImage(filename) {
+      if (!filename) return null;
+      const cleanName = filename.trim();
+      for (const item of lineups) {
+        if (item.aimImage === cleanName || item.posImage === cleanName || item.resultImage === cleanName) {
+          return item;
+        }
+      }
+      return null;
     }
 
     function generateShareCodeFromForm() {
@@ -923,19 +917,7 @@
       setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-copy mr-1"></i> Copier', 2000);
     }
 
-// RECHERCHE DE DOUBLON DANS LA BASE ACTUELLE
-    function findDuplicateImage(filename) {
-      if (!filename) return null;
-      const cleanName = filename.trim();
-      for (const item of lineups) {
-        if (item.aimImage === cleanName || item.posImage === cleanName || item.resultImage === cleanName) {
-          return item;
-        }
-      }
-      return null;
-    }
-
-    // SOUMISSION DU FORMULAIRE : PAS DE DOSSIER IMAGES/ ET NOMS ORIGINAUX
+    // SOUMISSION DU FORMULAIRE + OUVERTURE AUTOMATIQUE DE GITHUB UPLOAD
     function handleFormSubmit(e) {
       e.preventDefault();
       const data = getFormData();
@@ -950,7 +932,6 @@
         aimPath = document.getElementById("formAimUrl").value.trim();
         posPath = document.getElementById("formPosUrl").value.trim();
         resultPath = document.getElementById("formResultUrl").value.trim();
-        
         if (!aimPath) {
           alert("Veuillez renseigner le lien de l'image de visée.");
           return;
@@ -964,9 +945,8 @@
         closeAddModal();
         document.getElementById("lineupForm").reset();
         showSaveAlert();
-        alert("Lineup ajouté ! Pense à exporter lineups.json.");
+        window.open(GITHUB_UPLOAD_URL, "_blank");
       } else {
-        // Mode Local : ON GARDE LE NOM EXACT DU FICHIER ET À LA RACINE (pas de images/)
         const fileAim = document.getElementById("fileAim").files[0];
         const filePos = document.getElementById("filePos").files[0];
         const fileRes = document.getElementById("fileResult").files[0];
@@ -976,26 +956,23 @@
           return;
         }
 
-        // --- VÉRIFICATION DES DOUBLONS D'IMAGES ---
+        // Vérification des doublons
         const filesToCheck = [fileAim, filePos, fileRes].filter(Boolean);
         let conflicts = [];
 
         for (const file of filesToCheck) {
           const existing = findDuplicateImage(file.name);
           if (existing) {
-            conflicts.push(`• "${file.name}" (déjà utilisé sur : [${existing.map}] ${existing.target})`);
+            conflicts.push(`• "${file.name}" (déjà sur ${existing.map} : ${existing.target})`);
           }
         }
 
         if (conflicts.length > 0) {
-          const msg = "⚠️ ATTENTION : Fichier(s) déjà existant(s) dans la base !\n\n" +
+          const msg = "⚠️ ATTENTION : Nom(s) de fichier déjà existant(s) !\n\n" +
                       conflicts.join("\n") +
-                      "\n\nSi vous continuez, vous allez écraser la photo sur GitHub ou partager la même image entre deux repères.\n\nVoulez-vous quand même enregistrer ?";
-          if (!confirm(msg)) {
-            return; // Annule l'enregistrement pour te permettre de renommer la capture
-          }
+                      "\n\nVoulez-vous quand même continuer ?";
+          if (!confirm(msg)) return;
         }
-        // ------------------------------------------
 
         aimPath = fileAim.name;
         if (filePos) posPath = filePos.name;
@@ -1009,7 +986,9 @@
         closeAddModal();
         document.getElementById("lineupForm").reset();
 
-        // Afficher le récapitulatif des fichiers à glisser à la racine
+        // Ouvre automatiquement la page d'upload GitHub pour tes photos
+        window.open(GITHUB_UPLOAD_URL, "_blank");
+
         showLocalSummaryModal([fileAim.name, filePos ? filePos.name : null, fileRes ? fileRes.name : null].filter(Boolean));
       }
     }
@@ -1061,7 +1040,7 @@
       renderLineups();
       closeImportModal();
       document.getElementById('importCodesTextarea').value = "";
-      alert(`${parsedItems.length} lineup(s) importé(s) ! lineups.json va se télécharger.`);
+      alert(`${parsedItems.length} lineup(s) importé(s) !`);
       downloadLineupsJson();
     }
 
@@ -1093,7 +1072,6 @@
     function openImportModal() { document.getElementById("importModal").classList.remove("hidden"); }
     function closeImportModal() { document.getElementById("importModal").classList.add("hidden"); }
 
-    // Démarrage
     loadLineupsData();
   </script>
 </body>
