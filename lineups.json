@@ -10,9 +10,9 @@
 	"throwClick": "Clic Gauche",
 	"throwMovement": "Jumpthrow",
 	"tip": "",
-	"aimImage": "/dust_ii_t_smoke_b_window_aim.jpg",
-	"posImage": "/dust_ii_t_smoke_b_window_pos.jpg",
-	"resultImage": "/dust_ii_t_smoke_b_window_result.jpg"
+	"aimImage": "dust_ii_t_smoke_b_window_aim.jpg",
+	"posImage": "dust_ii_t_smoke_b_window_pos.jpg",
+	"resultImage": "dust_ii_t_smoke_b_window_result.jpg"
 	},
 	{
 	  "id": "dust_ii_t_smoke_b_door_9000",
@@ -25,9 +25,9 @@
 	  "throwClick": "Clic Gauche",
 	  "throwMovement": "Jumpthrow",
 	  "tip": "",
-	  "aimImage": "/dust_ii_t_smoke_b_door_aim.jpg",
-	  "posImage": "/dust_ii_t_smoke_b_door_pos.jpg",
-	  "resultImage": "/dust_ii_t_smoke_b_door_result.jpg"
+	  "aimImage": "dust_ii_t_smoke_b_door_aim.jpg",
+	  "posImage": "dust_ii_t_smoke_b_door_pos.jpg",
+	  "resultImage": "dust_ii_t_smoke_b_door_result.jpg"
 	},
 	{
 	  "id": "dust_ii_t_smoke_ct_spawn_6768",
@@ -40,9 +40,9 @@
 	  "throwClick": "Clic Gauche",
 	  "throwMovement": "Jumpthrow",
 	  "tip": "",
-	  "aimImage": "/dust_ii_t_smoke_ct_spawn_aim.jpg",
-	  "posImage": "/dust_ii_t_smoke_ct_spawn_pos.jpg",
-	  "resultImage": "/dust_ii_t_smoke_ct_spawn_result.jpg"
+	  "aimImage": "dust_ii_t_smoke_ct_spawn_aim.jpg",
+	  "posImage": "dust_ii_t_smoke_ct_spawn_pos.jpg",
+	  "resultImage": "dust_ii_t_smoke_ct_spawn_result.jpg"
 	},
 	{
 	  "id": "dust_ii_t_smoke_mid_door_1116",
@@ -55,8 +55,8 @@
 	  "throwClick": "Clic G + D (Moyen)",
 	  "throwMovement": "Statique",
 	  "tip": "",
-	  "aimImage": "/dust_ii_t_smoke_mid_door_aim.jpg",
-	  "posImage": "/dust_ii_t_smoke_mid_door_pos.jpg",
-	  "resultImage": "/dust_ii_t_smoke_mid_door_result.jpg"
+	  "aimImage": "dust_ii_t_smoke_mid_door_aim.jpg",
+	  "posImage": "dust_ii_t_smoke_mid_door_pos.jpg",
+	  "resultImage": "dust_ii_t_smoke_mid_door_result.jpg"
 	}
 ]
