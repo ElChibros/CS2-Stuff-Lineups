@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CS2 Lineups</title>
+  <title>CS2 Lineups • by ElChibros</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -12,27 +12,45 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="bg-zinc-950 text-zinc-100 font-sans pb-12 select-none">
+<body class="bg-zinc-950 text-zinc-100 font-sans pb-16 select-none">
 
   <!-- TOP BAR -->
   <header class="sticky top-0 z-30 bg-zinc-900/90 backdrop-blur border-b border-zinc-800 px-4 py-3">
     <div class="flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <span class="text-amber-500 font-black tracking-wider text-lg">CS2</span>
-        <span class="text-xs uppercase tracking-widest text-zinc-400 font-semibold">Lineups</span>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-amber-500 font-black tracking-wider text-lg">CS2</span>
+          <span class="text-xs uppercase tracking-widest text-zinc-400 font-semibold">Lineups</span>
+        </div>
+        <div class="text-[10px] text-zinc-500 font-medium tracking-wide">
+          made by <span class="text-amber-400 font-bold">ElChibros</span>
+        </div>
       </div>
-      <div class="flex items-center gap-2">
-        <button onclick="openAddModal()" class="text-xs bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 transition shadow">
+
+      <!-- BOUTONS D'ACTION DU HAUT -->
+      <div class="flex items-center gap-1.5">
+        <button onclick="openImportModal()" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition">
+          <i class="fa-solid fa-file-import text-amber-400"></i> Importer
+        </button>
+        <button onclick="openAddModal()" class="text-xs bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition shadow">
           <i class="fa-solid fa-plus"></i> Ajouter
         </button>
       </div>
     </div>
 
-    <!-- SÉLECTEUR DE MAP -->
+    <!-- SÉLECTEUR DE MAP (ORDRE DEMANDÉ) -->
     <div class="flex gap-2 mt-3 overflow-x-auto no-scrollbar pb-1 text-sm font-semibold" id="mapButtons">
       <!-- Rempli en JS -->
     </div>
   </header>
+
+  <!-- BANDEAU DE SAUVEGARDE EN ATTENTE (SI MODIFICATIONS OU SUPPRESSIONS) -->
+  <div id="saveAlert" class="hidden bg-amber-500/10 border-b border-amber-500/30 px-4 py-2.5 flex items-center justify-between text-xs">
+    <span class="text-amber-400"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Des changements ont été faits !</span>
+    <button onclick="downloadUpdatedHtml()" class="bg-amber-500 text-zinc-950 font-bold px-2.5 py-1 rounded hover:bg-amber-400 transition flex items-center gap-1">
+      <i class="fa-solid fa-floppy-disk"></i> Enregistrer index.html
+    </button>
+  </div>
 
   <!-- FILTRES RAPIDES : CAMP & TYPE -->
   <section class="p-4 space-y-3">
@@ -55,7 +73,14 @@
     <!-- Rempli en JS -->
   </main>
 
-  <!-- MODAL 1 : FORMULAIRE D'AJOUT -->
+  <!-- FOOTER BRANDING -->
+  <footer class="mt-12 text-center text-xs text-zinc-600 border-t border-zinc-900 pt-6">
+    <p>CS2 Stuff Lineups • Made with precision by <span class="text-zinc-400 font-semibold">ElChibros</span></p>
+  </footer>
+
+  <!-- ======================================================== -->
+  <!-- MODAL 1 : FORMULAIRE D'AJOUT (ImgBB OU Fichier PC)        -->
+  <!-- ======================================================== -->
   <div id="addModal" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm p-4 overflow-y-auto hidden">
     <div class="max-w-lg mx-auto bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-2xl">
       <div class="flex justify-between items-center mb-4 border-b border-zinc-800 pb-3">
@@ -63,17 +88,28 @@
         <button onclick="closeAddModal()" class="text-zinc-500 hover:text-zinc-300 text-xl font-bold">&times;</button>
       </div>
 
-      <form id="lineupForm" onsubmit="handleFormSubmit(event)" class="space-y-3.5 text-xs">
+      <!-- SÉLECTEUR DE MODE D'IMAGES -->
+      <div class="grid grid-cols-2 gap-2 mb-4 text-xs font-semibold">
+        <button type="button" onclick="setImageMode('url')" id="btnModeUrl" class="py-2 rounded-lg bg-amber-500 text-zinc-950 flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-link"></i> Liens ImgBB / Web
+        </button>
+        <button type="button" onclick="setImageMode('local')" id="btnModeLocal" class="py-2 rounded-lg bg-zinc-950 text-zinc-400 border border-zinc-800 flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-folder-open"></i> Photos PC (Local)
+        </button>
+      </div>
+
+      <form id="lineupForm" onsubmit="handleFormSubmit(event)" class="space-y-3 text-xs">
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-zinc-400 mb-1 font-semibold">Carte</label>
             <select id="formMap" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-zinc-100 focus:outline-none focus:border-amber-500">
+              <option value="Dust II">Dust II</option>
+              <option value="Cache">Cache</option>
               <option value="Mirage">Mirage</option>
               <option value="Inferno">Inferno</option>
-              <option value="Nuke">Nuke</option>
-              <option value="Dust II">Dust II</option>
               <option value="Ancient">Ancient</option>
               <option value="Anubis">Anubis</option>
+              <option value="Nuke">Nuke</option>
             </select>
           </div>
           <div>
@@ -92,7 +128,7 @@
               <option value="smoke">Smoke</option>
               <option value="molotov">Molotov</option>
               <option value="flash">Flash</option>
-              <option value="he">HE (Grenade)</option>
+              <option value="he">HE</option>
             </select>
           </div>
           <div>
@@ -108,12 +144,12 @@
         <div>
           <label class="block text-zinc-400 mb-1 font-semibold">Mouvement au lancer</label>
           <select id="formMovement" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-zinc-100 focus:outline-none focus:border-amber-500">
-            <option value="Statique">Statique (Pas de saut)</option>
+            <option value="Statique">Statique</option>
             <option value="Jumpthrow">Jumpthrow</option>
-            <option value="W + Jumpthrow">W + Jumpthrow (Avancer + Sauter)</option>
+            <option value="W + Jumpthrow">W + Jumpthrow (Avancer)</option>
             <option value="D + Jumpthrow">D + Jumpthrow</option>
-            <option value="Run-throw">Run-throw (Courir et lâcher)</option>
-            <option value="Walk-throw">Walk-throw (Marcher shift et lâcher)</option>
+            <option value="Run-throw">Run-throw (Courir)</option>
+            <option value="Walk-throw">Walk-throw (Marcher)</option>
           </select>
         </div>
 
@@ -127,60 +163,122 @@
           <input type="text" id="formFrom" required placeholder="ex: Spawn T (Poubelle), Coin B" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-zinc-100 focus:outline-none focus:border-amber-500">
         </div>
 
-        <!-- UPLOAD IMAGES DEPUIS LE PC -->
-        <div class="border border-zinc-800 bg-zinc-950/60 p-3 rounded-xl space-y-2.5">
-          <div>
-            <label class="block text-amber-400 font-bold mb-1">📸 Photo du Viseur (Alignement)</label>
-            <input type="file" id="fileAim" accept="image/*" required class="block w-full text-zinc-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-zinc-800 file:text-zinc-200 hover:file:bg-zinc-700">
+        <!-- ZONE 1 : LIENS EXTERNES / IMGBB -->
+        <div id="sectionUrlImages" class="border border-zinc-800 bg-zinc-950/70 p-3 rounded-xl space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-amber-400 font-bold">Liens d'images (ImgBB)</span>
+            <a href="https://fr.imgbb.com/" target="_blank" class="text-[11px] text-sky-400 underline hover:text-sky-300">
+              Ouvrir fr.imgbb.com <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+            </a>
           </div>
           <div>
-            <label class="block text-zinc-400 font-medium mb-1">📍 Photo du Placement (Pieds / Position) - Optionnel</label>
-            <input type="file" id="filePos" accept="image/*" class="block w-full text-zinc-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-zinc-800 file:text-zinc-200 hover:file:bg-zinc-700">
+            <label class="block text-zinc-400 mb-1">Lien photo du viseur * (URL ou lien direct)</label>
+            <input type="url" id="formAimUrl" placeholder="https://i.ibb.co/... ou lien d'image" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500 text-xs">
+          </div>
+          <div>
+            <label class="block text-zinc-400 mb-1">Lien photo des pieds / position (Optionnel)</label>
+            <input type="url" id="formPosUrl" placeholder="https://i.ibb.co/... (optionnel)" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-zinc-100 focus:outline-none focus:border-amber-500 text-xs">
+          </div>
+        </div>
+
+        <!-- ZONE 2 : FICHIERS LOCAUX PC -->
+        <div id="sectionLocalImages" class="hidden border border-zinc-800 bg-zinc-950/70 p-3 rounded-xl space-y-2.5">
+          <div>
+            <label class="block text-amber-400 font-bold mb-1">Photo du Viseur (Alignement)</label>
+            <input type="file" id="fileAim" accept="image/*" class="block w-full text-zinc-400 file:mr-3 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-zinc-800 file:text-zinc-200">
+          </div>
+          <div>
+            <label class="block text-zinc-400 font-medium mb-1">Photo Position (Optionnelle)</label>
+            <input type="file" id="filePos" accept="image/*" class="block w-full text-zinc-400 file:mr-3 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-zinc-800 file:text-zinc-200">
           </div>
         </div>
 
         <div>
           <label class="block text-zinc-400 mb-1 font-semibold">Note / Astuce (Optionnel)</label>
-          <input type="text" id="formTip" placeholder="ex: Aligner le bas du viseur avec l'antenne" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-zinc-100 focus:outline-none focus:border-amber-500">
+          <input type="text" id="formTip" placeholder="ex: Viser le coin supérieur gauche du panneau" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-zinc-100 focus:outline-none focus:border-amber-500">
         </div>
 
-        <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold py-3 rounded-lg text-sm transition mt-2">
-          Enregistrer le Lineup & Exporter
-        </button>
+        <!-- DEUX BOUTONS DE SOUMISSION -->
+        <div class="grid grid-cols-2 gap-2 pt-2">
+          <button type="button" onclick="generateShareCodeFromForm()" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold py-2.5 rounded-lg text-xs transition border border-zinc-700">
+            <i class="fa-solid fa-share-nodes text-amber-400 mr-1"></i> Copier le Code
+          </button>
+          <button type="submit" class="bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold py-2.5 rounded-lg text-xs transition shadow">
+            <i class="fa-solid fa-plus mr-1"></i> Ajouter au site
+          </button>
+        </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL 2 : TÉLÉCHARGEMENT & INSTRUCTIONS GITHUB -->
+  <!-- ======================================================== -->
+  <!-- MODAL 2 : IMPORTER PLUSIEURS CODES DE POTES               -->
+  <!-- ======================================================== -->
+  <div id="importModal" class="fixed inset-0 z-40 bg-black/85 backdrop-blur-sm p-4 overflow-y-auto hidden">
+    <div class="max-w-lg mx-auto bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-2xl space-y-3.5">
+      <div class="flex justify-between items-center border-b border-zinc-800 pb-3">
+        <div>
+          <h2 class="text-base font-bold text-zinc-100"><i class="fa-solid fa-file-import text-amber-500 mr-2"></i>Importer des Lineups</h2>
+          <p class="text-[11px] text-zinc-400">Colle les codes envoyés par tes potes ci-dessous</p>
+        </div>
+        <button onclick="closeImportModal()" class="text-zinc-500 hover:text-zinc-300 text-xl font-bold">&times;</button>
+      </div>
+
+      <div class="text-xs text-zinc-400">
+        <label class="block mb-1 font-semibold text-zinc-300">Colle le ou les codes ici :</label>
+        <textarea id="importCodesTextarea" rows="8" placeholder="Colle ici un ou plusieurs codes envoyés par tes potes..." class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-zinc-200 font-mono text-[11px] focus:outline-none focus:border-amber-500"></textarea>
+      </div>
+
+      <div class="flex gap-2">
+        <button onclick="processImportCodes()" class="flex-1 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold py-2.5 rounded-lg text-xs transition shadow">
+          <i class="fa-solid fa-bolt mr-1"></i> Valider et Télécharger index.html
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL 3 : CODE DE PARTAGE GÉNÉRÉ                         -->
+  <!-- ======================================================== -->
+  <div id="shareCodeModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm p-4 flex items-center justify-center hidden">
+    <div class="max-w-md w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-5 shadow-2xl space-y-3 text-center">
+      <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto text-lg">
+        <i class="fa-solid fa-code"></i>
+      </div>
+      <h3 class="font-bold text-sm text-zinc-100">Code de Lineup à donner à ElChibros</h3>
+      <p class="text-[11px] text-zinc-400">Copie ce code et envoie-le sur Discord / Steam / WhatsApp :</p>
+      <textarea id="shareCodeOutput" readonly rows="5" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 font-mono text-[11px] text-amber-300 select-all focus:outline-none"></textarea>
+      <div class="flex gap-2">
+        <button onclick="copyGeneratedCode()" id="btnCopyCode" class="flex-1 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold py-2 rounded-lg text-xs transition">
+          <i class="fa-solid fa-copy mr-1"></i> Copier dans le presse-papier
+        </button>
+        <button onclick="document.getElementById('shareCodeModal').classList.add('hidden')" class="px-4 py-2 bg-zinc-800 text-zinc-300 font-semibold rounded-lg text-xs hover:bg-zinc-700 transition">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL 4 : EXPORT POUR FICHIERS LOCAUX                    -->
+  <!-- ======================================================== -->
   <div id="exportModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm p-4 overflow-y-auto hidden">
     <div class="max-w-md mx-auto bg-zinc-900 border border-zinc-700 rounded-2xl p-5 shadow-2xl space-y-4">
       <div class="text-center">
-        <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-xl mb-2">
+        <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-lg mb-2">
           <i class="fa-solid fa-check"></i>
         </div>
-        <h2 class="text-base font-bold text-zinc-100">Lineup ajouté avec succès !</h2>
-        <p class="text-xs text-zinc-400 mt-1">Voici ce qu'il te reste à faire pour mettre à jour GitHub :</p>
+        <h2 class="text-base font-bold text-zinc-100">Lineup enregistré !</h2>
+        <p class="text-xs text-zinc-400 mt-1">Télécharge tes fichiers pour mettre à jour GitHub :</p>
       </div>
 
-      <!-- Étape 1 : Téléchargement des photos renommées -->
-      <div class="bg-zinc-950 p-3.5 rounded-xl border border-zinc-800 space-y-2">
-        <p class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
-          <span class="w-4 h-4 rounded-full bg-amber-500 text-zinc-950 text-[10px] inline-flex items-center justify-center font-black">1</span>
-          Télécharge tes photos renommées
-        </p>
-        <p class="text-[11px] text-zinc-400">À déposer dans le dossier <code class="text-zinc-200 bg-zinc-800 px-1 py-0.5 rounded">images/</code> de ton projet :</p>
-        <div id="downloadButtonsPhotos" class="space-y-1.5 pt-1">
-          <!-- Boutons générés en JS -->
-        </div>
+      <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800 space-y-2">
+        <p class="text-xs font-bold text-amber-400">1. Photos (dans le dossier images/)</p>
+        <div id="downloadButtonsPhotos" class="space-y-1.5 pt-1"></div>
       </div>
 
-      <!-- Étape 2 : Téléchargement du HTML -->
-      <div class="bg-zinc-950 p-3.5 rounded-xl border border-zinc-800 space-y-2">
-        <p class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
-          <span class="w-4 h-4 rounded-full bg-amber-500 text-zinc-950 text-[10px] inline-flex items-center justify-center font-black">2</span>
-          Télécharge le code du site
-        </p>
-        <p class="text-[11px] text-zinc-400">Remplace ton ancien fichier <code class="text-zinc-200 bg-zinc-800 px-1 py-0.5 rounded">index.html</code> par celui-ci :</p>
+      <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800 space-y-2">
+        <p class="text-xs font-bold text-amber-400">2. Code du site mis à jour</p>
         <button onclick="downloadUpdatedHtml()" class="w-full bg-zinc-100 hover:bg-white text-zinc-950 font-bold py-2.5 rounded-lg text-xs transition flex items-center justify-center gap-2">
           <i class="fa-solid fa-file-code"></i> Télécharger index.html
         </button>
@@ -200,22 +298,35 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- BASE DE DONNÉES EMBARQUÉE (mise à jour auto par l'export) -->
+  <!-- BASE DE DONNÉES DES LINEUPS                              -->
   <!-- ======================================================== -->
   <script id="database-script">
     window.LINEUPS_DATA = [
       {
-        id: "mirage_t_smoke_fenetre_mid",
-        map: "Mirage",
-        side: "T",
-        type: "smoke",
-        target: "Fenêtre Mid",
-        from: "Spawn T (Poubelle)",
-        throwClick: "Clic Gauche",
-        throwMovement: "D + Jumpthrow",
-        aimImage: "images/mirage_t_smoke_fenetre_mid_aim.jpg",
-        posImage: "",
-        tip: "Se caler contre la poubelle, viser le coin supérieur droit du tapis."
+        "id": "dust_ii_t_smoke_xbox",
+        "map": "Dust II",
+        "side": "T",
+        "type": "smoke",
+        "target": "Xbox (Mid)",
+        "from": "Spawn T (Pente)",
+        "throwClick": "Clic Gauche",
+        "throwMovement": "Jumpthrow",
+        "aimImage": "https://placehold.co/800x450/18181b/f59e0b?text=Xbox+Smoke+Aim",
+        "posImage": "",
+        "tip": "Bloque la vision des CT depuis le spawn vers le Mid."
+      },
+      {
+        "id": "mirage_t_smoke_fenetre_mid",
+        "map": "Mirage",
+        "side": "T",
+        "type": "smoke",
+        "target": "Fenêtre Mid",
+        "from": "Spawn T (Poubelle)",
+        "throwClick": "Clic Gauche",
+        "throwMovement": "D + Jumpthrow",
+        "aimImage": "https://placehold.co/800x450/18181b/f59e0b?text=Mirage+Window+Aim",
+        "posImage": "",
+        "tip": "Se caler contre la poubelle, viser le coin supérieur droit du tapis."
       }
     ];
   </script>
@@ -223,13 +334,24 @@
   <!-- LOGIQUE DE L'APPLICATION -->
   <script>
     let lineups = [...window.LINEUPS_DATA];
-    const MAPS = ["Mirage", "Inferno", "Nuke", "Dust II", "Ancient", "Anubis"];
+    
+    // Ordre des maps exactement comme demandé
+    const MAPS = [
+      "Dust II",
+      "Cache",
+      "Mirage",
+      "Inferno",
+      "Ancient",
+      "Anubis",
+      "Nuke"
+    ];
 
-    let currentMap = "Mirage";
+    let currentMap = "Dust II";
     let currentSide = "ALL";
     let currentType = "ALL";
+    let imageMode = "url"; // 'url' ou 'local'
 
-    // Variables temporaires pour l'export
+    // Fichiers locaux pour export
     let lastAimFile = null;
     let lastPosFile = null;
     let lastAimName = "";
@@ -290,14 +412,14 @@
         container.innerHTML = `
           <div class="text-center py-16 text-zinc-600">
             <i class="fa-solid fa-ghost text-4xl mb-3"></i>
-            <p class="text-sm">Aucun repère pour ces filtres.</p>
+            <p class="text-sm">Aucun repère pour ces filtres sur ${currentMap}.</p>
           </div>
         `;
         return;
       }
 
       container.innerHTML = filtered.map(item => `
-        <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-lg">
+        <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-lg relative group">
           <div class="p-3.5 border-b border-zinc-800/80 flex items-start justify-between">
             <div>
               <div class="flex items-center gap-2">
@@ -309,19 +431,32 @@
               <p class="text-xs text-zinc-400 mt-1"><i class="fa-solid fa-location-dot text-zinc-500 mr-1"></i> Depuis : <span class="text-zinc-300">${item.from}</span></p>
             </div>
             
-            <div class="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-300">
-              ${item.type === 'smoke' ? '<i class="fa-solid fa-smog"></i>' : ''}
-              ${item.type === 'molotov' ? '<i class="fa-solid fa-fire text-amber-500"></i>' : ''}
-              ${item.type === 'flash' ? '<i class="fa-solid fa-bolt text-yellow-400"></i>' : ''}
-              ${item.type === 'he' ? '<i class="fa-solid fa-bomb text-red-500"></i>' : ''}
+            <div class="flex items-center gap-1.5">
+              <!-- Bouton Copier le code du lineup -->
+              <button onclick='copySingleLineupCode(${JSON.stringify(item)})' title="Copier le code de partage" class="w-8 h-8 rounded-full bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center text-zinc-400 hover:text-amber-400 transition text-xs">
+                <i class="fa-solid fa-share-nodes"></i>
+              </button>
+
+              <!-- Bouton Supprimer -->
+              <button onclick="deleteLineup('${item.id}')" title="Supprimer ce lineup" class="w-8 h-8 rounded-full bg-zinc-800 hover:bg-red-500/20 text-zinc-400 hover:text-red-400 flex items-center justify-center transition text-xs">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+
+              <!-- Badge type de grenade -->
+              <div class="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-300 ml-1">
+                ${item.type === 'smoke' ? '<i class="fa-solid fa-smog"></i>' : ''}
+                ${item.type === 'molotov' ? '<i class="fa-solid fa-fire text-amber-500"></i>' : ''}
+                ${item.type === 'flash' ? '<i class="fa-solid fa-bolt text-yellow-400"></i>' : ''}
+                ${item.type === 'he' ? '<i class="fa-solid fa-bomb text-red-500"></i>' : ''}
+              </div>
             </div>
           </div>
 
           <!-- Image Viseur -->
           <div class="relative bg-zinc-950 aspect-video overflow-hidden cursor-pointer" onclick="openImageModal('${item.aimImage}', '${item.target} - Alignement Viseur')">
-            <img src="${item.aimImage}" onerror="this.src='https://placehold.co/800x450/18181b/a1a1aa?text=Image+introuvable+(verifiez+images/)'" class="w-full h-full object-cover" alt="Alignement">
+            <img src="${item.aimImage}" onerror="this.src='https://placehold.co/800x450/18181b/a1a1aa?text=Image+non+disponible'" class="w-full h-full object-cover" alt="Alignement">
             <span class="absolute bottom-2 left-2 bg-black/75 backdrop-blur text-[11px] px-2 py-0.5 rounded text-zinc-300 border border-zinc-700">
-              <i class="fa-solid fa-crosshairs mr-1"></i> Viseur (toucher pour zoom)
+              <i class="fa-solid fa-crosshairs mr-1"></i> Viseur (toucher pour zoomer)
             </span>
           </div>
 
@@ -349,7 +484,38 @@
       `).join('');
     }
 
-    // GESTION DU FORMULAIRE ET GÉNÉRATION DES NOMS
+    // SUPPRESSION D'UN LINEUP
+    function deleteLineup(id) {
+      const item = lineups.find(l => l.id === id);
+      if (!item) return;
+
+      if (confirm(`Es-tu sûr de vouloir supprimer le lineup "${item.target}" sur ${item.map} ?`)) {
+        lineups = lineups.filter(l => l.id !== id);
+        renderLineups();
+        showSaveAlert();
+      }
+    }
+
+    function showSaveAlert() {
+      document.getElementById('saveAlert').classList.remove('hidden');
+    }
+
+    // BASCULER MODE IMAGES (URL vs LOCAL)
+    function setImageMode(mode) {
+      imageMode = mode;
+      if (mode === 'url') {
+        document.getElementById('btnModeUrl').className = "py-2 rounded-lg bg-amber-500 text-zinc-950 font-bold flex items-center justify-center gap-1.5";
+        document.getElementById('btnModeLocal').className = "py-2 rounded-lg bg-zinc-950 text-zinc-400 border border-zinc-800 flex items-center justify-center gap-1.5";
+        document.getElementById('sectionUrlImages').classList.remove('hidden');
+        document.getElementById('sectionLocalImages').classList.add('hidden');
+      } else {
+        document.getElementById('btnModeLocal').className = "py-2 rounded-lg bg-amber-500 text-zinc-950 font-bold flex items-center justify-center gap-1.5";
+        document.getElementById('btnModeUrl').className = "py-2 rounded-lg bg-zinc-950 text-zinc-400 border border-zinc-800 flex items-center justify-center gap-1.5";
+        document.getElementById('sectionLocalImages').classList.remove('hidden');
+        document.getElementById('sectionUrlImages').classList.add('hidden');
+      }
+    }
+
     function slugify(text) {
       return text.toString().toLowerCase().trim()
         .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -357,65 +523,181 @@
         .replace(/^_+|_+$/g, '');
     }
 
-    function handleFormSubmit(e) {
-      e.preventDefault();
-
-      const map = document.getElementById("formMap").value;
-      const side = document.getElementById("formSide").value;
-      const type = document.getElementById("formType").value;
-      const target = document.getElementById("formTarget").value;
-      const from = document.getElementById("formFrom").value;
-      const throwClick = document.getElementById("formClick").value;
-      const throwMovement = document.getElementById("formMovement").value;
-      const tip = document.getElementById("formTip").value;
-
-      lastAimFile = document.getElementById("fileAim").files[0];
-      lastPosFile = document.getElementById("filePos").files[0];
-
-      // Formatage du nom automatique : ex: mirage_t_smoke_fenetre_aim.jpg
-      const baseSlug = `${slugify(map)}_${slugify(side)}_${slugify(type)}_${slugify(target)}`;
-      const aimExt = lastAimFile ? lastAimFile.name.split('.').pop() : 'jpg';
-      lastAimName = `${baseSlug}_aim.${aimExt}`;
-
-      let posPath = "";
-      if (lastPosFile) {
-        const posExt = lastPosFile.name.split('.').pop();
-        lastPosName = `${baseSlug}_pos.${posExt}`;
-        posPath = `images/${lastPosName}`;
-      }
-
-      const newEntry = {
-        id: baseSlug + "_" + Date.now().toString().slice(-4),
-        map,
-        side,
-        type,
-        target,
-        from,
-        throwClick,
-        throwMovement,
-        aimImage: `images/${lastAimName}`,
-        posImage: posPath,
-        tip
+    // RÉCUPÉRATION DES VALEURS DU FORMULAIRE
+    function getFormData() {
+      return {
+        map: document.getElementById("formMap").value,
+        side: document.getElementById("formSide").value,
+        type: document.getElementById("formType").value,
+        target: document.getElementById("formTarget").value.trim(),
+        from: document.getElementById("formFrom").value.trim(),
+        throwClick: document.getElementById("formClick").value,
+        throwMovement: document.getElementById("formMovement").value,
+        tip: document.getElementById("formTip").value.trim()
       };
-
-      lineups.unshift(newEntry);
-      currentMap = map;
-      renderMapButtons();
-      renderLineups();
-
-      closeAddModal();
-      document.getElementById("lineupForm").reset();
-
-      // Préparation du modal d'exportation
-      showExportModal();
     }
 
+    // GÉNÉRER UN CODE DE PARTAGE DIRECTEMENT DEPUIS LE FORMULAIRE
+    function generateShareCodeFromForm() {
+      const data = getFormData();
+      if (!data.target || !data.from) {
+        alert("Remplis au moins la cible et la position de départ.");
+        return;
+      }
+
+      const aimUrl = document.getElementById("formAimUrl").value.trim();
+      const posUrl = document.getElementById("formPosUrl").value.trim();
+
+      if (!aimUrl && imageMode === 'url') {
+        alert("Colle l'URL de ton image ImgBB pour générer un code.");
+        return;
+      }
+
+      const payload = {
+        id: `${slugify(data.map)}_${slugify(data.side)}_${slugify(data.type)}_${slugify(data.target)}_${Date.now().toString().slice(-4)}`,
+        ...data,
+        aimImage: aimUrl || "https://placehold.co/800x450/18181b/f59e0b?text=Aim",
+        posImage: posUrl || ""
+      };
+
+      const codeString = JSON.stringify(payload, null, 2);
+      document.getElementById('shareCodeOutput').value = codeString;
+      document.getElementById('shareCodeModal').classList.remove('hidden');
+    }
+
+    function copySingleLineupCode(item) {
+      const codeString = JSON.stringify(item, null, 2);
+      document.getElementById('shareCodeOutput').value = codeString;
+      document.getElementById('shareCodeModal').classList.remove('hidden');
+    }
+
+    function copyGeneratedCode() {
+      const textarea = document.getElementById('shareCodeOutput');
+      textarea.select();
+      navigator.clipboard.writeText(textarea.value);
+      const btn = document.getElementById('btnCopyCode');
+      btn.innerHTML = '<i class="fa-solid fa-check mr-1"></i> Copié !';
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fa-solid fa-copy mr-1"></i> Copier dans le presse-papier';
+      }, 2000);
+    }
+
+    // SOUMISSION DU FORMULAIRE
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const data = getFormData();
+      const baseSlug = `${slugify(data.map)}_${slugify(data.side)}_${slugify(data.type)}_${slugify(data.target)}`;
+      const id = baseSlug + "_" + Date.now().toString().slice(-4);
+
+      let aimPath = "";
+      let posPath = "";
+
+      if (imageMode === 'url') {
+        aimPath = document.getElementById("formAimUrl").value.trim();
+        posPath = document.getElementById("formPosUrl").value.trim();
+        if (!aimPath) {
+          alert("Veuillez renseigner le lien de l'image de visée.");
+          return;
+        }
+
+        const newEntry = { id, ...data, aimImage: aimPath, posImage: posPath };
+        lineups.unshift(newEntry);
+        currentMap = data.map;
+        renderMapButtons();
+        renderLineups();
+        closeAddModal();
+        document.getElementById("lineupForm").reset();
+        showSaveAlert();
+        alert(`Lineup ajouté avec succès ! Pense à cliquer sur "Enregistrer index.html" pour mettre à jour GitHub.`);
+      } else {
+        // Mode Local
+        lastAimFile = document.getElementById("fileAim").files[0];
+        lastPosFile = document.getElementById("filePos").files[0];
+
+        if (!lastAimFile) {
+          alert("Sélectionne au moins une photo pour le viseur.");
+          return;
+        }
+
+        const aimExt = lastAimFile.name.split('.').pop();
+        lastAimName = `${baseSlug}_aim.${aimExt}`;
+        aimPath = `images/${lastAimName}`;
+
+        if (lastPosFile) {
+          const posExt = lastPosFile.name.split('.').pop();
+          lastPosName = `${baseSlug}_pos.${posExt}`;
+          posPath = `images/${lastPosName}`;
+        }
+
+        const newEntry = { id, ...data, aimImage: aimPath, posImage: posPath };
+        lineups.unshift(newEntry);
+        currentMap = data.map;
+        renderMapButtons();
+        renderLineups();
+        closeAddModal();
+        document.getElementById("lineupForm").reset();
+        showExportModal();
+      }
+    }
+
+    // TRAITEMENT DES CODES MULTIPLES IMPORTÉS
+    function processImportCodes() {
+      const raw = document.getElementById('importCodesTextarea').value.trim();
+      if (!raw) {
+        alert("Colle au moins un code dans le champ de texte.");
+        return;
+      }
+
+      let parsedItems = [];
+
+      // Tentative 1 : JSON Array direct ou simple objet
+      try {
+        const direct = JSON.parse(raw);
+        if (Array.isArray(direct)) parsedItems = direct;
+        else if (typeof direct === 'object' && direct !== null) parsedItems = [direct];
+      } catch (e) {
+        // Tentative 2 : Plusieurs blocs JSON collés à la suite { ... } { ... }
+        const matches = raw.match(/\{[\s\S]*?\}/g);
+        if (matches) {
+          for (const m of matches) {
+            try {
+              const item = JSON.parse(m);
+              if (item.target && item.map) parsedItems.push(item);
+            } catch (err) {}
+          }
+        }
+      }
+
+      if (parsedItems.length === 0) {
+        alert("Impossible de lire les codes. Assure-toi que le format est correct.");
+        return;
+      }
+
+      // Ajout des lineups importés
+      let addedCount = 0;
+      parsedItems.forEach(item => {
+        if (!item.id) {
+          item.id = `${slugify(item.map || 'lineup')}_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+        }
+        lineups.unshift(item);
+        addedCount++;
+      });
+
+      renderLineups();
+      closeImportModal();
+      document.getElementById('importCodesTextarea').value = "";
+
+      alert(`${addedCount} lineup(s) importé(s) avec succès ! Le fichier index.html va maintenant se télécharger.`);
+      downloadUpdatedHtml();
+    }
+
+    // MODAL LOCALE EXPORT
     function showExportModal() {
       const container = document.getElementById("downloadButtonsPhotos");
       let html = `
         <div class="flex items-center justify-between bg-zinc-900 p-2 rounded border border-zinc-800">
           <span class="font-mono text-zinc-300 text-[11px] truncate mr-2">${lastAimName}</span>
-          <button onclick="downloadFile(lastAimFile, lastAimName)" class="bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-2 py-1 rounded text-[11px] whitespace-nowrap">
+          <button onclick="downloadFile(lastAimFile, lastAimName)" class="bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-2 py-1 rounded text-[11px]">
             <i class="fa-solid fa-download"></i> Télécharger
           </button>
         </div>
@@ -425,7 +707,7 @@
         html += `
           <div class="flex items-center justify-between bg-zinc-900 p-2 rounded border border-zinc-800 mt-1">
             <span class="font-mono text-zinc-300 text-[11px] truncate mr-2">${lastPosName}</span>
-            <button onclick="downloadFile(lastPosFile, lastPosName)" class="bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-2 py-1 rounded text-[11px] whitespace-nowrap">
+            <button onclick="downloadFile(lastPosFile, lastPosName)" class="bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-2 py-1 rounded text-[11px]">
               <i class="fa-solid fa-download"></i> Télécharger
             </button>
           </div>
@@ -446,17 +728,19 @@
       URL.revokeObjectURL(url);
     }
 
-    // EXPORTATION DU CODE HTML COMPLET ET À JOUR
+    // TÉLÉCHARGEMENT DE index.html MIS À JOUR
     function downloadUpdatedHtml() {
-      // Cloner tout le document actuel
       const docClone = document.documentElement.cloneNode(true);
 
-      // Fermer tous les modals dans la version exportée
+      // Fermer tous les modals
       docClone.querySelector('#addModal').classList.add('hidden');
+      docClone.querySelector('#importModal').classList.add('hidden');
       docClone.querySelector('#exportModal').classList.add('hidden');
+      docClone.querySelector('#shareCodeModal').classList.add('hidden');
       docClone.querySelector('#imageModal').classList.add('hidden');
+      docClone.querySelector('#saveAlert').classList.add('hidden');
 
-      // Injecter la liste à jour dans le script de base de données
+      // Mettre à jour la balise de données avec les lineups actuels
       const dbScript = docClone.querySelector('#database-script');
       dbScript.textContent = `\n    window.LINEUPS_DATA = ${JSON.stringify(lineups, null, 2)};\n  `;
 
@@ -469,11 +753,15 @@
       a.download = "index.html";
       a.click();
       URL.revokeObjectURL(url);
+
+      document.getElementById('saveAlert').classList.add('hidden');
     }
 
-    // MODALS CONTROLS
+    // GESTION DES MODALS
     function openAddModal() { document.getElementById("addModal").classList.remove("hidden"); }
     function closeAddModal() { document.getElementById("addModal").classList.add("hidden"); }
+    function openImportModal() { document.getElementById("importModal").classList.remove("hidden"); }
+    function closeImportModal() { document.getElementById("importModal").classList.add("hidden"); }
     function closeExportModal() { document.getElementById("exportModal").classList.add("hidden"); }
 
     function openImageModal(src, caption) {
