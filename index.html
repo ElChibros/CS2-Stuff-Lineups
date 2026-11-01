@@ -1,51 +1,53 @@
 <!DOCTYPE html>
 <html lang="fr" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  <title>CS2 Lineups • by ElChibros</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body { -webkit-tap-highlight-color: transparent; }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+	<title>CS2 Lineups • by ElChibros</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<style>
+	body { -webkit-tap-highlight-color: transparent; }
+	.no-scrollbar::-webkit-scrollbar { display: none; }
+	.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Loupe centrale de crosshair */
-    .crosshair-magnifier {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 130px;
-      height: 130px;
-      border: 2px solid #f59e0b;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 0 0 2px rgba(0,0,0,0.85), 0 10px 25px -5px rgba(0,0,0,0.9);
-      pointer-events: none;
-      z-index: 20;
-      background: #09090b;
-    }
-    .crosshair-magnifier img {
-      position: absolute;
-      width: 1000%;
-      height: 1000%;
-      max-width: none;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      object-fit: cover;
-    }
-    .crosshair-magnifier::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border: 1px dashed rgba(245, 158, 11, 0.4);
-      border-radius: 12px;
-      pointer-events: none;
-    }
-  </style>
+	/* Loupe centrale de crosshair */
+	.crosshair-magnifier {
+	  position: absolute;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	  width: 130px;
+	  height: 130px;
+	  border: 2px solid #f59e0b;
+	  border-radius: 14px;
+	  overflow: hidden;
+	  box-shadow: 0 0 0 2px rgba(0,0,0,0.85), 0 10px 25px -5px rgba(0,0,0,0.9);
+	  pointer-events: none;
+	  z-index: 20;
+	  background: #09090b;
+	}
+	.crosshair-magnifier img {
+	  position: absolute;
+	  width: 1000%;
+	  height: 1000%;
+	  max-width: none;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	  object-fit: cover;
+	}
+	.crosshair-magnifier::after {
+	  content: "";
+	  position: absolute;
+	  inset: 0;
+	  border: 1px dashed rgba(245, 158, 11, 0.4);
+	  border-radius: 12px;
+	  pointer-events: none;
+	}
+	</style>
+	<link rel="icon" type="image/svg+xml" href="favicon.svg">
+	<link rel="apple-touch-icon" href="favicon.svg">
 </head>
 <body class="bg-zinc-950 text-zinc-100 font-sans pb-16 select-none">
 
