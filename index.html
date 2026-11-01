@@ -1,53 +1,66 @@
 <!DOCTYPE html>
 <html lang="fr" class="dark">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-	<title>CS2 Lineups • by ElChibros</title>
-	<script src="https://cdn.tailwindcss.com"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-	<style>
-	body { -webkit-tap-highlight-color: transparent; }
-	.no-scrollbar::-webkit-scrollbar { display: none; }
-	.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>CS2 Lineups • by ElChibros</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="favicon.svg">
+  <meta name="theme-color" content="#09090b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { -webkit-tap-highlight-color: transparent; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-	/* Loupe centrale de crosshair */
-	.crosshair-magnifier {
-	  position: absolute;
-	  top: 50%;
-	  left: 50%;
-	  transform: translate(-50%, -50%);
-	  width: 130px;
-	  height: 130px;
-	  border: 2px solid #f59e0b;
-	  border-radius: 14px;
-	  overflow: hidden;
-	  box-shadow: 0 0 0 2px rgba(0,0,0,0.85), 0 10px 25px -5px rgba(0,0,0,0.9);
-	  pointer-events: none;
-	  z-index: 20;
-	  background: #09090b;
-	}
-	.crosshair-magnifier img {
-	  position: absolute;
-	  width: 1000%;
-	  height: 1000%;
-	  max-width: none;
-	  top: 50%;
-	  left: 50%;
-	  transform: translate(-50%, -50%);
-	  object-fit: cover;
-	}
-	.crosshair-magnifier::after {
-	  content: "";
-	  position: absolute;
-	  inset: 0;
-	  border: 1px dashed rgba(245, 158, 11, 0.4);
-	  border-radius: 12px;
-	  pointer-events: none;
-	}
-	</style>
-	<link rel="icon" type="image/svg+xml" href="favicon.svg">
-	<link rel="apple-touch-icon" href="favicon.svg">
+    /* Loupe centrale de crosshair */
+    .crosshair-magnifier {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 130px;
+      height: 130px;
+      border: 2px solid #f59e0b;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.85), 0 10px 25px -5px rgba(0,0,0,0.9);
+      pointer-events: none;
+      z-index: 20;
+      background: #09090b;
+    }
+    .crosshair-magnifier img {
+      position: absolute;
+      width: 1000%;
+      height: 1000%;
+      max-width: none;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+    }
+    .crosshair-magnifier::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px dashed rgba(245, 158, 11, 0.4);
+      border-radius: 12px;
+      pointer-events: none;
+    }
+
+    /* Radar marker pulse */
+    .radar-pin-pulse {
+      animation: pinPulse 2s infinite ease-out;
+    }
+    @keyframes pinPulse {
+      0% { transform: scale(1); opacity: 1; }
+      70% { transform: scale(1.8); opacity: 0; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+  </style>
 </head>
 <body class="bg-zinc-950 text-zinc-100 font-sans pb-16 select-none">
 
@@ -70,11 +83,15 @@
         </div>
 
         <div class="flex items-center gap-1.5">
+          <!-- BOUTON ANTI-VEILLE SUR LE HUB -->
+          <button onclick="toggleWakeLock()" id="btnWakeLockHub" class="text-xs bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition" title="Empêcher l'écran de se verrouiller">
+            <i class="fa-regular fa-lightbulb"></i> <span id="wakeLockTextHub">Veille</span>
+          </button>
           <button onclick="downloadLineupsJson()" title="Exporter lineups.json" class="text-xs bg-zinc-900 hover:bg-zinc-800 text-amber-400 border border-zinc-800 font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition">
             <i class="fa-solid fa-floppy-disk"></i> JSON
           </button>
           <button onclick="openImportModal()" class="text-xs bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition">
-            <i class="fa-solid fa-file-import text-zinc-400"></i> Importer
+            <i class="fa-solid fa-file-import text-zinc-400"></i>
           </button>
         </div>
       </div>
@@ -123,10 +140,17 @@
         </div>
 
         <div class="flex items-center gap-1.5">
+          <!-- BOUTON ANTI-VEILLE -->
+          <button onclick="toggleWakeLock()" id="btnWakeLockTop" class="text-[11px] px-2 py-1.5 rounded-lg border font-semibold flex items-center gap-1 transition" title="Garder l'écran allumé">
+            <i class="fa-regular fa-lightbulb"></i> <span id="wakeLockTextTop" class="hidden sm:inline">Veille</span>
+          </button>
+
+          <!-- TOGGLE LOUPE -->
           <button onclick="toggleCrosshairZoom()" id="toggleZoomBtnTop" class="text-[11px] px-2 py-1.5 rounded-lg border font-semibold flex items-center gap-1 transition" title="Activer/Désactiver la loupe de crosshair">
             <i class="fa-solid fa-crosshairs"></i> <span id="toggleZoomStatusTop">ON</span>
           </button>
-          <button onclick="downloadLineupsJson()" title="Sauvegarder JSON et ouvrir GitHub" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-amber-400 border border-zinc-700 font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition">
+          
+          <button onclick="downloadLineupsJson()" title="Sauvegarder JSON et ouvrir GitHub" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-amber-400 border border-zinc-700 font-bold px-2 py-1.5 rounded-lg flex items-center gap-1 transition">
             <i class="fa-solid fa-floppy-disk"></i> JSON
           </button>
           <button onclick="openAddModal()" class="text-xs bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition shadow">
@@ -162,12 +186,37 @@
       </button>
     </div>
 
-    <!-- FILTRES RAPIDES -->
+    <!-- RADAR 2D INTERACTIF EN HAUT DE PAGE -->
+    <section class="px-3.5 pt-3">
+      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-2.5 space-y-1.5 shadow-lg">
+        <div class="flex items-center justify-between text-xs px-1">
+          <span class="font-bold text-zinc-200 flex items-center gap-1.5">
+            <i class="fa-solid fa-map-location-dot text-amber-500"></i> Radar 2D <span class="text-[10px] text-zinc-500 font-normal">(Toucher un point pour ouvrir)</span>
+          </span>
+          <button onclick="toggleRadarVisibility()" id="btnToggleRadar" class="text-[10px] text-zinc-400 hover:text-amber-400 font-semibold px-2 py-0.5 rounded bg-zinc-950 border border-zinc-800 transition">
+            Masquer
+          </button>
+        </div>
+
+        <!-- CONTENEUR DU RADAR -->
+        <div id="radarMainWrapper" class="relative aspect-square max-w-sm mx-auto rounded-xl overflow-hidden border border-zinc-800/80 bg-zinc-950 shadow-inner select-none">
+          <img id="mainRadarImg" src="" class="w-full h-full object-cover pointer-events-none opacity-85" alt="Radar Map">
+          <!-- Les repères interactifs sont injectés ici en JS -->
+          <div id="radarPinsContainer" class="absolute inset-0 pointer-events-auto"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FILTRES RAPIDES : CAMP & TYPE & FAVORIS -->
     <section class="px-3.5 pt-2.5 space-y-2">
-      <div class="grid grid-cols-3 gap-1.5 text-[11px] font-bold uppercase tracking-wider">
+      <div class="grid grid-cols-4 gap-1.5 text-[11px] font-bold uppercase tracking-wider">
         <button onclick="setSide('ALL')" id="btn-side-ALL" class="py-1.5 rounded-lg bg-amber-500 text-zinc-950 transition">Tous</button>
         <button onclick="setSide('T')" id="btn-side-T" class="py-1.5 rounded-lg bg-zinc-900 text-amber-400 border border-zinc-800 transition">T Side</button>
         <button onclick="setSide('CT')" id="btn-side-CT" class="py-1.5 rounded-lg bg-zinc-900 text-sky-400 border border-zinc-800 transition">CT Side</button>
+        <!-- BOUTON FILTRE FAVORIS -->
+        <button onclick="toggleFavoritesFilter()" id="btnFilterFav" class="py-1.5 rounded-lg bg-zinc-900 text-zinc-400 border border-zinc-800 transition flex items-center justify-center gap-1">
+          <i class="fa-solid fa-star text-amber-400 text-[10px]"></i> Fav (<span id="favCountBadge">0</span>)
+        </button>
       </div>
 
       <div class="flex gap-1.5 overflow-x-auto no-scrollbar text-[11px]">
@@ -184,7 +233,7 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- MODAL DÉTAIL D'UN LINEUP (AVEC BOUTON D'ÉDITION DIRECT) -->
+  <!-- MODAL DÉTAIL D'UN LINEUP (AVEC ÉDITION ET FAVORIS)      -->
   <!-- ======================================================== -->
   <div id="detailModal" class="fixed inset-0 z-40 bg-black/90 backdrop-blur-md p-3 sm:p-5 overflow-y-auto hidden">
     <div class="max-w-xl mx-auto bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl">
@@ -204,8 +253,11 @@
             </div>
           </div>
 
-          <!-- ACTIONS DETAIL : ÉDITER & FERMER -->
+          <!-- ACTIONS DETAIL : FAVORIS, ÉDITER & FERMER -->
           <div class="flex items-center gap-1.5 shrink-0">
+            <button onclick="toggleFavoriteCurrentDetail()" id="detailFavBtn" title="Ajouter aux favoris" class="w-8 h-8 rounded-full bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center text-xs transition">
+              <i class="fa-regular fa-star text-zinc-400"></i>
+            </button>
             <button onclick="editCurrentActiveLineup()" title="Modifier ce stuff" class="w-8 h-8 rounded-full bg-zinc-800 hover:bg-amber-500 text-zinc-400 hover:text-zinc-950 flex items-center justify-center text-xs transition">
               <i class="fa-solid fa-pen-to-square"></i>
             </button>
@@ -223,13 +275,12 @@
           </span>
         </div>
 
-        <!-- ALERTE ROUGE : POSTURE SPÉCIALE -->
+        <!-- ALERTES -->
         <div id="detailStanceWarning" class="hidden bg-red-500/20 border border-red-500/50 text-red-200 px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2 shadow-sm">
           <i class="fa-solid fa-triangle-exclamation text-amber-400 text-sm animate-pulse"></i>
           <span>ATTENTION POSTURE SPÉCIALE : <span id="detailStanceWarningText" class="underline uppercase"></span></span>
         </div>
 
-        <!-- ALERTE AMBRE : RÉTICULE DE GRENADE -->
         <div id="detailReticleWarning" class="hidden bg-amber-500/20 border border-amber-500/50 text-amber-200 px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2 shadow-sm">
           <i class="fa-solid fa-triangle-exclamation text-amber-400 text-sm animate-pulse"></i>
           <span>ATTENTION : ALIGNER LE RÉTICULE DE GRENADE / HUD (PAS LE VISEUR CENTRAL)</span>
@@ -304,7 +355,7 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- MODAL FORMULAIRE D'AJOUT & ÉDITION (AVEC NOVALIDATE)      -->
+  <!-- MODAL FORMULAIRE D'AJOUT & ÉDITION (AVEC RADAR 2D PICKER)-->
   <!-- ======================================================== -->
   <div id="addModal" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm p-3 overflow-y-auto hidden">
     <div class="max-w-lg mx-auto bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-2xl">
@@ -323,7 +374,6 @@
         </button>
       </div>
 
-      <!-- FORM AVEC NOVALIDATE POUR ÉVITER LES BLOCAGES SILENCIEUX DU NAVIGATEUR -->
       <form id="lineupForm" onsubmit="handleFormSubmit(event)" novalidate class="space-y-3 text-xs">
         
         <!-- CARTE -->
@@ -337,6 +387,25 @@
             <button type="button" data-val="Ancient" onclick="setFormOption('map', 'Ancient', this)" class="form-btn px-2.5 py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">Ancient</button>
             <button type="button" data-val="Anubis" onclick="setFormOption('map', 'Anubis', this)" class="form-btn px-2.5 py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">Anubis</button>
             <button type="button" data-val="Nuke" onclick="setFormOption('map', 'Nuke', this)" class="form-btn px-2.5 py-1 rounded-lg border bg-zinc-950 text-zinc-400 border-zinc-800">Nuke</button>
+          </div>
+        </div>
+
+        <!-- SÉLECTION DU POINT SUR LA CARTE 2D -->
+        <div class="border border-zinc-800 bg-zinc-950/70 p-2.5 rounded-xl space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-amber-400 font-bold flex items-center gap-1.5">
+              <i class="fa-solid fa-map-pin"></i> Point d'atterrissage sur la carte 2D
+            </span>
+            <button type="button" onclick="clearRadarPickerCoords()" class="text-[10px] text-zinc-500 hover:text-red-400 font-semibold">Effacer</button>
+          </div>
+          <p class="text-[10px] text-zinc-500">Touche la carte ci-dessous pour indiquer où atterrit le stuff :</p>
+          
+          <div id="radarPickerWrapper" onclick="handleRadarPickerClick(event)" class="relative aspect-square max-w-[240px] mx-auto rounded-xl overflow-hidden border border-zinc-800 cursor-crosshair bg-zinc-900 select-none shadow-inner">
+            <img id="radarPickerImg" src="" class="w-full h-full object-cover pointer-events-none opacity-85" alt="Radar">
+            <!-- Punaise d'atterrissage -->
+            <div id="radarPickerPin" class="hidden absolute -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-amber-500 border-2 border-white shadow-xl pointer-events-none flex items-center justify-center text-[9px] text-zinc-950 font-black">
+              <i class="fa-solid fa-crosshairs"></i>
+            </div>
           </div>
         </div>
 
@@ -360,7 +429,7 @@
           </div>
         </div>
 
-        <!-- TYPE DE REPÈRE DE VISÉE -->
+        <!-- REPÈRE DE VISÉE -->
         <div>
           <label class="block text-amber-400 mb-1 font-semibold">Repère de visée</label>
           <div class="grid grid-cols-2 gap-1.5" id="groupAimType">
@@ -433,7 +502,7 @@
           </div>
         </div>
 
-        <!-- ZONE PHOTOS URL (AVEC TYPE="TEXT" POUR ÉVITER LES BOGUES DE VALIDATION) -->
+        <!-- ZONE PHOTOS URL -->
         <div id="sectionUrlImages" class="hidden border border-zinc-800 bg-zinc-950/70 p-2.5 rounded-xl space-y-2">
           <div class="flex items-center justify-between"><span class="text-amber-400 font-bold">Liens ImgBB</span><a href="https://fr.imgbb.com/" target="_blank" class="text-[11px] text-sky-400 underline">Ouvrir fr.imgbb.com</a></div>
           <input type="text" id="formResultUrl" placeholder="Lien Résultat" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs">
@@ -506,13 +575,13 @@
     const GITHUB_UPLOAD_URL = "https://github.com/ElChibros/CS2-Stuff-Lineups/upload";
 
     const MAPS_META = [
-      { name: "Dust II", code: "de_dust2", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_dust2.png", color: "from-amber-600/20 to-orange-950/40" },
-      { name: "Cache", code: "de_cache", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_cache.png", color: "from-emerald-600/20 to-teal-950/40" },
-      { name: "Mirage", code: "de_mirage", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_mirage.png", color: "from-amber-500/20 to-yellow-950/40" },
-      { name: "Inferno", code: "de_inferno", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_inferno.png", color: "from-orange-600/20 to-red-950/40" },
-      { name: "Ancient", code: "de_ancient", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_ancient.png", color: "from-green-600/20 to-emerald-950/40" },
-      { name: "Anubis", code: "de_anubis", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_anubis.png", color: "from-yellow-600/20 to-amber-950/40" },
-      { name: "Nuke", code: "de_nuke", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_nuke.png", color: "from-sky-600/20 to-blue-950/40" }
+      { name: "Dust II", code: "de_dust2", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_dust2.png", radar: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/radars/de_dust2_radar_psd.png", color: "from-amber-600/20 to-orange-950/40" },
+      { name: "Cache", code: "de_cache", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_cache.png", radar: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/radars/de_cache_radar_psd.png", color: "from-emerald-600/20 to-teal-950/40" },
+      { name: "Mirage", code: "de_mirage", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_mirage.png", radar: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/radars/de_mirage_radar_psd.png", color: "from-amber-500/20 to-yellow-950/40" },
+      { name: "Inferno", code: "de_inferno", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_inferno.png", radar: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/radars/de_inferno_radar_psd.png", color: "from-orange-600/20 to-red-950/40" },
+      { name: "Ancient", code: "de_ancient", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_ancient.png", radar: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/radars/de_ancient_radar_psd.png", color: "from-green-600/20 to-emerald-950/40" },
+      { name: "Anubis", code: "de_anubis", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_anubis.png", radar: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/radars/de_anubis_radar_psd.png", color: "from-yellow-600/20 to-amber-950/40" },
+      { name: "Nuke", code: "de_nuke", icon: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_nuke.png", radar: "https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/radars/de_nuke_radar_psd.png", color: "from-sky-600/20 to-blue-950/40" }
     ];
 
     const DEFAULT_FALLBACK_DATA = [
@@ -528,6 +597,8 @@
         "throwClick": "Clic Gauche",
         "throwMovement": "Jumpthrow",
         "tip": "",
+        "targetX": 39.5,
+        "targetY": 65.5,
         "aimImage": "dust_ii_t_smoke_b_window_aim.jpg",
         "posImage": "dust_ii_t_smoke_b_window_pos.jpg",
         "resultImage": "dust_ii_t_smoke_b_window_result.jpg"
@@ -538,13 +609,23 @@
     let currentMap = "Dust II";
     let currentSide = "ALL";
     let currentType = "ALL";
+    let filterOnlyFavorites = false;
     let searchQuery = "";
     let imageMode = "local";
     let activeLineup = null;
     let editingLineupId = null;
     let zoomScale = 1;
+    let isRadarVisible = true;
 
+    // FAVORIS (Sauvegardés dans le téléphone)
+    let favorites = JSON.parse(localStorage.getItem("cs2_lineup_favorites") || "[]");
+
+    // LOUPE
     let isCrosshairZoomEnabled = localStorage.getItem("cs2_crosshair_zoom") !== "false";
+
+    // WAKE LOCK (Anti-veille écran)
+    let wakeLockSentinel = null;
+    let isWakeLockEnabled = localStorage.getItem("cs2_wakelock_enabled") === "true";
 
     let formValues = {
       map: "Dust II",
@@ -553,9 +634,226 @@
       aimType: "crosshair",
       click: "Clic Gauche",
       stance: "Stand Up",
-      movement: "Jumpthrow"
+      movement: "Jumpthrow",
+      targetX: null,
+      targetY: null
     };
 
+    // ==========================================
+    // GESTION DU WAKE LOCK (ÉCRAN TOUJOURS ALLUMÉ)
+    // ==========================================
+    async function initWakeLock() {
+      if (isWakeLockEnabled) {
+        await activateWakeLock();
+      }
+      updateWakeLockUI();
+    }
+
+    async function activateWakeLock() {
+      if ('wakeLock' in navigator) {
+        try {
+          wakeLockSentinel = await navigator.wakeLock.request('screen');
+          wakeLockSentinel.addEventListener('release', () => {
+            updateWakeLockUI();
+          });
+        } catch (err) {
+          console.warn("Wake Lock non supporté ou refusé :", err);
+        }
+      }
+    }
+
+    async function toggleWakeLock() {
+      isWakeLockEnabled = !isWakeLockEnabled;
+      localStorage.setItem("cs2_wakelock_enabled", isWakeLockEnabled);
+
+      if (isWakeLockEnabled) {
+        await activateWakeLock();
+      } else {
+        if (wakeLockSentinel) {
+          await wakeLockSentinel.release();
+          wakeLockSentinel = null;
+        }
+      }
+      updateWakeLockUI();
+    }
+
+    function updateWakeLockUI() {
+      const active = isWakeLockEnabled && wakeLockSentinel !== null;
+      const btnHub = document.getElementById("btnWakeLockHub");
+      const btnTop = document.getElementById("btnWakeLockTop");
+
+      const activeClass = "bg-amber-500/20 text-amber-400 border-amber-500/50";
+      const inactiveClass = "bg-zinc-900 text-zinc-400 border-zinc-800";
+
+      if (btnHub) {
+        btnHub.className = `text-xs font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1 border transition ${active ? activeClass : inactiveClass}`;
+        document.getElementById("wakeLockTextHub").innerText = active ? "Veille OFF" : "Veille";
+        btnHub.querySelector('i').className = active ? "fa-solid fa-lightbulb text-amber-400" : "fa-regular fa-lightbulb";
+      }
+
+      if (btnTop) {
+        btnTop.className = `text-[11px] font-semibold px-2 py-1.5 rounded-lg flex items-center gap-1 border transition ${active ? activeClass : inactiveClass}`;
+        document.getElementById("wakeLockTextTop").innerText = active ? "Veille OFF" : "Veille";
+        btnTop.querySelector('i').className = active ? "fa-solid fa-lightbulb text-amber-400" : "fa-regular fa-lightbulb";
+      }
+    }
+
+    document.addEventListener('visibilitychange', async () => {
+      if (document.visibilityState === 'visible' && isWakeLockEnabled) {
+        await activateWakeLock();
+      }
+    });
+
+    // ==========================================
+    // GESTION DES FAVORIS
+    // ==========================================
+    function toggleFavorite(id) {
+      if (favorites.includes(id)) {
+        favorites = favorites.filter(favId => favId !== id);
+      } else {
+        favorites.push(id);
+      }
+      localStorage.setItem("cs2_lineup_favorites", JSON.stringify(favorites));
+      renderLineups();
+      updateFavoritesBadge();
+    }
+
+    function toggleFavoriteCurrentDetail() {
+      if (!activeLineup) return;
+      toggleFavorite(activeLineup.id);
+      updateDetailFavIcon();
+    }
+
+    function updateDetailFavIcon() {
+      const btn = document.getElementById("detailFavBtn");
+      if (!btn || !activeLineup) return;
+      const isFav = favorites.includes(activeLineup.id);
+      btn.innerHTML = `<i class="fa-${isFav ? 'solid' : 'regular'} fa-star ${isFav ? 'text-amber-400' : 'text-zinc-400'}"></i>`;
+      btn.className = `w-8 h-8 rounded-full ${isFav ? 'bg-amber-500/20 border border-amber-500/40' : 'bg-zinc-800 hover:bg-zinc-700'} flex items-center justify-center text-xs transition`;
+    }
+
+    function toggleFavoritesFilter() {
+      filterOnlyFavorites = !filterOnlyFavorites;
+      const btn = document.getElementById("btnFilterFav");
+      if (filterOnlyFavorites) {
+        btn.className = "py-1.5 rounded-lg bg-amber-500 text-zinc-950 font-bold transition flex items-center justify-center gap-1 shadow";
+        btn.querySelector('i').className = "fa-solid fa-star text-zinc-950 text-[10px]";
+      } else {
+        btn.className = "py-1.5 rounded-lg bg-zinc-900 text-zinc-400 border border-zinc-800 transition flex items-center justify-center gap-1";
+        btn.querySelector('i').className = "fa-solid fa-star text-amber-400 text-[10px]";
+      }
+      renderLineups();
+    }
+
+    function updateFavoritesBadge() {
+      const mapLineups = lineups.filter(l => l.map === currentMap);
+      const favOnThisMap = mapLineups.filter(l => favorites.includes(l.id)).length;
+      const badge = document.getElementById("favCountBadge");
+      if (badge) badge.innerText = favOnThisMap;
+    }
+
+    // ==========================================
+    // RADAR 2D INTERACTIF
+    // ==========================================
+    function getMapMeta(mapName) {
+      return MAPS_META.find(m => m.name === mapName) || MAPS_META[0];
+    }
+
+    function renderMainRadar() {
+      const meta = getMapMeta(currentMap);
+      document.getElementById("mainRadarImg").src = meta.radar;
+
+      const container = document.getElementById("radarPinsContainer");
+      const mapLineups = lineups.filter(l => l.map === currentMap && l.targetX && l.targetY);
+
+      if (mapLineups.length === 0) {
+        container.innerHTML = `
+          <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <span class="text-[10px] bg-black/75 px-2 py-1 rounded text-zinc-400 border border-zinc-800">
+              Aucun repère placé sur ce radar (Édite un stuff pour placer le point)
+            </span>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = mapLineups.map(item => {
+        let badgeColor = "bg-slate-600 text-white";
+        let iconHtml = '<i class="fa-solid fa-smog"></i>';
+        if (item.type === 'molotov') { badgeColor = "bg-orange-500 text-white"; iconHtml = '<i class="fa-solid fa-fire"></i>'; }
+        if (item.type === 'flash') { badgeColor = "bg-yellow-400 text-zinc-950"; iconHtml = '<i class="fa-solid fa-bolt"></i>'; }
+        if (item.type === 'he') { badgeColor = "bg-red-500 text-white"; iconHtml = '<i class="fa-solid fa-bomb"></i>'; }
+
+        const isFav = favorites.includes(item.id);
+
+        return `
+          <div onclick="openDetailModal('${item.id}')"
+               style="left: ${item.targetX}%; top: ${item.targetY}%;"
+               class="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-20 group">
+            
+            <div class="relative flex items-center justify-center">
+              <div class="w-6 h-6 rounded-full ${badgeColor} border-2 ${isFav ? 'border-amber-300 ring-2 ring-amber-400' : 'border-white'} flex items-center justify-center shadow-lg text-[9px] active:scale-125 transition transform">
+                ${iconHtml}
+              </div>
+              ${isFav ? '<div class="absolute -top-1 -right-1 text-[8px] text-amber-400 drop-shadow"><i class="fa-solid fa-star"></i></div>' : ''}
+            </div>
+
+            <!-- Bulle au survol ou toucher -->
+            <div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-black/95 text-[9px] font-bold text-zinc-200 rounded whitespace-nowrap border border-zinc-700 pointer-events-none z-30 shadow-md">
+              ${item.target}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleRadarVisibility() {
+      isRadarVisible = !isRadarVisible;
+      const wrapper = document.getElementById("radarMainWrapper");
+      const btn = document.getElementById("btnToggleRadar");
+      if (isRadarVisible) {
+        wrapper.classList.remove("hidden");
+        btn.innerText = "Masquer";
+      } else {
+        wrapper.classList.add("hidden");
+        btn.innerText = "Afficher";
+      }
+    }
+
+    // Gestion du sélecteur de point sur la carte 2D dans le formulaire
+    function handleRadarPickerClick(e) {
+      const wrapper = document.getElementById("radarPickerWrapper");
+      const rect = wrapper.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+      setRadarPickerCoords(Math.min(98, Math.max(2, x)), Math.min(98, Math.max(2, y)));
+    }
+
+    function setRadarPickerCoords(x, y) {
+      formValues.targetX = parseFloat(x.toFixed(1));
+      formValues.targetY = parseFloat(y.toFixed(1));
+
+      const pin = document.getElementById("radarPickerPin");
+      pin.style.left = `${formValues.targetX}%`;
+      pin.style.top = `${formValues.targetY}%`;
+      pin.classList.remove("hidden");
+    }
+
+    function clearRadarPickerCoords() {
+      formValues.targetX = null;
+      formValues.targetY = null;
+      document.getElementById("radarPickerPin").classList.add("hidden");
+    }
+
+    function updateFormRadarPickerImg() {
+      const meta = getMapMeta(formValues.map);
+      document.getElementById("radarPickerImg").src = meta.radar;
+    }
+
+    // ==========================================
+    // LOUPE ZOOM AU CENTRE
+    // ==========================================
     function updateZoomUI() {
       const statusText = isCrosshairZoomEnabled ? "ON" : "OFF";
       const btnClass = isCrosshairZoomEnabled 
@@ -603,6 +901,8 @@
       document.getElementById("mapSelectView").classList.add("hidden");
       document.getElementById("lineupsMainView").classList.remove("hidden");
       renderMapButtons();
+      renderMainRadar();
+      updateFavoritesBadge();
       renderLineups();
     }
 
@@ -643,6 +943,7 @@
     function init() {
       renderMapGrid();
       updateZoomUI();
+      initWakeLock();
     }
 
     function downloadLineupsJson() {
@@ -725,12 +1026,14 @@
         const matchMap = searchQuery ? true : (item.map === currentMap);
         const matchSide = currentSide === 'ALL' || item.side === currentSide;
         const matchType = currentType === 'ALL' || item.type === currentType;
+        const matchFav = !filterOnlyFavorites || favorites.includes(item.id);
+
         let matchSearch = true;
         if (searchQuery) {
           const haystack = `${item.target} ${item.from} ${item.map} ${item.side} ${item.stance || ''} ${item.aimType || ''} ${item.throwClick} ${item.throwMovement} ${item.tip || ''}`.toLowerCase();
           matchSearch = haystack.includes(searchQuery);
         }
-        return matchMap && matchSide && matchType && matchSearch;
+        return matchMap && matchSide && matchType && matchFav && matchSearch;
       });
 
       if (filtered.length === 0) {
@@ -738,7 +1041,10 @@
         return;
       }
 
-      container.innerHTML = filtered.map(item => `
+      container.innerHTML = filtered.map(item => {
+        const isFav = favorites.includes(item.id);
+
+        return `
         <div class="bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-xl overflow-hidden shadow transition cursor-pointer" onclick="openDetailModal('${item.id}')">
           <div class="p-2.5 border-b border-zinc-800/80 flex items-center justify-between gap-2">
             <div class="flex items-center gap-2.5 min-w-0">
@@ -753,8 +1059,11 @@
               </div>
             </div>
             
-            <!-- ACTIONS DE LA CARTE : ÉDITER, PARTAGER, SUPPRIMER -->
+            <!-- ACTIONS DE LA CARTE : FAVORIS, ÉDITER, PARTAGER, SUPPRIMER -->
             <div class="flex items-center gap-1 shrink-0">
+              <button onclick='event.stopPropagation(); toggleFavorite("${item.id}")' title="Favori" class="w-7 h-7 rounded bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center transition text-[11px]">
+                <i class="fa-${isFav ? 'solid' : 'regular'} fa-star ${isFav ? 'text-amber-400' : 'text-zinc-500 hover:text-amber-300'}"></i>
+              </button>
               <button onclick='event.stopPropagation(); openEditModal("${item.id}")' title="Modifier ce lineup" class="w-7 h-7 rounded bg-zinc-800 hover:bg-amber-500 text-zinc-400 hover:text-zinc-950 flex items-center justify-center transition text-[11px]">
                 <i class="fa-solid fa-pen-to-square"></i>
               </button>
@@ -790,7 +1099,8 @@
             ${item.tip ? `<span class="text-[11px] text-zinc-400 italic truncate max-w-full"><i class="fa-solid fa-circle-info text-zinc-500 mr-1 text-[10px]"></i>${item.tip}</span>` : ''}
           </div>
         </div>
-      `).join('');
+      `;
+      }).join('');
     }
 
     function openDetailModal(id) {
@@ -852,6 +1162,7 @@
       document.getElementById('detailAimImg').src = item.aimImage;
       document.getElementById('magnifierZoomImg').src = item.aimImage;
 
+      updateDetailFavIcon();
       updateZoomUI();
       document.getElementById('detailModal').classList.remove('hidden');
     }
@@ -916,6 +1227,7 @@
         lineups = lineups.filter(l => l.id !== id);
         renderLineups();
         renderMapGrid();
+        renderMainRadar();
         showSaveAlert();
       }
     }
@@ -933,6 +1245,10 @@
       });
       el.classList.remove('bg-zinc-950', 'text-zinc-400', 'border-zinc-800');
       el.classList.add('bg-amber-500', 'text-zinc-950', 'font-bold', 'border-amber-500');
+
+      if (field === 'map') {
+        updateFormRadarPickerImg();
+      }
     }
 
     function selectButtonByVal(groupId, field, value) {
@@ -980,7 +1296,9 @@
         stance: formValues.stance,
         throwClick: formValues.click,
         throwMovement: formValues.movement,
-        tip: document.getElementById("formTip").value.trim()
+        tip: document.getElementById("formTip").value.trim(),
+        targetX: formValues.targetX,
+        targetY: formValues.targetY
       };
     }
 
@@ -1073,10 +1391,7 @@
         posPath = document.getElementById("formPosUrl").value.trim() || (existingItem ? existingItem.posImage : "");
         resultPath = document.getElementById("formResultUrl").value.trim() || (existingItem ? existingItem.resultImage : "");
 
-        if (!aimPath) { 
-          alert("Veuillez renseigner au moins le lien de la photo de visée."); 
-          return; 
-        }
+        if (!aimPath) { alert("Veuillez renseigner au moins le lien de la photo de visée."); return; }
 
         const entry = { id, ...data, aimImage: aimPath, posImage: posPath, resultImage: resultPath };
         
@@ -1098,7 +1413,6 @@
         const filePos = document.getElementById("filePos").files[0];
         const fileRes = document.getElementById("fileResult").files[0];
 
-        // En création nouvelle, la photo de visée est obligatoire. En édition, on garde l'existante.
         if (!isEditing && !fileAim) {
           alert("Sélectionne au moins une photo pour le crosshair.");
           return;
@@ -1135,7 +1449,6 @@
 
         downloadLineupsJson();
 
-        // N'affiche le rappel d'upload que si de nouvelles photos ont été sélectionnées
         const newlySelectedFiles = [fileAim ? fileAim.name : null, filePos ? filePos.name : null, fileRes ? fileRes.name : null].filter(Boolean);
         if (newlySelectedFiles.length > 0) {
           showLocalSummaryModal(newlySelectedFiles);
@@ -1181,6 +1494,7 @@
 
       renderLineups();
       renderMapGrid();
+      renderMainRadar();
       closeImportModal();
       document.getElementById('importCodesTextarea').value = "";
       alert(`${parsedItems.length} lineup(s) importé(s) !`);
@@ -1198,6 +1512,7 @@
             lineups = parsed;
             renderLineups();
             renderMapGrid();
+            renderMainRadar();
             closeImportModal();
             alert(`Base chargée : ${parsed.length} repères.`);
           }
@@ -1221,6 +1536,8 @@
       document.getElementById("hintPosPhoto").innerText = "";
       document.getElementById("hintAimPhoto").innerText = "";
 
+      clearRadarPickerCoords();
+
       selectButtonByVal("groupMap", "map", currentMap || "Dust II");
       selectButtonByVal("groupSide", "side", "T");
       selectButtonByVal("groupType", "type", "smoke");
@@ -1229,6 +1546,7 @@
       selectButtonByVal("groupStance", "stance", "Stand Up");
       selectButtonByVal("groupMovement", "movement", "Jumpthrow");
 
+      updateFormRadarPickerImg();
       setImageMode("local");
       document.getElementById("addModal").classList.remove("hidden"); 
     }
@@ -1244,12 +1562,10 @@
       document.getElementById("modalSubmitBtn").innerHTML = '<i class="fa-solid fa-check mr-1"></i> Enregistrer les modifications';
       document.getElementById("editModePhotoNotice").innerHTML = '<i class="fa-solid fa-circle-info text-amber-400 mr-1"></i>Les photos actuelles sont conservées si aucun nouveau fichier n\'est sélectionné.';
 
-      // Textes
       document.getElementById("formTarget").value = item.target || "";
       document.getElementById("formFrom").value = item.from || "";
       document.getElementById("formTip").value = item.tip || "";
 
-      // Boutons sélecteurs
       selectButtonByVal("groupMap", "map", item.map || "Dust II");
       selectButtonByVal("groupSide", "side", item.side || "T");
       selectButtonByVal("groupType", "type", item.type || "smoke");
@@ -1258,12 +1574,19 @@
       selectButtonByVal("groupStance", "stance", item.stance || "Stand Up");
       selectButtonByVal("groupMovement", "movement", item.throwMovement || "Jumpthrow");
 
-      // Noms des photos en rappel
+      updateFormRadarPickerImg();
+
+      // Charger les coordonnées radar si présentes
+      if (item.targetX && item.targetY) {
+        setRadarPickerCoords(item.targetX, item.targetY);
+      } else {
+        clearRadarPickerCoords();
+      }
+
       document.getElementById("hintResultPhoto").innerText = item.resultImage ? `(Actuelle : ${item.resultImage})` : `(Aucune)`;
       document.getElementById("hintPosPhoto").innerText = item.posImage ? `(Actuelle : ${item.posImage})` : `(Aucune)`;
       document.getElementById("hintAimPhoto").innerText = item.aimImage ? `(Actuelle : ${item.aimImage})` : ``;
 
-      // Détection du mode (web si commence par http, sinon local)
       const isWebImages = (item.aimImage && item.aimImage.startsWith("http"));
       if (isWebImages) {
         document.getElementById("formResultUrl").value = item.resultImage || "";
