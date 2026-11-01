@@ -11,6 +11,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="manifest" href="manifest.json">
   <style>
     body { -webkit-tap-highlight-color: transparent; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -1609,6 +1610,11 @@
     
     function openImportModal() { document.getElementById("importModal").classList.remove("hidden"); }
     function closeImportModal() { document.getElementById("importModal").classList.add("hidden"); }
+	
+	// Enregistrement pour l'installation comme vraie application Android
+	  if ('serviceWorker' in navigator) {
+		navigator.serviceWorker.register('sw.js').catch(err => console.log('SW:', err));
+	  }
 
     loadLineupsData();
   </script>
