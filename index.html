@@ -50,16 +50,6 @@
       border-radius: 12px;
       pointer-events: none;
     }
-
-    /* Radar marker pulse */
-    .radar-pin-pulse {
-      animation: pinPulse 2s infinite ease-out;
-    }
-    @keyframes pinPulse {
-      0% { transform: scale(1); opacity: 1; }
-      70% { transform: scale(1.8); opacity: 0; }
-      100% { transform: scale(1.8); opacity: 0; }
-    }
   </style>
 </head>
 <body class="bg-zinc-950 text-zinc-100 font-sans pb-16 select-none">
@@ -84,13 +74,13 @@
 
         <div class="flex items-center gap-1.5">
           <!-- BOUTON ANTI-VEILLE SUR LE HUB -->
-          <button onclick="toggleWakeLock()" id="btnWakeLockHub" class="text-xs bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition" title="Empêcher l'écran de se verrouiller">
-            <i class="fa-regular fa-lightbulb"></i> <span id="wakeLockTextHub">Veille</span>
+          <button onclick="toggleWakeLock()" id="btnWakeLockHub" class="h-8 text-xs font-semibold px-2.5 rounded-lg inline-flex items-center gap-1.5 border transition" title="Empêcher l'écran de se verrouiller">
+            <i class="fa-solid fa-sun text-[11px]"></i> <span id="wakeLockTextHub">Écran : ON</span>
           </button>
-          <button onclick="downloadLineupsJson()" title="Exporter lineups.json" class="text-xs bg-zinc-900 hover:bg-zinc-800 text-amber-400 border border-zinc-800 font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition">
+          <button onclick="downloadLineupsJson()" title="Exporter lineups.json" class="h-8 text-xs bg-zinc-900 hover:bg-zinc-800 text-amber-400 border border-zinc-800 font-bold px-2.5 rounded-lg inline-flex items-center gap-1 transition">
             <i class="fa-solid fa-floppy-disk"></i> JSON
           </button>
-          <button onclick="openImportModal()" class="text-xs bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition">
+          <button onclick="openImportModal()" class="h-8 text-xs bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 font-semibold px-2.5 rounded-lg inline-flex items-center gap-1 transition">
             <i class="fa-solid fa-file-import text-zinc-400"></i>
           </button>
         </div>
@@ -103,8 +93,8 @@
           <p class="text-[11px] text-zinc-500">Sélectionne la map pour afficher les repères</p>
         </div>
         
-        <button onclick="toggleCrosshairZoom()" id="toggleZoomBtnHub" class="text-[11px] px-2.5 py-1 rounded-lg border flex items-center gap-1.5 transition font-semibold">
-          <i class="fa-solid fa-crosshairs"></i> Loupe : <span id="toggleZoomStatusHub">ON</span>
+        <button onclick="toggleCrosshairZoom()" id="toggleZoomBtnHub" class="h-8 text-[11px] px-2.5 rounded-lg border inline-flex items-center gap-1.5 transition font-semibold">
+          <i class="fa-solid fa-crosshairs text-[11px]"></i> Loupe : <span id="toggleZoomStatusHub">ON</span>
         </button>
       </div>
 
@@ -130,7 +120,7 @@
     <header class="sticky top-0 z-30 bg-zinc-900/95 backdrop-blur border-b border-zinc-800 px-3.5 py-2.5 space-y-2">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <button onclick="showMapSelectView()" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition">
+          <button onclick="showMapSelectView()" class="h-7 text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 font-bold px-2.5 rounded-lg inline-flex items-center gap-1.5 transition">
             <i class="fa-solid fa-chevron-left text-[10px] text-amber-400"></i> Cartes
           </button>
           <div>
@@ -140,20 +130,20 @@
         </div>
 
         <div class="flex items-center gap-1.5">
-          <!-- BOUTON ANTI-VEILLE -->
-          <button onclick="toggleWakeLock()" id="btnWakeLockTop" class="text-[11px] px-2 py-1.5 rounded-lg border font-semibold flex items-center gap-1 transition" title="Garder l'écran allumé">
-            <i class="fa-regular fa-lightbulb"></i> <span id="wakeLockTextTop" class="hidden sm:inline">Veille</span>
+          <!-- BOUTON ANTI-VEILLE (HAUTEUR H-7 ALIGNÉE) -->
+          <button onclick="toggleWakeLock()" id="btnWakeLockTop" class="h-7 text-[11px] px-2 rounded-lg border font-semibold inline-flex items-center gap-1 transition" title="Garder l'écran allumé sans veille">
+            <i class="fa-solid fa-sun text-[10px]"></i> <span id="wakeLockTextTop">Écran : ON</span>
           </button>
 
-          <!-- TOGGLE LOUPE -->
-          <button onclick="toggleCrosshairZoom()" id="toggleZoomBtnTop" class="text-[11px] px-2 py-1.5 rounded-lg border font-semibold flex items-center gap-1 transition" title="Activer/Désactiver la loupe de crosshair">
-            <i class="fa-solid fa-crosshairs"></i> <span id="toggleZoomStatusTop">ON</span>
+          <!-- TOGGLE LOUPE (HAUTEUR H-7 ALIGNÉE) -->
+          <button onclick="toggleCrosshairZoom()" id="toggleZoomBtnTop" class="h-7 text-[11px] px-2 rounded-lg border font-semibold inline-flex items-center gap-1 transition" title="Activer/Désactiver la loupe de crosshair">
+            <i class="fa-solid fa-crosshairs text-[10px]"></i> Loupe : <span id="toggleZoomStatusTop">ON</span>
           </button>
           
-          <button onclick="downloadLineupsJson()" title="Sauvegarder JSON et ouvrir GitHub" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-amber-400 border border-zinc-700 font-bold px-2 py-1.5 rounded-lg flex items-center gap-1 transition">
+          <button onclick="downloadLineupsJson()" title="Sauvegarder JSON et ouvrir GitHub" class="h-7 text-xs bg-zinc-800 hover:bg-zinc-700 text-amber-400 border border-zinc-700 font-bold px-2 rounded-lg inline-flex items-center gap-1 transition">
             <i class="fa-solid fa-floppy-disk"></i> JSON
           </button>
-          <button onclick="openAddModal()" class="text-xs bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition shadow">
+          <button onclick="openAddModal()" class="h-7 text-xs bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-2.5 rounded-lg inline-flex items-center gap-1 transition shadow">
             <i class="fa-solid fa-plus"></i>
           </button>
         </div>
@@ -191,7 +181,8 @@
       <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-2.5 space-y-1.5 shadow-lg">
         <div class="flex items-center justify-between text-xs px-1">
           <span class="font-bold text-zinc-200 flex items-center gap-1.5">
-            <i class="fa-solid fa-map-location-dot text-amber-500"></i> Radar 2D <span class="text-[10px] text-zinc-500 font-normal">(Toucher un point pour ouvrir)</span>
+            <i class="fa-solid fa-map-location-dot text-amber-500"></i> Radar 2D 
+            <span class="text-[10px] text-zinc-400 font-normal hidden sm:inline">(Cercle bleu = CT / orange = T)</span>
           </span>
           <button onclick="toggleRadarVisibility()" id="btnToggleRadar" class="text-[10px] text-zinc-400 hover:text-amber-400 font-semibold px-2 py-0.5 rounded bg-zinc-950 border border-zinc-800 transition">
             Masquer
@@ -313,7 +304,7 @@
             </span>
             
             <button id="toggleZoomBtnDetail" onclick="toggleCrosshairZoom()" class="text-[10px] px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 font-semibold hover:border-amber-500 transition">
-              <i class="fa-solid fa-magnifying-glass mr-1 text-amber-400"></i>Loupe : <span class="zoomStatusText">ON</span>
+              <i class="fa-solid fa-crosshairs mr-1 text-amber-400"></i>Loupe : <span class="zoomStatusText">ON</span>
             </button>
           </div>
 
@@ -617,15 +608,15 @@
     let zoomScale = 1;
     let isRadarVisible = true;
 
-    // FAVORIS (Sauvegardés dans le téléphone)
+    // FAVORIS
     let favorites = JSON.parse(localStorage.getItem("cs2_lineup_favorites") || "[]");
 
     // LOUPE
     let isCrosshairZoomEnabled = localStorage.getItem("cs2_crosshair_zoom") !== "false";
 
-    // WAKE LOCK (Anti-veille écran)
+    // WAKE LOCK (ACTIVÉ PAR DÉFAUT SI PAS DE CONFIG EXISTANTE)
     let wakeLockSentinel = null;
-    let isWakeLockEnabled = localStorage.getItem("cs2_wakelock_enabled") === "true";
+    let isWakeLockEnabled = localStorage.getItem("cs2_wakelock_enabled") !== "false";
 
     let formValues = {
       map: "Dust II",
@@ -657,7 +648,7 @@
             updateWakeLockUI();
           });
         } catch (err) {
-          console.warn("Wake Lock non supporté ou refusé :", err);
+          console.warn("Wake Lock non actif :", err);
         }
       }
     }
@@ -678,7 +669,7 @@
     }
 
     function updateWakeLockUI() {
-      const active = isWakeLockEnabled && wakeLockSentinel !== null;
+      const active = isWakeLockEnabled && (wakeLockSentinel !== null || !('wakeLock' in navigator));
       const btnHub = document.getElementById("btnWakeLockHub");
       const btnTop = document.getElementById("btnWakeLockTop");
 
@@ -686,23 +677,31 @@
       const inactiveClass = "bg-zinc-900 text-zinc-400 border-zinc-800";
 
       if (btnHub) {
-        btnHub.className = `text-xs font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1 border transition ${active ? activeClass : inactiveClass}`;
-        document.getElementById("wakeLockTextHub").innerText = active ? "Veille OFF" : "Veille";
-        btnHub.querySelector('i').className = active ? "fa-solid fa-lightbulb text-amber-400" : "fa-regular fa-lightbulb";
+        btnHub.className = `h-8 text-xs font-semibold px-2.5 rounded-lg inline-flex items-center gap-1.5 border transition ${active ? activeClass : inactiveClass}`;
+        document.getElementById("wakeLockTextHub").innerText = active ? "Écran : ON" : "Écran : OFF";
+        btnHub.querySelector('i').className = active ? "fa-solid fa-sun text-amber-400 text-[11px]" : "fa-solid fa-moon text-zinc-500 text-[11px]";
       }
 
       if (btnTop) {
-        btnTop.className = `text-[11px] font-semibold px-2 py-1.5 rounded-lg flex items-center gap-1 border transition ${active ? activeClass : inactiveClass}`;
-        document.getElementById("wakeLockTextTop").innerText = active ? "Veille OFF" : "Veille";
-        btnTop.querySelector('i').className = active ? "fa-solid fa-lightbulb text-amber-400" : "fa-regular fa-lightbulb";
+        btnTop.className = `h-7 text-[11px] font-semibold px-2 rounded-lg inline-flex items-center gap-1 border transition ${active ? activeClass : inactiveClass}`;
+        document.getElementById("wakeLockTextTop").innerText = active ? "Écran : ON" : "Écran : OFF";
+        btnTop.querySelector('i').className = active ? "fa-solid fa-sun text-amber-400 text-[10px]" : "fa-solid fa-moon text-zinc-500 text-[10px]";
       }
     }
 
+    // Réactive le verrouillage d'écran lors du retour sur l'onglet
     document.addEventListener('visibilitychange', async () => {
       if (document.visibilityState === 'visible' && isWakeLockEnabled) {
         await activateWakeLock();
       }
     });
+
+    // Permet d'activer le WakeLock sur le 1er tap si le navigateur bloque l'autoplay
+    document.addEventListener('click', () => {
+      if (isWakeLockEnabled && !wakeLockSentinel) {
+        activateWakeLock();
+      }
+    }, { once: true });
 
     // ==========================================
     // GESTION DES FAVORIS
@@ -715,6 +714,7 @@
       }
       localStorage.setItem("cs2_lineup_favorites", JSON.stringify(favorites));
       renderLineups();
+      renderMainRadar();
       updateFavoritesBadge();
     }
 
@@ -778,11 +778,18 @@
       }
 
       container.innerHTML = mapLineups.map(item => {
-        let badgeColor = "bg-slate-600 text-white";
+        // Intérieur = type de grenade
+        let badgeColor = "bg-slate-700 text-white";
         let iconHtml = '<i class="fa-solid fa-smog"></i>';
-        if (item.type === 'molotov') { badgeColor = "bg-orange-500 text-white"; iconHtml = '<i class="fa-solid fa-fire"></i>'; }
+        if (item.type === 'molotov') { badgeColor = "bg-orange-600 text-white"; iconHtml = '<i class="fa-solid fa-fire"></i>'; }
         if (item.type === 'flash') { badgeColor = "bg-yellow-400 text-zinc-950"; iconHtml = '<i class="fa-solid fa-bolt"></i>'; }
-        if (item.type === 'he') { badgeColor = "bg-red-500 text-white"; iconHtml = '<i class="fa-solid fa-bomb"></i>'; }
+        if (item.type === 'he') { badgeColor = "bg-rose-600 text-white"; iconHtml = '<i class="fa-solid fa-bomb"></i>'; }
+
+        // BORDURE EXTÉRIEURE = COULEUR DU SIDE (BLEU CT / ORANGE T)
+        const isCT = item.side === 'CT';
+        const sideBorderClass = isCT 
+          ? "border-sky-400 shadow-sky-500/50" 
+          : "border-amber-500 shadow-amber-500/50";
 
         const isFav = favorites.includes(item.id);
 
@@ -792,15 +799,15 @@
                class="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-20 group">
             
             <div class="relative flex items-center justify-center">
-              <div class="w-6 h-6 rounded-full ${badgeColor} border-2 ${isFav ? 'border-amber-300 ring-2 ring-amber-400' : 'border-white'} flex items-center justify-center shadow-lg text-[9px] active:scale-125 transition transform">
+              <div class="w-6 h-6 rounded-full ${badgeColor} border-[2.5px] ${sideBorderClass} flex items-center justify-center shadow-lg text-[9px] active:scale-125 transition transform">
                 ${iconHtml}
               </div>
-              ${isFav ? '<div class="absolute -top-1 -right-1 text-[8px] text-amber-400 drop-shadow"><i class="fa-solid fa-star"></i></div>' : ''}
+              ${isFav ? '<div class="absolute -top-1.5 -right-1.5 text-[8px] text-amber-300 drop-shadow"><i class="fa-solid fa-star"></i></div>' : ''}
             </div>
 
             <!-- Bulle au survol ou toucher -->
             <div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-black/95 text-[9px] font-bold text-zinc-200 rounded whitespace-nowrap border border-zinc-700 pointer-events-none z-30 shadow-md">
-              ${item.target}
+              <span class="${isCT ? 'text-sky-400' : 'text-amber-400'} font-black mr-1">[${item.side}]</span>${item.target}
             </div>
           </div>
         `;
@@ -820,7 +827,6 @@
       }
     }
 
-    // Gestion du sélecteur de point sur la carte 2D dans le formulaire
     function handleRadarPickerClick(e) {
       const wrapper = document.getElementById("radarPickerWrapper");
       const rect = wrapper.getBoundingClientRect();
@@ -863,11 +869,11 @@
       const btnHub = document.getElementById("toggleZoomBtnHub");
       const btnTop = document.getElementById("toggleZoomBtnTop");
       if (btnHub) {
-        btnHub.className = `text-[11px] px-2.5 py-1 rounded-lg border flex items-center gap-1.5 transition ${btnClass}`;
+        btnHub.className = `h-8 text-[11px] px-2.5 rounded-lg border inline-flex items-center gap-1.5 transition ${btnClass}`;
         document.getElementById("toggleZoomStatusHub").innerText = statusText;
       }
       if (btnTop) {
-        btnTop.className = `text-[11px] px-2 py-1.5 rounded-lg border font-semibold flex items-center gap-1 transition ${btnClass}`;
+        btnTop.className = `h-7 text-[11px] px-2 rounded-lg border font-semibold inline-flex items-center gap-1 transition ${btnClass}`;
         document.getElementById("toggleZoomStatusTop").innerText = statusText;
       }
       document.querySelectorAll(".zoomStatusText").forEach(el => el.innerText = statusText);
@@ -1364,9 +1370,6 @@
       setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-copy mr-1"></i> Copier', 2000);
     }
 
-    // ==========================================
-    // SOUMISSION DU FORMULAIRE (AJOUT & MODIFICATION)
-    // ==========================================
     function handleFormSubmit(e) {
       e.preventDefault();
       const data = getFormData();
@@ -1521,9 +1524,6 @@
       reader.readAsText(file);
     }
 
-    // ==========================================
-    // OUVERTURE MODAL AJOUT / ÉDITION
-    // ==========================================
     function openAddModal() { 
       editingLineupId = null;
       document.getElementById("lineupForm").reset();
@@ -1576,7 +1576,6 @@
 
       updateFormRadarPickerImg();
 
-      // Charger les coordonnées radar si présentes
       if (item.targetX && item.targetY) {
         setRadarPickerCoords(item.targetX, item.targetY);
       } else {
