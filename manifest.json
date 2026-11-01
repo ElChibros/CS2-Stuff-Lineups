@@ -1,0 +1,19 @@
+{
+  "name": "CS2 Lineups",
+  "short_name": "CS2 Lineups",
+  "description": "Aide-mémoire de repères de stuff CS2 par ElChibros",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
