@@ -17,16 +17,17 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Loupe centrale de crosshair */
+    /* Loupe de crosshair calée à droite et réduite de 20% */
     .crosshair-magnifier {
       position: absolute;
       top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 130px;
-      height: 130px;
+      right: 10px;
+      left: auto;
+      transform: translateY(-50%);
+      width: 104px;
+      height: 104px;
       border: 2px solid #f59e0b;
-      border-radius: 14px;
+      border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 0 0 2px rgba(0,0,0,0.85), 0 10px 25px -5px rgba(0,0,0,0.9);
       pointer-events: none;
@@ -35,8 +36,8 @@
     }
     .crosshair-magnifier img {
       position: absolute;
-      width: 1000%;
-      height: 1000%;
+      width: 1250%;
+      height: 1250%;
       max-width: none;
       top: 50%;
       left: 50%;
@@ -48,7 +49,7 @@
       position: absolute;
       inset: 0;
       border: 1px dashed rgba(245, 158, 11, 0.4);
-      border-radius: 12px;
+      border-radius: 10px;
       pointer-events: none;
     }
   </style>
