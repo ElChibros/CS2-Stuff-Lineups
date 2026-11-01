@@ -20,7 +20,7 @@
     "map": "Mirage",
     "side": "T",
     "type": "smoke",
-    "aimType": "crosshair",
+    "aimType": "reticle",
     "target": "Palace exit",
     "from": "Palace A",
     "stance": "Aim Stand Up then crouch",
