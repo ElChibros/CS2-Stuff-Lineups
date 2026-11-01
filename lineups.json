@@ -1,5 +1,23 @@
 [
   {
+    "id": "inferno_ct_smoke_t_stairs_8594",
+    "map": "Inferno",
+    "side": "CT",
+    "type": "smoke",
+    "aimType": "crosshair",
+    "target": "T Stairs",
+    "from": "CT Spawn",
+    "stance": "Crouch and throw",
+    "throwClick": "Clic Gauche",
+    "throwMovement": "Jumpthrow",
+    "tip": "",
+    "targetX": 44.4,
+    "targetY": 63.3,
+    "aimImage": "20261101205303_1.jpg",
+    "posImage": "20261101205255_1.jpg",
+    "resultImage": "20261101205321_1.jpg"
+  },
+  {
     "id": "inferno_t_smoke_short_a_2637",
     "map": "Inferno",
     "side": "T",
