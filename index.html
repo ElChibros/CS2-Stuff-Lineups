@@ -6,18 +6,18 @@
   <title>CS2 Lineups • by ElChibros</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="favicon.svg">
+  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#09090b">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="manifest" href="manifest.json">
   <style>
     body { -webkit-tap-highlight-color: transparent; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Loupe de crosshair calée à droite et réduite de 20% */
+    /* Loupe de crosshair calée à droite, réduite de 20%, sans cercle jaune */
     .crosshair-magnifier {
       position: absolute;
       top: 50%;
@@ -82,7 +82,7 @@
           <button onclick="downloadLineupsJson()" title="Exporter lineups.json" class="h-8 text-xs bg-zinc-900 hover:bg-zinc-800 text-amber-400 border border-zinc-800 font-bold px-2.5 rounded-lg inline-flex items-center gap-1 transition">
             <i class="fa-solid fa-floppy-disk"></i> JSON
           </button>
-          <button onclick="openImportModal()" class="h-8 text-xs bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 font-semibold px-2.5 rounded-lg inline-flex items-center gap-1 transition">
+          <button onclick="openImportModal()" class="h-8 text-xs bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 font-semibold px-2.5 py-1.5 rounded-lg inline-flex items-center gap-1 transition">
             <i class="fa-solid fa-file-import text-zinc-400"></i>
           </button>
         </div>
@@ -132,13 +132,13 @@
         </div>
 
         <div class="flex items-center gap-1.5">
-          <!-- BOUTON ANTI-VEILLE (HAUTEUR H-7 ALIGNÉE) -->
-          <button onclick="toggleWakeLock()" id="btnWakeLockTop" class="h-7 text-[11px] px-2 rounded-lg border font-semibold inline-flex items-center gap-1 transition" title="Garder l'écran allumé sans veille">
+          <!-- BOUTON ANTI-VEILLE (HAUTEUR H-7 ALIGNÉE ET MÊME STYLE QUE LE ZOOM) -->
+          <button onclick="toggleWakeLock()" id="btnWakeLockTop" class="h-7 text-[11px] px-2 rounded-lg border font-bold inline-flex items-center gap-1 transition bg-amber-500 text-zinc-950 border-amber-400" title="Garder l'écran allumé sans veille">
             <i class="fa-solid fa-sun text-[10px]"></i> <span id="wakeLockTextTop">Écran : ON</span>
           </button>
 
-          <!-- TOGGLE LOUPE (HAUTEUR H-7 ALIGNÉE) -->
-          <button onclick="toggleCrosshairZoom()" id="toggleZoomBtnTop" class="h-7 text-[11px] px-2 rounded-lg border font-semibold inline-flex items-center gap-1 transition" title="Activer/Désactiver la loupe de crosshair">
+          <!-- TOGGLE LOUPE (HAUTEUR H-7 ALIGNÉE ET MÊME STYLE QUE LA VEILLE) -->
+          <button onclick="toggleCrosshairZoom()" id="toggleZoomBtnTop" class="h-7 text-[11px] px-2 rounded-lg border font-bold inline-flex items-center gap-1 transition bg-amber-500 text-zinc-950 border-amber-400" title="Activer/Désactiver la loupe de crosshair">
             <i class="fa-solid fa-crosshairs text-[10px]"></i> Loupe : <span id="toggleZoomStatusTop">ON</span>
           </button>
           
@@ -313,7 +313,7 @@
           <div class="relative rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900 cursor-pointer" onclick="triggerZoomFromDetail('aim')">
             <img id="detailAimImg" src="" alt="Crosshair Placement" class="w-full object-contain max-h-[45vh]">
             
-            <!-- LOUPE AUTOMATIQUE -->
+            <!-- LOUPE AUTOMATIQUE CALÉE À DROITE -->
             <div id="crosshairMagnifierBox" class="crosshair-magnifier">
               <img id="magnifierZoomImg" src="" alt="Zoom Viseur">
               <span class="absolute bottom-1 right-1.5 bg-black/80 px-1 py-0.2 rounded text-[8px] font-mono font-bold text-amber-400 border border-amber-500/40">10x</span>
@@ -367,6 +367,7 @@
         </button>
       </div>
 
+      <!-- FORM AVEC NOVALIDATE POUR ÉVITER LES BLOCAGES SILENCIEUX DU NAVIGATEUR -->
       <form id="lineupForm" onsubmit="handleFormSubmit(event)" novalidate class="space-y-3 text-xs">
         
         <!-- CARTE -->
@@ -495,7 +496,7 @@
           </div>
         </div>
 
-        <!-- ZONE PHOTOS URL -->
+        <!-- ZONE PHOTOS URL (TYPE TEXT POUR ÉVITER LES VALIDATIONS BLOQUANTES DU NAVIGATEUR) -->
         <div id="sectionUrlImages" class="hidden border border-zinc-800 bg-zinc-950/70 p-2.5 rounded-xl space-y-2">
           <div class="flex items-center justify-between"><span class="text-amber-400 font-bold">Liens ImgBB</span><a href="https://fr.imgbb.com/" target="_blank" class="text-[11px] text-sky-400 underline">Ouvrir fr.imgbb.com</a></div>
           <input type="text" id="formResultUrl" placeholder="Lien Résultat" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-100 text-xs">
@@ -633,6 +634,15 @@
     };
 
     // ==========================================
+    // STYLE UNIFIÉ POUR LES BOUTONS TOGGLES (VEILLE & LOUPE)
+    // ==========================================
+    const TOGGLE_BTN_ACTIVE_TOP = "h-7 text-[11px] px-2 rounded-lg border font-bold inline-flex items-center gap-1 transition bg-amber-500 text-zinc-950 border-amber-400";
+    const TOGGLE_BTN_INACTIVE_TOP = "h-7 text-[11px] px-2 rounded-lg border font-semibold inline-flex items-center gap-1 transition bg-zinc-900 text-zinc-400 border-zinc-800";
+
+    const TOGGLE_BTN_ACTIVE_HUB = "h-8 text-[11px] px-2.5 rounded-lg border font-bold inline-flex items-center gap-1.5 transition bg-amber-500 text-zinc-950 border-amber-400";
+    const TOGGLE_BTN_INACTIVE_HUB = "h-8 text-[11px] px-2.5 rounded-lg border font-semibold inline-flex items-center gap-1.5 transition bg-zinc-900 text-zinc-400 border-zinc-800";
+
+    // ==========================================
     // GESTION DU WAKE LOCK (ÉCRAN TOUJOURS ALLUMÉ)
     // ==========================================
     async function initWakeLock() {
@@ -675,19 +685,16 @@
       const btnHub = document.getElementById("btnWakeLockHub");
       const btnTop = document.getElementById("btnWakeLockTop");
 
-      const activeClass = "bg-amber-500/20 text-amber-400 border-amber-500/50";
-      const inactiveClass = "bg-zinc-900 text-zinc-400 border-zinc-800";
-
       if (btnHub) {
-        btnHub.className = `h-8 text-xs font-semibold px-2.5 rounded-lg inline-flex items-center gap-1.5 border transition ${active ? activeClass : inactiveClass}`;
+        btnHub.className = active ? TOGGLE_BTN_ACTIVE_HUB : TOGGLE_BTN_INACTIVE_HUB;
         document.getElementById("wakeLockTextHub").innerText = active ? "Écran : ON" : "Écran : OFF";
-        btnHub.querySelector('i').className = active ? "fa-solid fa-sun text-amber-400 text-[11px]" : "fa-solid fa-moon text-zinc-500 text-[11px]";
+        btnHub.querySelector('i').className = active ? "fa-solid fa-sun text-[11px]" : "fa-solid fa-moon text-zinc-500 text-[11px]";
       }
 
       if (btnTop) {
-        btnTop.className = `h-7 text-[11px] font-semibold px-2 rounded-lg inline-flex items-center gap-1 border transition ${active ? activeClass : inactiveClass}`;
+        btnTop.className = active ? TOGGLE_BTN_ACTIVE_TOP : TOGGLE_BTN_INACTIVE_TOP;
         document.getElementById("wakeLockTextTop").innerText = active ? "Écran : ON" : "Écran : OFF";
-        btnTop.querySelector('i').className = active ? "fa-solid fa-sun text-amber-400 text-[10px]" : "fa-solid fa-moon text-zinc-500 text-[10px]";
+        btnTop.querySelector('i').className = active ? "fa-solid fa-sun text-[10px]" : "fa-solid fa-moon text-zinc-500 text-[10px]";
       }
     }
 
@@ -864,18 +871,15 @@
     // ==========================================
     function updateZoomUI() {
       const statusText = isCrosshairZoomEnabled ? "ON" : "OFF";
-      const btnClass = isCrosshairZoomEnabled 
-        ? "bg-amber-500 text-zinc-950 font-bold border-amber-400" 
-        : "bg-zinc-900 text-zinc-400 border-zinc-800";
-
       const btnHub = document.getElementById("toggleZoomBtnHub");
       const btnTop = document.getElementById("toggleZoomBtnTop");
+
       if (btnHub) {
-        btnHub.className = `h-8 text-[11px] px-2.5 rounded-lg border inline-flex items-center gap-1.5 transition ${btnClass}`;
+        btnHub.className = isCrosshairZoomEnabled ? TOGGLE_BTN_ACTIVE_HUB : TOGGLE_BTN_INACTIVE_HUB;
         document.getElementById("toggleZoomStatusHub").innerText = statusText;
       }
       if (btnTop) {
-        btnTop.className = `h-7 text-[11px] px-2 rounded-lg border font-semibold inline-flex items-center gap-1 transition ${btnClass}`;
+        btnTop.className = isCrosshairZoomEnabled ? TOGGLE_BTN_ACTIVE_TOP : TOGGLE_BTN_INACTIVE_TOP;
         document.getElementById("toggleZoomStatusTop").innerText = statusText;
       }
       document.querySelectorAll(".zoomStatusText").forEach(el => el.innerText = statusText);
@@ -1372,6 +1376,9 @@
       setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-copy mr-1"></i> Copier', 2000);
     }
 
+    // ==========================================
+    // SOUMISSION DU FORMULAIRE (AJOUT & MODIFICATION)
+    // ==========================================
     function handleFormSubmit(e) {
       e.preventDefault();
       const data = getFormData();
@@ -1396,7 +1403,10 @@
         posPath = document.getElementById("formPosUrl").value.trim() || (existingItem ? existingItem.posImage : "");
         resultPath = document.getElementById("formResultUrl").value.trim() || (existingItem ? existingItem.resultImage : "");
 
-        if (!aimPath) { alert("Veuillez renseigner au moins le lien de la photo de visée."); return; }
+        if (!aimPath) { 
+          alert("Veuillez renseigner au moins le lien de la photo de visée."); 
+          return; 
+        }
 
         const entry = { id, ...data, aimImage: aimPath, posImage: posPath, resultImage: resultPath };
         
@@ -1418,6 +1428,7 @@
         const filePos = document.getElementById("filePos").files[0];
         const fileRes = document.getElementById("fileResult").files[0];
 
+        // En création nouvelle, la photo de visée est obligatoire. En édition, on garde l'existante.
         if (!isEditing && !fileAim) {
           alert("Sélectionne au moins une photo pour le crosshair.");
           return;
@@ -1454,6 +1465,7 @@
 
         downloadLineupsJson();
 
+        // N'affiche le rappel d'upload que si de nouvelles photos ont été sélectionnées
         const newlySelectedFiles = [fileAim ? fileAim.name : null, filePos ? filePos.name : null, fileRes ? fileRes.name : null].filter(Boolean);
         if (newlySelectedFiles.length > 0) {
           showLocalSummaryModal(newlySelectedFiles);
@@ -1526,6 +1538,9 @@
       reader.readAsText(file);
     }
 
+    // ==========================================
+    // OUVERTURE MODAL AJOUT / ÉDITION
+    // ==========================================
     function openAddModal() { 
       editingLineupId = null;
       document.getElementById("lineupForm").reset();
@@ -1611,11 +1626,11 @@
     
     function openImportModal() { document.getElementById("importModal").classList.remove("hidden"); }
     function closeImportModal() { document.getElementById("importModal").classList.add("hidden"); }
-	
-	// Enregistrement pour l'installation comme vraie application Android
-	  if ('serviceWorker' in navigator) {
-		navigator.serviceWorker.register('sw.js').catch(err => console.log('SW:', err));
-	  }
+
+    // Enregistrement PWA Service Worker pour Android
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(err => console.log('SW:', err));
+    }
 
     loadLineupsData();
   </script>
